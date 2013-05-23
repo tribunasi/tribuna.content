@@ -9,9 +9,9 @@
     <browser:jbot directory="overrides" layer="..interfaces.ITribunaContentLayer" />
 
     <!-- Publish static files -->
-    <browser:resourceDirectory
+    <!-- <browser:resourceDirectory
       name="tribuna.content"
       directory="static"
-      />
+      /> -->
 
 </configure>
