@@ -1,0 +1,20 @@
+#use it like this: svn propset svn:ignore -F .svnignore ./
+bin
+parts
+develop-eggs
+.installed.cfg
+.mr.developer.cfg
+eggs
+include
+var
+.Python
+lib
+coverage
+report
+fake-eggs
+downloads
+products
+fabfile.py
+.fabfile-progress.txt
+Paste*
+
