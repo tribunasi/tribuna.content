@@ -1,0 +1,18 @@
+<dl class="portlet portletSidebar"
+    i18n:domain="tribuna.content">
+
+    <dt class="portletHeader">
+        <span class="portletTopLeft"></span>
+        Sidebar tag navigation
+        <span class="portletTopRight"></span>
+    </dt>
+    <ul tal:repeat="tag view/tags" class="tribunaSidebar">
+        <li class="tribunaSidebarItem">${tag/Title}</li>
+    </ul>
+
+    <dd class="portletFooter">
+        <span class="portletBottomLeft"></span>
+        <span class="portletBottomRight"></span>
+    </dd>
+
+</dl>
