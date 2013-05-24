@@ -40,6 +40,8 @@ setup(
         'Pillow',
         'Plone',
         'plone.api',
+        'plone.app.dexterity',
+        'plone.directives.form',
         'setuptools',
         'z3c.jbot',
     ],
