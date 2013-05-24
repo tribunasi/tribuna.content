@@ -25,3 +25,7 @@ class IArticle(form.Schema):
             description=_(u"Upload an image for your article"),
             required=False,
         )
+
+    tag = schema.TextLine(
+            title=_(u"Tag name"),
+        )
