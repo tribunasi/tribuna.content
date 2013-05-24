@@ -1,3 +1,4 @@
 <object name="portal_types">
  <object name="tribuna.content.tag" meta_type="Dexterity FTI" />
+ <object name="tribuna.content.article" meta_type="Dexterity FTI" />
 </object>
