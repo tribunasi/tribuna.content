@@ -13,7 +13,7 @@
 
         <div tal:replace="structure provider:plone.abovecontenttitle" />
 
-        <h1 class="documentFirstHeading"> Main page </h1>
+        <h1 class="documentFirstHeading"> Home page </h1>
 
 
         <div tal:replace="structure provider:plone.belowcontenttitle" />
@@ -21,13 +21,16 @@
 
         <div tal:replace="structure provider:plone.abovecontentbody" />
 
-        <h2 i18n:translate="heading_sessions">Article</h2>
-        <div>
-          <tal:block tal:repeat="article view/articles">
-              <h3 tal:content="article/Title" />
+        <h2 i18n:translate="heading_sessions">Tags</h2>
+        <tal:block repeat="article view/articles">
+                <div style="margin-left: 20px; min-height: 200px; background-color: grey; width: 20%; float: left">
+                    <h3><a tal:attributes="href article/getURL"
+                       tal:content="article/Title" /> </h3>
+
                 <p tal:content="article/Description" />
-          </tal:block>
-        </div>
+                </div>
+        </tal:block>
+
 
         <div tal:replace="structure provider:plone.belowcontentbody" />
 

@@ -7,7 +7,32 @@ from zope.container.interfaces import IObjectAddedEvent
 from zope.container.interfaces import IObjectRemovedEvent
 from zope.lifecycleevent.interfaces import IObjectModifiedEvent
 
+from zope.schema.interfaces import IContextSourceBinder
+from zope.schema.vocabulary import SimpleVocabulary
+
 from tribuna.content import _
+
+
+class TagsList(object):
+    grok.implements(IContextSourceBinder)
+
+    def __init__(self):
+        pass
+
+    def __call__(self, context):
+        catalog = api.portal.get_tool(name='portal_catalog')
+        items = catalog({
+            'portal_type': 'tribuna.content.tag',
+            'review_state': 'published',
+        })
+
+        terms = []
+
+        for item in items:
+            term = item.Title
+            terms.append(SimpleVocabulary.createTerm(term, term, term))
+
+        return SimpleVocabulary(terms)
 
 
 class ITag(form.Schema):
