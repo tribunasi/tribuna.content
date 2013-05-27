@@ -10,26 +10,26 @@ from zope.schema.vocabulary import SimpleVocabulary
 from tribuna.content import _
 
 
-class TagsList(object):
-    grok.implements(IContextSourceBinder)
+# class TagsList(object):
+#     grok.implements(IContextSourceBinder)
 
-    def __init__(self):
-        pass
+#     def __init__(self):
+#         pass
 
-    def __call__(self, context):
-        catalog = api.portal.get_tool(name='portal_catalog')
-        items = catalog({
-            'portal_type': 'tribuna.content.tag',
-            'review_state': 'published',
-        })
+#     def __call__(self, context):
+#         catalog = api.portal.get_tool(name='portal_catalog')
+#         items = catalog({
+#             'portal_type': 'tribuna.content.tag',
+#             'review_state': 'published',
+#         })
 
-        terms = []
+#         terms = []
 
-        for item in items:
-            term = item.Title
-            terms.append(SimpleVocabulary.createTerm(term, term, term))
+#         for item in items:
+#             term = item.Title
+#             terms.append(SimpleVocabulary.createTerm(term, term, term))
 
-        return SimpleVocabulary(terms)
+#         return SimpleVocabulary(terms)
 
 
 class IArticle(form.Schema):
@@ -50,8 +50,8 @@ class IArticle(form.Schema):
         required=False,
     )
 
-    tags = schema.List(
-        title=u"Tags",
-        # source=CountriesList(),
-        value_type=schema.Choice(source=TagsList()),
-    )
+    # tags = schema.List(
+    #     title=u"Tags",
+    #     # source=CountriesList(),
+    #     value_type=schema.Choice(source=TagsList()),
+    # )

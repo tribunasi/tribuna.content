@@ -1,9 +1,11 @@
 from five import grok
 from plone import api
-from plone.app.textfield import RichText
 from plone.directives import form
 from plone.namedfile.field import NamedImage
 from zope import schema
+from zope.container.interfaces import IObjectAddedEvent
+from zope.container.interfaces import IObjectRemovedEvent
+from zope.lifecycleevent.interfaces import IObjectModifiedEvent
 
 from tribuna.content import _
 
@@ -27,6 +29,40 @@ class ITag(form.Schema):
     )
 
 
+@grok.subscribe(ITag, IObjectModifiedEvent)
+def object_edited(context, event):
+    context.subject = (context.title, )
+
+
+@grok.subscribe(ITag, IObjectAddedEvent)
+def object_added(context, event):
+    context.subject = (context.title, )
+
+
+@grok.subscribe(ITag, IObjectRemovedEvent)
+def object_deleted(context, event):
+    # First time it's called, before the "delete or no" popup
+    if(context.REQUEST.method == 'GET'):
+        pass
+    # Second and third time it's called, after popup
+    elif(context.REQUEST.method == 'POST'):
+        try:
+            context.REQUEST.form['form.submitted']
+            # Second time
+        except:
+            # Third time
+            catalog = api.portal.get_tool(name='portal_catalog')
+            all_tags = [i.getObject() for i in catalog(Subject={
+                'query': (context.title, ),
+                'operator': 'and',
+            })]
+            for item in all_tags:
+                item.setSubject(tuple((
+                    i for i in item.Subject() if i != context.title
+                )
+                ))
+
+
 class View(grok.View):
     grok.context(ITag)
     grok.require('zope2.View')
@@ -37,6 +73,7 @@ class View(grok.View):
 
         catalog = api.portal.get_tool(name='portal_catalog')
         all_articles = catalog(portal_type="tribuna.content.article")
+
         return [article for article in all_articles
                 if article.review_state == 'published' and
                 self.context.Title() in article.getObject().tags]
