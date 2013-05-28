@@ -100,5 +100,4 @@ class View(grok.View):
         all_articles = catalog(portal_type="tribuna.content.article")
 
         return [article for article in all_articles
-                if article.review_state == 'published' and
-                self.context.Title() in article.getObject().tags]
+                if article.review_state == 'published']
