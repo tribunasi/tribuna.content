@@ -27,6 +27,6 @@ class MainPageView(grok.View):
         if not all_articles:
             return []
         if session["is_union"]:
-            return [article for article in all_articles if any([i in article.getObject().tags for i in tag])]
+            return [article for article in all_articles if any([i in article.getObject().Subject() for i in tag])]
         else:
-            return [article for article in all_articles if all([i in article.getObject().tags for i in tag])]
+            return [article for article in all_articles if all([i in article.getObject().Subject() for i in tag])]
