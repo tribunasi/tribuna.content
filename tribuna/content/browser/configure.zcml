@@ -14,4 +14,22 @@
       directory="static"
       /> -->
 
+
+  <browser:view
+      for="*"
+      name="keywordsmapgenerator"
+      class=".keywords.KeywordsMapGenerator"
+      permission="zope2.View"
+      layer="..interfaces.ITribunaContentLayer"
+      />
+
+    <browser:view
+      for="*"
+      name="keywordswidgetgenerator"
+      class=".keywords.KeywordsWidgetGenerator"
+      permission="zope2.View"
+      allowed_attributes="unicodeset"
+      layer="..interfaces.ITribunaContentLayer"
+      />
+
 </configure>

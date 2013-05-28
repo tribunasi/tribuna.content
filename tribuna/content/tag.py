@@ -64,28 +64,34 @@ def object_added(context, event):
     context.subject = (context.title, )
 
 
-@grok.subscribe(ITag, IObjectRemovedEvent)
-def object_deleted(context, event):
-    # First time it's called, before the "delete or no" popup
-    if(context.REQUEST.method == 'GET'):
-        pass
-    # Second and third time it's called, after popup
-    elif(context.REQUEST.method == 'POST'):
-        try:
-            context.REQUEST.form['form.submitted']
-            # Second time
-        except:
-            # Third time
-            catalog = api.portal.get_tool(name='portal_catalog')
-            all_tags = [i.getObject() for i in catalog(Subject={
-                'query': (context.title, ),
-                'operator': 'and',
-            })]
-            for item in all_tags:
-                item.setSubject(tuple((
-                    i for i in item.Subject() if i != context.title
-                )
-                ))
+"""
+Right now, we don't want to delete tags from all content. The tags will be saved
+and everything will "magically" appear again if we re-add the tag with the same
+name. Need to decide if we want to give the option to delete tag from all content
+on deletion and what to do on tag renaming.
+"""
+# @grok.subscribe(ITag, IObjectRemovedEvent)
+# def object_deleted(context, event):
+#     # First time it's called, before the "delete or no" popup
+#     if(context.REQUEST.method == 'GET'):
+#         pass
+#     # Second and third time it's called, after popup
+#     elif(context.REQUEST.method == 'POST'):
+#         try:
+#             context.REQUEST.form['form.submitted']
+#             # Second time
+#         except:
+#             # Third time
+#             catalog = api.portal.get_tool(name='portal_catalog')
+#             all_tags = [i.getObject() for i in catalog(Subject={
+#                 'query': (context.title, ),
+#                 'operator': 'and',
+#             })]
+#             for item in all_tags:
+#                 item.setSubject(tuple((
+#                     i for i in item.Subject() if i != context.title
+#                 )
+#                 ))
 
 
 class View(grok.View):

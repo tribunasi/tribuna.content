@@ -1,22 +1,18 @@
 from five import grok
 from plone import api
-from plone.directives import form
 from plone.app.portlets.portlets import base
+from plone.directives import form
 from plone.portlets.interfaces import IPortletDataProvider
+from Products.CMFCore.interfaces import ISiteRoot
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from z3c.form import button
 from zope import schema
 from zope.interface import implements
-
-from tribuna.content import _
-from tribuna.content.mainpage import MainPageView
-
 from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.vocabulary import SimpleVocabulary
-from Products.CMFCore.interfaces import ISiteRoot
-from z3c.form import button
 
-import urllib2
-import urllib
+from tribuna.content import _
+from tribuna.content.utils import TagsPublished
 
 
 class TagsList(object):
@@ -26,31 +22,19 @@ class TagsList(object):
         pass
 
     def __call__(self, context):
-        catalog = api.portal.get_tool(name='portal_catalog')
-        items = catalog({
-            'portal_type': 'tribuna.content.tag',
-            'review_state': 'published',
-        })
-
-        terms = []
-
-        for item in items:
-            term = item.Title
-            terms.append(SimpleVocabulary.createTerm(term, term, term))
-
+        items = TagsPublished()
+        terms = [SimpleVocabulary.createTerm(i, i, i) for i in items]
         return SimpleVocabulary(terms)
-
 
 
 class ISidebarForm(form.Schema):
     """ Defining form fields for sidebar portlet """
 
     tags = schema.List(
-            title=u"Tags",
-            # source=CountriesList(),
-            value_type=schema.Choice(source=TagsList()),
-            default=[]
-        )
+        title=u"Tags",
+        value_type=schema.Choice(source=TagsList()),
+        default=[]
+    )
 
 
 @form.default_value(field=ISidebarForm['tags'])
@@ -121,10 +105,6 @@ class Assignment(base.Assignment):
 
     title = _(u"Sidebar portlet")
 
-    def tags(self):
-        catalog = api.portal.get_tool(name='portal_catalog')
-        return catalog(portal_type="tribuna.content.tag")
-
 
 class Renderer(base.Renderer):
     render = ViewPageTemplateFile('sidebar.pt')
@@ -132,12 +112,9 @@ class Renderer(base.Renderer):
     def tags(self):
         """Return a catalog search result of articles that have this tag
         """
-
         form1 = SidebarForm(self.context, self.request)
         form1.update()
         return form1
-        # catalog = api.portal.get_tool(name='portal_catalog')
-        # return catalog(portal_type="tribuna.content.tag")
 
     def callMainPage(self, tag):
         return "localhost:8080/Plone/" + tag
@@ -146,5 +123,3 @@ class Renderer(base.Renderer):
 class AddForm(base.NullAddForm):
     def create(self):
         return Assignment()
-
-
