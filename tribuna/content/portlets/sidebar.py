@@ -27,6 +27,19 @@ class TagsList(object):
         return SimpleVocabulary(terms)
 
 
+class ChoicesList(object):
+    grok.implements(IContextSourceBinder)
+
+    def __init__(self):
+        pass
+
+    def __call__(self, context):
+        items = ("comments", "latest")
+        terms = [SimpleVocabulary.createTerm(i, i, i) for i in items]
+        #import pdb; pdb.set_trace()
+        return SimpleVocabulary(terms)
+
+
 class ISidebarForm(form.Schema):
     """ Defining form fields for sidebar portlet """
 
@@ -35,16 +48,32 @@ class ISidebarForm(form.Schema):
         value_type=schema.Choice(source=TagsList()),
         default=[]
     )
+    # sort_choice = schema.Choice(
+    #     source=ChoicesList(),
+    #     title=u"Type of sorting articles",
+    #     default=[]
+    # )
 
 
 @form.default_value(field=ISidebarForm['tags'])
-def default_title(data):
+def default_tags(data):
     sdm = data.context.session_data_manager
     session = sdm.getSessionData(create=True)
     if("tags" in session.keys()):
         return session["tags"]["tags"]
     else:
         return []
+
+
+# @form.default_value(field=ISidebarForm['sort_choice'])
+# def default_sort_choice(data):
+#     sdm = data.context.session_data_manager
+#     session = sdm.getSessionData(create=True)
+#     if("tags" in session.keys()):
+#         if(["sort_choice"] in session["tags"].keys()):
+#             return session["tags"]["sort_choice"]
+#     else:
+#         return []
 
 
 class SidebarForm(form.SchemaForm):
@@ -116,8 +145,6 @@ class Renderer(base.Renderer):
         form1.update()
         return form1
 
-    def callMainPage(self, tag):
-        return "localhost:8080/Plone/" + tag
 
 
 class AddForm(base.NullAddForm):

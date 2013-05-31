@@ -41,7 +41,7 @@ class IArticle(form.Schema):
     )
 
     description = schema.Text(
-        title=_(u"Article text"),
+        title=_(u"Article description"),
     )
 
     picture = NamedImage(
