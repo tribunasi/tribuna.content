@@ -101,7 +101,8 @@ class SidebarForm(form.SchemaForm):
         session = sdm.getSessionData(create=True)
         session.set("tags", data)
         session.set("is_union", True)
-        self.request.response.redirect("http://localhost:8080/Plone/@@main-page")
+        url = api.portal.get().absolute_url()
+        self.request.response.redirect("{0}/@@main-page".format(url))
 
     @button.buttonAndHandler(u'Send-Intersection')
     def handleApply(self, action):
@@ -114,7 +115,8 @@ class SidebarForm(form.SchemaForm):
         session = sdm.getSessionData(create=True)
         session.set("tags", data)
         session.set("is_union", False)
-        self.request.response.redirect("http://localhost:8080/Plone/@@main-page")
+        url = api.portal.get().absolute_url()
+        self.request.response.redirect("{0}/@@main-page".format(url))
 
     @button.buttonAndHandler(u"Cancel")
     def handleCancel(self, action):

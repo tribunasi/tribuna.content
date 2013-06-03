@@ -23,9 +23,8 @@ class MainPageView(grok.View):
         sdm = self.context.session_data_manager
         session = sdm.getSessionData(create=True)
         tags = session["tags"]["tags"]
-        if session["is_union"]:
-            x =  catalog(portal_type="tribuna.content.article", review_state="published", sort_on="Date", Subject={"query": tags, "operator": "or"})
-            #import pdb; pdb.set_trace()
+        if session["is_union"] is True:
+            x = catalog(portal_type="tribuna.content.article", review_state="published", sort_on="Date", Subject={"query": tags, "operator": "or"})
             return x
         else:
             return catalog(portal_type="tribuna.content.article", review_state="published", sort_on="Date", Subject={"query": tags, "operator": "and"})
