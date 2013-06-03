@@ -44,6 +44,12 @@ setup(
         'plone.directives.form',
         'setuptools',
         'z3c.jbot',
+        'plone.behavior',
+        'plone.directives.form',
+        'zope.schema',
+        'zope.interface',
+        'zope.component',
+        'rwproperty',
     ],
     extras_require={
         'test': [

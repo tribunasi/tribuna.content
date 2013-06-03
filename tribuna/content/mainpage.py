@@ -24,7 +24,20 @@ class MainPageView(grok.View):
         session = sdm.getSessionData(create=True)
         tags = session["tags"]["tags"]
         if session["is_union"] is True:
-            x = catalog(portal_type="tribuna.content.article", review_state="published", sort_on="Date", Subject={"query": tags, "operator": "or"})
+            x = catalog(
+                portal_type="tribuna.content.article",
+                review_state="published",
+                sort_on="Date",
+                Subject={"query": tags, "operator": "or"}
+            )
+            x = [i.getObject() for i in x]
             return x
         else:
-            return catalog(portal_type="tribuna.content.article", review_state="published", sort_on="Date", Subject={"query": tags, "operator": "and"})
+            x = catalog(
+                portal_type="tribuna.content.article",
+                review_state="published",
+                sort_on="Date",
+                Subject={"query": tags, "operator": "and"}
+            )
+            x = [i.getObject() for i in x]
+            return x

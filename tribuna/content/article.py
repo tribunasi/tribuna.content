@@ -44,11 +44,11 @@ class IArticle(form.Schema):
         title=_(u"Article description"),
     )
 
-    picture = NamedImage(
-        title=_(u"Article image"),
-        description=_(u"Upload an image for your article"),
-        required=False,
-    )
+    # picture = NamedImage(
+    #     title=_(u"Article image"),
+    #     description=_(u"Upload an image for your article"),
+    #     required=False,
+    # )
 
     # tags = schema.List(
     #     title=u"Tags",

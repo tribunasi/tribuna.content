@@ -44,13 +44,13 @@
 
           <tal:block tal:repeat="article view/articles">
             <li>
-              <tal:block tal:define="articleO article/getObject">
-              <img tal:attributes="src string:${articleO/absolute_url}/@@images/image; title article/Title" />
+
+              <img tal:attributes="src string:${article/absolute_url}/@@images/image; title article/title" />
               <div class="gv-panel-content">
-                  <h3  tal:content="article/Title" />
-                  <p tal:content="structure articleO/text" />
+                  <h3  tal:content="article/title" />
+                  <p tal:content="structure article/text" />
               </div>
-              </tal:block>
+
             </li>
           </tal:block>
           </ul>

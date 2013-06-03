@@ -1,0 +1,19 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    xmlns:grok="http://namespaces.zope.org/grok"
+    i18n_domain="tribuna.content">
+
+    <include package="plone.behavior" file="meta.zcml" />
+
+    <include package="plone.directives.form" file="meta.zcml" />
+    <include package="plone.directives.form" />
+
+    <plone:behavior
+        title="TermitnjakLeadImage"
+        description="Fancy version of LeadImage."
+        provides=".behaviors.ITermitnjakLeadImage"
+        factory=".behaviors.TermitnjakLeadImage"
+        />
+
+</configure>
