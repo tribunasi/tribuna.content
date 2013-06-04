@@ -16,4 +16,13 @@
         factory=".behaviors.TermitnjakLeadImage"
         />
 
+    <plone:behavior
+        title="LockOnHomePage"
+        description="Behavior for selecting content to be locked on home page"
+        provides=".behaviors.ILockOnHomePage"
+        factory=".behaviors.LockOnHomePage"
+        />
+
+    <adapter factory=".behaviors.lock_on_home_page_indexer" name="locked_on_home"/>
+
 </configure>

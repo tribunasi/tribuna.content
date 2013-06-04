@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<object name="portal_catalog" meta_type="Plone Catalog Tool">
+ <index name="locked_on_home" meta_type="BooleanIndex">
+  <indexed_attr value="locked_on_home"/>
+ </index>
+</object>

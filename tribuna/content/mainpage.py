@@ -4,15 +4,11 @@ from zope.interface import Interface
 
 from tribuna.content import _
 
-#grok.templatedir('mainpage_templates')
-
 
 class MainPageView(grok.View):
     grok.context(Interface)
     grok.require('zope2.View')
     grok.name('main-page')
-
-    #grok.template('mainpage.pt')
 
     def articles(self):
         """ Return a catalog search result of articles that have this tag
