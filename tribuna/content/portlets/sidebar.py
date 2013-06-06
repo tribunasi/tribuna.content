@@ -6,13 +6,15 @@ from plone.portlets.interfaces import IPortletDataProvider
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from z3c.form import button
+from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from zope import schema
 from zope.interface import implements
 from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.vocabulary import SimpleVocabulary
 
+
 from tribuna.content import _
-from tribuna.content.utils import TagsPublished
+from tribuna.content.utils import tagsPublished
 
 
 class TagsList(object):
@@ -22,7 +24,7 @@ class TagsList(object):
         pass
 
     def __call__(self, context):
-        items = TagsPublished()
+        items = tagsPublished()
         terms = [SimpleVocabulary.createTerm(i, i, i) for i in items]
         return SimpleVocabulary(terms)
 
@@ -36,17 +38,17 @@ class ChoicesList(object):
     def __call__(self, context):
         items = ("comments", "latest")
         terms = [SimpleVocabulary.createTerm(i, i, i) for i in items]
-        #import pdb; pdb.set_trace()
         return SimpleVocabulary(terms)
 
 
 class ISidebarForm(form.Schema):
     """ Defining form fields for sidebar portlet """
 
+    form.widget(tags=CheckBoxFieldWidget)
     tags = schema.List(
         title=u"Tags",
         value_type=schema.Choice(source=TagsList()),
-        default=[]
+        default=[],
     )
     # sort_choice = schema.Choice(
     #     source=ChoicesList(),
@@ -146,7 +148,6 @@ class Renderer(base.Renderer):
         form1 = SidebarForm(self.context, self.request)
         form1.update()
         return form1
-
 
 
 class AddForm(base.NullAddForm):

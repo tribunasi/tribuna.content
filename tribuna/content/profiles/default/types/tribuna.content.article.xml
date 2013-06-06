@@ -23,7 +23,10 @@
  <!-- enabled behaviors -->
  <property name="behaviors">
      <element value="plone.app.content.interfaces.INameFromTitle" />
-     <element value="plone.app.dexterity.behaviors.metadata.ICategorization" />
+     <element value="tribuna.content.behaviors.behaviors.ITermitnjakLeadImage" />
+     <element value="tribuna.content.behaviors.behaviors.ITags" />
+     <element value="tribuna.content.behaviors.behaviors.ILockOnHomePage" />
+     <element value="collective.miscbehaviors.behavior.bodytext.IBodyText" />
  </property>
 
  <!-- View information -->

@@ -10,7 +10,7 @@ from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.vocabulary import SimpleVocabulary
 
 from tribuna.content import _
-from tribuna.content.utils import TagsPublished
+from tribuna.content.utils import tagsPublished
 
 
 class TagsList(object):
@@ -20,7 +20,7 @@ class TagsList(object):
         pass
 
     def __call__(self, context):
-        items = TagsPublished()
+        items = tagsPublished()
         terms = [SimpleVocabulary.createTerm(i, i, i) for i in items]
         return SimpleVocabulary(terms)
 

@@ -17,6 +17,13 @@
         />
 
     <plone:behavior
+        title="TermitnjakTags"
+        description="Tags to use with on Tribuna page."
+        provides=".behaviors.ITags"
+        factory=".behaviors.Tags"
+        />
+
+    <plone:behavior
         title="LockOnHomePage"
         description="Behavior for selecting content to be locked on home page"
         provides=".behaviors.ILockOnHomePage"
