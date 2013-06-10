@@ -50,6 +50,7 @@ class ISidebarForm(form.Schema):
         value_type=schema.Choice(source=TagsList()),
         default=[],
     )
+
     # sort_choice = schema.Choice(
     #     source=ChoicesList(),
     #     title=u"Type of sorting articles",
@@ -145,8 +146,10 @@ class Renderer(base.Renderer):
     def tags(self):
         """Return a catalog search result of articles that have this tag
         """
+        #import pdb; pdb.set_trace()
         form1 = SidebarForm(self.context, self.request)
         form1.update()
+        #form1.updateWidgets()
         return form1
 
 
