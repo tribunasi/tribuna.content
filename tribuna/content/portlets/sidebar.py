@@ -18,6 +18,8 @@ from tribuna.content import _
 from tribuna.content.utils import tagsPublished
 
 
+# SimpleTerm(value (actual value), token (request), title (shown in browser))
+
 class TagsList(object):
     grok.implements(IContextSourceBinder)
 
@@ -35,16 +37,34 @@ class ISidebarForm(form.Schema):
 
     form.widget(tags=CheckBoxFieldWidget)
     tags = schema.List(
-        title=u"Tags",
+        title=_(u"Tags"),
         value_type=schema.Choice(source=TagsList()),
     )
 
     sort_choice = schema.Choice(
+        title=_(u"Type of sorting articles"),
         vocabulary=SimpleVocabulary([
-            SimpleTerm(u'comments', u'comments', u'comments'),
-            SimpleTerm(u'latest', u'latest', u'latest'),
+            SimpleTerm(u'comments', u'comments', _(u'Nr. of comments')),
+            SimpleTerm(u'latest', u'latest', _(u'Latest')),
         ]),
-        title=u"Type of sorting articles",
+    )
+
+    form.widget(content_filters=CheckBoxFieldWidget)
+    content_filters = schema.List(
+        title=_(u"Content filters"),
+        value_type=schema.Choice(source=SimpleVocabulary([
+            SimpleTerm(u'articles', u'articles', _(u'Articles')),
+            SimpleTerm(u'comments', u'comments', _(u'Comments')),
+            SimpleTerm(u'images', u'images', _(u'Images')),
+        ])),
+    )
+
+    sort_type = schema.Choice(
+        title=_(u"How to apply tags"),
+        vocabulary=SimpleVocabulary([
+            SimpleTerm(u'union', u'union', _(u'Union')),
+            SimpleTerm(u'intersection', u'intersection', _(u'Intersection')),
+        ]),
     )
 
 
@@ -52,8 +72,8 @@ class ISidebarForm(form.Schema):
 def default_tags(data):
     sdm = data.context.session_data_manager
     session = sdm.getSessionData(create=True)
-    if(u"tags" in session.keys()):
-        return session[u"tags"][u"tags"]
+    if(u"portlet_data" in session.keys()):
+        return session[u"portlet_data"][u"tags"]
     else:
         return []
 
@@ -62,11 +82,32 @@ def default_tags(data):
 def default_sort_choice(data):
     sdm = data.context.session_data_manager
     session = sdm.getSessionData(create=True)
-    if(u"tags" in session.keys()):
-        if(u"sort_choice" in session["tags"].keys()):
-            return session[u"tags"][u"sort_choice"]
+    if(u"portlet_data" in session.keys()):
+        if(u"sort_choice" in session["portlet_data"].keys()):
+            return session[u"portlet_data"][u"sort_choice"]
     else:
         return u"latest"
+
+
+@form.default_value(field=ISidebarForm['content_filters'])
+def default_content_filters(data):
+    sdm = data.context.session_data_manager
+    session = sdm.getSessionData(create=True)
+    if(u"portlet_data" in session.keys()):
+        return session[u"portlet_data"][u"content_filters"]
+    else:
+        return []
+
+
+@form.default_value(field=ISidebarForm['sort_type'])
+def default_sort_type(data):
+    sdm = data.context.session_data_manager
+    session = sdm.getSessionData(create=True)
+    if(u"portlet_data" in session.keys()):
+        if(u"sort_choice" in session["portlet_data"].keys()):
+            return session[u"portlet_data"][u"sort_type"]
+    else:
+        return u"union"
 
 
 class SidebarForm(form.SchemaForm):
@@ -83,7 +124,8 @@ class SidebarForm(form.SchemaForm):
     label = u"Select appropriate tags"
     description = u"Tags selection form"
 
-    def _handleApply(self, action, is_union):
+    @button.buttonAndHandler(u'Filter')
+    def handleApply(self, action):
         data, errors = self.extractData()
         if errors:
             self.status = self.formErrorsMessage
@@ -91,23 +133,23 @@ class SidebarForm(form.SchemaForm):
 
         sdm = self.context.session_data_manager
         session = sdm.getSessionData(create=True)
-        session.set("tags", data)
-        session.set("is_union", is_union)
+        session.set("portlet_data", data)
+        #session.set("is_union", is_union)
         url = api.portal.get().absolute_url()
         self.request.response.redirect("{0}/@@main-page".format(url))
 
-    @button.buttonAndHandler(u'Send-Union')
-    def handleApply(self, action):
-        self._handleApply(action, True)
+    # @button.buttonAndHandler(u'Send-Union')
+    # def handleApply(self, action):
+    #     self._handleApply(action, True)
 
-    @button.buttonAndHandler(u'Send-Intersection')
-    def handleApply(self, action):
-        self._handleApply(action, False)
+    # @button.buttonAndHandler(u'Send-Intersection')
+    # def handleApply(self, action):
+    #     self._handleApply(action, False)
 
-    @button.buttonAndHandler(u"Cancel")
-    def handleCancel(self, action):
-        """User cancelled. Redirect back to the front page.
-        """
+    # @button.buttonAndHandler(u"Cancel")
+    # def handleCancel(self, action):
+    #     """User cancelled. Redirect back to the front page.
+    #     """
 
 
 class ISidebarPortlet(IPortletDataProvider):
@@ -126,7 +168,7 @@ class Assignment(base.Assignment):
 class Renderer(base.Renderer):
     render = ViewPageTemplateFile('sidebar.pt')
 
-    def tags(self):
+    def portlet_data(self):
         """Return a catalog search result of articles that have this tag
         """
         form1 = SidebarForm(self.context, self.request)

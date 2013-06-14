@@ -24,7 +24,7 @@
                      that form is presented in "view" TAL variable.
 
                   -->
-            <tal:block define="form view/tags">
+            <tal:block define="form view/portlet_data">
                 <tal:block define="view nocall:form">
                     <metal:block use-macro="form/@@ploneform-macros/titlelessform" />
                 </tal:block>

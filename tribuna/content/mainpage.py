@@ -18,8 +18,8 @@ class MainPageView(grok.View):
 
         sdm = self.context.session_data_manager
         session = sdm.getSessionData(create=True)
-        tags = session["tags"]["tags"]
-        if session["is_union"] is True:
+        tags = session["portlet_data"]["tags"]
+        if session["portlet_data"]["sort_type"] is u'union':
             articles = catalog(
                 portal_type="tribuna.content.article",
                 review_state="published",
