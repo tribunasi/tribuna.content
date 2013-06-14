@@ -11,6 +11,7 @@ from zope import schema
 from zope.interface import implements
 from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.vocabulary import SimpleVocabulary
+from zope.schema.vocabulary import SimpleTerm
 
 
 from tribuna.content import _
@@ -29,18 +30,6 @@ class TagsList(object):
         return SimpleVocabulary(terms)
 
 
-class ChoicesList(object):
-    grok.implements(IContextSourceBinder)
-
-    def __init__(self):
-        pass
-
-    def __call__(self, context):
-        items = ("comments", "latest")
-        terms = [SimpleVocabulary.createTerm(i, i, i) for i in items]
-        return SimpleVocabulary(terms)
-
-
 class ISidebarForm(form.Schema):
     """ Defining form fields for sidebar portlet """
 
@@ -48,35 +37,36 @@ class ISidebarForm(form.Schema):
     tags = schema.List(
         title=u"Tags",
         value_type=schema.Choice(source=TagsList()),
-        default=[],
     )
 
-    # sort_choice = schema.Choice(
-    #     source=ChoicesList(),
-    #     title=u"Type of sorting articles",
-    #     default=[]
-    # )
+    sort_choice = schema.Choice(
+        vocabulary=SimpleVocabulary([
+            SimpleTerm(u'comments', u'comments', u'comments'),
+            SimpleTerm(u'latest', u'latest', u'latest'),
+        ]),
+        title=u"Type of sorting articles",
+    )
 
 
 @form.default_value(field=ISidebarForm['tags'])
 def default_tags(data):
     sdm = data.context.session_data_manager
     session = sdm.getSessionData(create=True)
-    if("tags" in session.keys()):
-        return session["tags"]["tags"]
+    if(u"tags" in session.keys()):
+        return session[u"tags"][u"tags"]
     else:
         return []
 
 
-# @form.default_value(field=ISidebarForm['sort_choice'])
-# def default_sort_choice(data):
-#     sdm = data.context.session_data_manager
-#     session = sdm.getSessionData(create=True)
-#     if("tags" in session.keys()):
-#         if(["sort_choice"] in session["tags"].keys()):
-#             return session["tags"]["sort_choice"]
-#     else:
-#         return []
+@form.default_value(field=ISidebarForm['sort_choice'])
+def default_sort_choice(data):
+    sdm = data.context.session_data_manager
+    session = sdm.getSessionData(create=True)
+    if(u"tags" in session.keys()):
+        if(u"sort_choice" in session["tags"].keys()):
+            return session[u"tags"][u"sort_choice"]
+    else:
+        return u"latest"
 
 
 class SidebarForm(form.SchemaForm):
@@ -93,8 +83,7 @@ class SidebarForm(form.SchemaForm):
     label = u"Select appropriate tags"
     description = u"Tags selection form"
 
-    @button.buttonAndHandler(u'Send-Union')
-    def handleApply(self, action):
+    def _handleApply(self, action, is_union):
         data, errors = self.extractData()
         if errors:
             self.status = self.formErrorsMessage
@@ -103,23 +92,17 @@ class SidebarForm(form.SchemaForm):
         sdm = self.context.session_data_manager
         session = sdm.getSessionData(create=True)
         session.set("tags", data)
-        session.set("is_union", True)
+        session.set("is_union", is_union)
         url = api.portal.get().absolute_url()
         self.request.response.redirect("{0}/@@main-page".format(url))
+
+    @button.buttonAndHandler(u'Send-Union')
+    def handleApply(self, action):
+        self._handleApply(action, True)
 
     @button.buttonAndHandler(u'Send-Intersection')
     def handleApply(self, action):
-        data, errors = self.extractData()
-        if errors:
-            self.status = self.formErrorsMessage
-            return
-
-        sdm = self.context.session_data_manager
-        session = sdm.getSessionData(create=True)
-        session.set("tags", data)
-        session.set("is_union", False)
-        url = api.portal.get().absolute_url()
-        self.request.response.redirect("{0}/@@main-page".format(url))
+        self._handleApply(action, False)
 
     @button.buttonAndHandler(u"Cancel")
     def handleCancel(self, action):
@@ -146,10 +129,8 @@ class Renderer(base.Renderer):
     def tags(self):
         """Return a catalog search result of articles that have this tag
         """
-        #import pdb; pdb.set_trace()
         form1 = SidebarForm(self.context, self.request)
         form1.update()
-        #form1.updateWidgets()
         return form1
 
 
