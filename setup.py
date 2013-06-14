@@ -50,6 +50,11 @@ setup(
         'zope.interface',
         'zope.component',
         'rwproperty',
+        'redomino.advancedkeyword',
+        'collective.searchform',
+        'collective.miscbehaviors',
+        'z3c.relationfield',
+        'plone.formwidget.contenttree',
     ],
     extras_require={
         'test': [

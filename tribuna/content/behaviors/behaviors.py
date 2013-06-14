@@ -80,18 +80,43 @@ class TagsList(object):
         return SimpleVocabulary(terms)
 
 
+# class ITags(form.Schema):
+#     """Add tags to content
+#     """
+
+#     form.widget(tags=CheckBoxFieldWidget)
+#     tags = schema.List(
+#         title=_(u'label_tags'),
+#         description=_(
+#             u'help_tags',
+#             default=u'Mine test.'
+#         ),
+#         value_type=schema.Choice(source=TagsList()),
+#     )
+
+from collective.z3cform.widgets.token_input_widget import TokenInputFieldWidget
+
+
 class ITags(form.Schema):
-    """Add tags to content
+    """
+        Auto-complete tags
     """
 
-    form.widget(tags=CheckBoxFieldWidget)
-    tags = schema.List(
+    form.widget(tags_old=CheckBoxFieldWidget)
+    tags_old = schema.List(
         title=_(u'label_tags'),
         description=_(
             u'help_tags',
             default=u'Mine test.'
         ),
         value_type=schema.Choice(source=TagsList()),
+    )
+
+    form.widget(tags_new=TokenInputFieldWidget)
+    tags_new = schema.List(
+        title=_(u"Categories"),
+        value_type=schema.TextLine(),
+        default=[],
     )
 
 alsoProvides(ITags, form.IFormFieldProvider)
@@ -108,13 +133,39 @@ class Tags(object):
         self.context = context
 
     @getproperty
-    def tags(self):
+    def tags_old(self):
         return set(self.context.Subject())
     @setproperty
-    def tags(self, value):
+    def tags_old(self, value):
         if value is None:
             value = ()
         self.context.setSubject(tuple(value))
+
+    @getproperty
+    def tags_new(self):
+        return set(self.context.Subject())
+    @setproperty
+    def tags_new(self, value):
+        if value is None:
+            value = ()
+        old_tags = set(self.context.Subject())
+        # Set Subject as an union of  tags in tags_old and tags_new
+        self.context.setSubject(tuple(old_tags.union(value)))
+
+        # Get all 'new' tags
+        catalog = api.portal.get_tool(name='portal_catalog')
+        items = catalog({
+            'portal_type': 'tribuna.content.tag',
+        })
+        titles = set(i.Title for i in items)
+        svalue = set(value)
+        svalue -= titles
+
+        site = api.portal.get()
+        for title in svalue:
+            name = title.replace(' ', '-').lower()
+            site['tags'].invokeFactory('tribuna.content.tag', name)
+            site['tags'][name].title = title
 
 
 class ILockOnHomePage(form.Schema):
