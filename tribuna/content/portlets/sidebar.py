@@ -83,7 +83,6 @@ def default_sort_choice(data):
     sdm = data.context.session_data_manager
     session = sdm.getSessionData(create=True)
     if(u"portlet_data" in session.keys()):
-        if(u"sort_choice" in session["portlet_data"].keys()):
             return session[u"portlet_data"][u"sort_choice"]
     else:
         return u"latest"
@@ -104,7 +103,6 @@ def default_sort_type(data):
     sdm = data.context.session_data_manager
     session = sdm.getSessionData(create=True)
     if(u"portlet_data" in session.keys()):
-        if(u"sort_choice" in session["portlet_data"].keys()):
             return session[u"portlet_data"][u"sort_type"]
     else:
         return u"union"
@@ -121,10 +119,10 @@ class SidebarForm(form.SchemaForm):
     schema = ISidebarForm
     ignoreContext = True
 
-    label = u"Select appropriate tags"
-    description = u"Tags selection form"
+    label = _(u"Select appropriate tags")
+    description = _(u"Tags selection form")
 
-    @button.buttonAndHandler(u'Filter')
+    @button.buttonAndHandler(_(u'Filter'))
     def handleApply(self, action):
         data, errors = self.extractData()
         if errors:
@@ -133,10 +131,24 @@ class SidebarForm(form.SchemaForm):
 
         sdm = self.context.session_data_manager
         session = sdm.getSessionData(create=True)
-        session.set("portlet_data", data)
-        #session.set("is_union", is_union)
+        session.set(u"portlet_data", data)
         url = api.portal.get().absolute_url()
         self.request.response.redirect("{0}/@@main-page".format(url))
+
+    @button.buttonAndHandler(_(u'Text'))
+    def handleApply(self, action):
+        sdm = self.context.session_data_manager
+        session = sdm.getSessionData(create=True)
+        session.set(u'view_type', u'text')
+        self.request.response.redirect(self.request.getURL())
+
+    @button.buttonAndHandler(_(u'Drag\'n\'drop'))
+    def handleApply(self, action):
+        sdm = self.context.session_data_manager
+        session = sdm.getSessionData(create=True)
+        session.set(u'view_type', u'drag')
+        self.request.response.redirect(self.request.getURL())
+
 
     # @button.buttonAndHandler(u'Send-Union')
     # def handleApply(self, action):

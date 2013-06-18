@@ -8,8 +8,7 @@
 <body>
 
 <metal:main fill-slot="main">
-    <tal:main-macro metal:define-macro="main"
-        >
+    <tal:main-macro metal:define-macro="main">
         <link rel="stylesheet" type="text/css"
             tal:define="navroot context/@@plone_portal_state/navigation_root_url"
             tal:attributes="href string:${navroot}/++resource++tribuna.theme/css/jquery-ui-1.10.3.custom.min.css"
@@ -30,55 +29,70 @@
         <div tal:replace="structure provider:plone.abovecontentbody" />
 
         <h2 i18n:translate="heading_sessions">Articles</h2>
-        <a tal:attributes="href string:${request/URL}?textview=True"
-                       >SWITCH TO TEXT VIEW</a>
-                       <br/>
         <script>
-          var tableGrid = []
-          $(document).ready(function() {
-            var x = 150
-            var y = 100
-            for (var i = 0; i<7; i++) {
-              for (var j = 0; j<7; j++) {
-                tableGrid.push({"left": i*x, "top": j*y})
-              }
-            }
-          });
+            var tableGrid = []
+            $(document).ready(function() {
+                var x = 150
+                var y = 100
+                for (var i = 0; i<7; i++) {
+                    for (var j = 0; j<7; j++) {
+                    tableGrid.push({"left": i*x, "top": j*y})
+                    }
+                }
+            });
         </script>
         <div style="min-height: 800px" >
         <tal:block repeat="article view/articles">
-                <div id="${article/UID}" class="ui-widget-content" style="margin-left: 20px; min-height: 200px; background-color: grey; width: 20%; float: left;">
-                    <h3><a tal:attributes="href article/absolute_url"
-                       tal:content="article/title" /> </h3>
-                       <img tal:attributes="src string:${article/absolute_url}/@@images/image/thumb" />
+            <tal:block tal:condition="view/is_text_view">
+                <div id="${article/UID}" class="ui-widget-content text-view">
+                    <h3>
+                        <a tal:attributes="href article/absolute_url" tal:content="article/title" />
+                   </h3>
+                   <p tal:content="article/description" />
+               </div>
+           </tal:block>
+           <tal:block tal:condition="not:view/is_text_view">
+                <div id="${article/UID}" class="ui-widget-content drag-view">
+                    <h3>
+                        <a tal:attributes="href article/absolute_url" tal:content="article/title" />
+                   </h3>
+                       <img tal:attributes="src string:${article/absolute_url}/@@images/image/preview" />
                 <p tal:content="article/description" />
                 </div>
 
-                <script tal:condition="not:view/is_text_view">
-                  function get_random_color() {
-                      var letters = '0123456789ABCDEF'.split('');
-                      var color = '#';
-                      for (var i = 0; i < 6; i++ ) {
-                          color += letters[Math.round(Math.random() * 15)];
-                      }
-                      return color;
-                  }
+                <script>
+                    function get_random_color() {
+                        var letters = '0123456789ABCDEF'.split('');
+                        var color = '#';
+                        for (var i = 0; i < 6; i++ ) {
+                            color += letters[Math.round(Math.random() * 15)];
+                        }
+                        return color;
+                    }
 
-                  $(function() {
-                    var  articleUID= "#${article/UID}"
-                    var numRand = Math.floor(Math.random()*tableGrid.length);
-                    $(articleUID).css({'margin-left': tableGrid[numRand]["left"]});
-                    $(articleUID).css({'margin-top': tableGrid[numRand]["top"]});
-                    $(articleUID).css({'background-color': get_random_color()});
-                    tableGrid.splice(numRand, 1);
-                    $(articleUID).css({'position' : 'absolute'});
-                    $(articleUID).draggable({stack: "div"});
-                    $(articleUID).draggable( "option", "distance", 0 );
-                  });
+                    $(function() {
+                        var articleUID= "#${article/UID}"
+                        var numRand = Math.floor(Math.random()*tableGrid.length);
+                        $(articleUID).css({'margin-left': tableGrid[numRand]["left"]});
+                        $(articleUID).css({'margin-top': tableGrid[numRand]["top"]});
+                        // $(articleUID).css({'background-color': get_random_color()});
+                        tableGrid.splice(numRand, 1);
+                        $(articleUID).css({'position' : 'absolute'});
+                        $(articleUID).draggable({stack: "div"});
+                        $(articleUID).draggable( "option", "distance", 0 );
 
-
-
+                        // Add the current height and width (defined by img) to the style, so the div doesn't shrink on hover. Need to add this on img.load, so it can always find the information
+                        var image = $(articleUID).find('img')
+                        image.load(function(){
+                            var imageHeight = image.height();
+                            var imageWidth = image.width();
+                            console.info(imageHeight, imageWidth);
+                            $(articleUID).css({'height': imageHeight})
+                            $(articleUID).css({'width': imageWidth})
+                        });
+                    });
               </script>
+            </tal:block>
         </tal:block>
 
         </div>
