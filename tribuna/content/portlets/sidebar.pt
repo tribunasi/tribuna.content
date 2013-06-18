@@ -15,7 +15,7 @@
     </dt>
     <tal:main-macro metal:define-macro="main">
 
-          <h1 class="documentFirstHeading">Select article tags</h1>
+          <h1 class="documentFirstHeading">Select filter</h1>
 
           <div id="skel-contents">
                 <!-- plone.app.z3cform package provides view ploneform-macros

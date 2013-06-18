@@ -252,6 +252,13 @@ class SidebarForm(form.SchemaForm):
         session.set('view_type', 'drag')
         self.request.response.redirect(self.request.getURL())
 
+    @button.buttonAndHandler(_(u'Gallery'))
+    def handleApply(self, action):
+        sdm = self.context.session_data_manager
+        session = sdm.getSessionData(create=True)
+        session.set('view_type', 'gallery')
+        self.request.response.redirect(self.request.getURL())
+
 
     # @button.buttonAndHandler('Send-Union')
     # def handleApply(self, action):
