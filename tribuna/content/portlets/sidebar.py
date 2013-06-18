@@ -31,12 +31,37 @@ def articles(session):
             Treba dodati se:
                 - portal_type: osnova so vsi tipi
         """
+
         catalog = api.portal.get_tool(name='portal_catalog')
         portal_type = ["tribuna.content.article"]
         review_state = "published"
         sort_on = "Date"
         query = None
         operator = "or"
+
+        if('portlet_data' not in session.keys()):
+            all_content = catalog(
+                portal_type=portal_type,
+                locked_on_home=True,
+                review_state=review_state,
+                sort_on=sort_on,
+                sort_limit=limit
+            )[:limit]
+            currentLen = len(all_content)
+
+            if currentLen < limit:
+                all_content += catalog(
+                    portal_type=portal_type,
+                    locked_on_home=False,
+                    review_state=review_state,
+                    sort_on=sort_on,
+                    sort_limit=limit-currentLen
+                )[:limit-currentLen]
+
+            if not all_content:
+                session.set('content_list', [])
+            session.set('content_list', [content.getObject() for content in all_content])
+            return True
 
         # portal_type
         if(session['portlet_data']['content_filters']):
@@ -99,8 +124,8 @@ def articles(session):
             )[:limit]
 
         if not all_content:
-            return []
-        return [content.getObject() for content in all_content]
+            session.set('content_list', [])
+        session.set('content_list', [content.getObject() for content in all_content])
 
 
 class TagsList(object):
@@ -234,7 +259,7 @@ class SidebarForm(form.SchemaForm):
         sdm = self.context.session_data_manager
         session = sdm.getSessionData(create=True)
         session.set("portlet_data", data)
-        session.set("content_list", articles(session))
+        articles(session)
         url = api.portal.get().absolute_url()
         self.request.response.redirect("{0}/@@home-page".format(url))
 

@@ -34,6 +34,7 @@
             tal:attributes="src string:${navroot}/++resource++tribuna.theme/js/jquery.timers-1.2.js"
             ></script>
 
+        <tal:block tal:replace="view/checkGET" />
         <div tal:replace="structure provider:plone.abovecontenttitle" />
 
         <h1 class="documentFirstHeading"> Home page </h1>
@@ -62,7 +63,7 @@
             <tal:block repeat="article view/articles">
                 <div id="${article/UID}" class="ui-widget-content text-view">
                     <h3>
-                        <a tal:attributes="href article/absolute_url" tal:content="article/title" />
+                        <a href="${context/absolute_url}/@@home-page?article=${article/tpURL}" tal:content="article/title" />
                    </h3>
                    <p tal:content="article/description" />
                </div>
@@ -72,7 +73,7 @@
             <tal:block repeat="article view/articles">
                 <div id="${article/UID}" class="ui-widget-content drag-view">
                     <h3>
-                        <a tal:attributes="href article/absolute_url" tal:content="article/title" />
+                        <a href="${context/absolute_url}/@@home-page?article=${article/tpURL}" tal:content="article/title" />
                    </h3>
                        <img tal:attributes="src string:${article/absolute_url}/@@images/image/preview" />
                 <p tal:content="article/description" />
@@ -97,7 +98,10 @@
                         tableGrid.splice(numRand, 1);
                         $(articleUID).css({'position' : 'absolute'});
                         $(articleUID).draggable({stack: "div"});
-                        $(articleUID).draggable( "option", "distance", 0 );
+                        $(articleUID).draggable("option", "distance", 0 );
+
+                        // We put a 1ms delay to draggable so we can still click on links
+                        $(articleUID).draggable("option", "delay", 1);
 
                         // Add the current height and width (defined by img) to the style, so the div doesn't shrink on hover. Need to add this on img.load, so it can always find the information
                         var image = $(articleUID).find('img')
