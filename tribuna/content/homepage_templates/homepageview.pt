@@ -58,7 +58,7 @@
                 }
             });
         </script>
-        <div style="min-height: 800px" >
+        <div id="homepage_div" style="min-height: 800px" >
          <tal:block tal:condition="python: view.is_text_view() == 'text'">
             <tal:block repeat="article view/articles">
                 <div id="${article/UID}" class="ui-widget-content text-view">
@@ -97,7 +97,7 @@
                         // $(articleUID).css({'background-color': get_random_color()});
                         tableGrid.splice(numRand, 1);
                         $(articleUID).css({'position' : 'absolute'});
-                        $(articleUID).draggable({stack: "div"});
+                        $(articleUID).draggable({containment: "parent", stack: "div"});
                         $(articleUID).draggable("option", "distance", 0 );
 
                         // We put a 1ms delay to draggable so we can still click on links
@@ -145,7 +145,8 @@
                     autoplay: false,
                     filmstrip_position: "top",
                     enable_overlay: true,
-                    show_captions: true
+                    show_captions: true,
+                    transition_interval: 0
                     // wrapper_width: 800;
                     // wrapper_height 600;
                 });

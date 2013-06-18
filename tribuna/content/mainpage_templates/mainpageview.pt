@@ -65,10 +65,9 @@
             frame_width: 120,
             frame_height: 90,
             pause_on_hover: true,
-            autoplay: false,
             filmstrip_position: "top",
             enable_overlay: true,
-            show_captions: true
+            show_captions: true,
             // wrapper_width: 800;
             // wrapper_height 600;
         });
