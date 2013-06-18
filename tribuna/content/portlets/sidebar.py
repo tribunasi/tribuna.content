@@ -20,7 +20,7 @@ from tribuna.content.utils import tagsPublished
 
 
 # SimpleTerm(value (actual value), token (request), title (shown in browser))
-# tags, sort_choice, content_filters, sort_type
+# tags, sort_on, content_filters, operator
 
 def articles(session):
         """
@@ -50,7 +50,7 @@ def articles(session):
                     pass
 
         # sort_on
-        tmp = session['portlet_data']['sort_choice']
+        tmp = session['portlet_data']['sort_on']
         if(tmp == 'latest'):
             sort_on = 'Date'
         elif(tmp == 'alphabetical'):
@@ -83,7 +83,7 @@ def articles(session):
                 )[:limit-currentLen]
         else:
             query = session['portlet_data']['tags']
-            tmp = session['portlet_data']['sort_type']
+            tmp = session['portlet_data']['operator']
             if(tmp == 'union'):
                 operator = 'or'
             elif(tmp == 'intersection'):
@@ -124,7 +124,7 @@ class ISidebarForm(form.Schema):
         value_type=schema.Choice(source=TagsList()),
     )
 
-    sort_choice = schema.Choice(
+    sort_on = schema.Choice(
         title=_(u"Type of sorting"),
         vocabulary=SimpleVocabulary([
             SimpleTerm('alphabetical', 'alphabetical', _(u'Alphabetical')),
@@ -151,7 +151,7 @@ class ISidebarForm(form.Schema):
         ])),
     )
 
-    sort_type = schema.Choice(
+    operator = schema.Choice(
         title=_(u"How to apply tags"),
         vocabulary=SimpleVocabulary([
             SimpleTerm('union', 'union', _(u'Union')),
@@ -170,12 +170,12 @@ def default_tags(data):
         return []
 
 
-@form.default_value(field=ISidebarForm['sort_choice'])
-def default_sort_choice(data):
+@form.default_value(field=ISidebarForm['sort_on'])
+def default_sort_on(data):
     sdm = data.context.session_data_manager
     session = sdm.getSessionData(create=True)
     if("portlet_data" in session.keys()):
-            return session["portlet_data"]["sort_choice"]
+            return session["portlet_data"]["sort_on"]
     else:
         return "latest"
 
@@ -200,12 +200,12 @@ def default_content_filters(data):
         return []
 
 
-@form.default_value(field=ISidebarForm['sort_type'])
-def default_sort_type(data):
+@form.default_value(field=ISidebarForm['operator'])
+def default_operator(data):
     sdm = data.context.session_data_manager
     session = sdm.getSessionData(create=True)
     if("portlet_data" in session.keys()):
-            return session["portlet_data"]["sort_type"]
+            return session["portlet_data"]["operator"]
     else:
         return "union"
 
