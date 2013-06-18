@@ -23,6 +23,8 @@
         <div tal:replace="structure provider:plone.abovecontentbody" />
 
         <h2 i18n:translate="heading_sessions">Articles</h2>
+        <p class="tagBodyText" tal:content="structure context/text" />
+        <img tal:attributes="src string:${context/absolute_url}/@@images/image" />
         <dl>
             <tal:block repeat="article view/articles">
                 <dt>

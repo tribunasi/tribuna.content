@@ -20,6 +20,7 @@ class HomePageView(grok.View):
         if "textview" in self.request.form:
             if self.request.form["textview"] == "True":
                 return True
+        return False
 
     def articles(self):
         """ Return a catalog search result of articles that have this tag

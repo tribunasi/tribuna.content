@@ -65,14 +65,15 @@
                   }
 
                   $(function() {
+                    var  articleUID= "#${article/UID}"
                     var numRand = Math.floor(Math.random()*tableGrid.length);
-                    $( "#${article/UID}" ).css({'margin-left': tableGrid[numRand]["left"]});
-                    $( "#${article/UID}" ).css({'margin-top': tableGrid[numRand]["top"]});
-                    $( "#${article/UID}" ).css({'background-color': get_random_color()});
+                    $(articleUID).css({'margin-left': tableGrid[numRand]["left"]});
+                    $(articleUID).css({'margin-top': tableGrid[numRand]["top"]});
+                    $(articleUID).css({'background-color': get_random_color()});
                     tableGrid.splice(numRand, 1);
-                    $( "#${article/UID}" ).css({'position' : 'absolute'});
-                    $( "#${article/UID}" ).draggable({stack: "div"});
-                    $( "#${article/UID}" ).draggable( "option", "distance", 0 );
+                    $(articleUID).css({'position' : 'absolute'});
+                    $(articleUID).draggable({stack: "div"});
+                    $(articleUID).draggable( "option", "distance", 0 );
                   });
 
 

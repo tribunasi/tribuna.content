@@ -37,11 +37,11 @@ class ITag(form.Schema):
         title=_(u"A short summary"),
     )
 
-    picture = NamedImage(
-        title=_(u"Picture"),
-        description=_(u"Please upload an image"),
-        required=False,
-    )
+    # picture = NamedImage(
+    #     title=_(u"Picture"),
+    #     description=_(u"Please upload an image"),
+    #     required=False,
+    # )
 
 
 @grok.subscribe(ITag, IObjectModifiedEvent)
@@ -91,9 +91,8 @@ class View(grok.View):
     def articles(self):
         """Return a catalog search result of articles that have this tag
         """
-
+        #import pdb; pdb.set_trace()
         catalog = api.portal.get_tool(name='portal_catalog')
         all_articles = catalog(portal_type="tribuna.content.article")
-
         return [article for article in all_articles
                 if article.review_state == 'published']
