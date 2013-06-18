@@ -59,10 +59,8 @@ def articles(session):
             pass
 
         sort_order = session['portlet_data']['sort_order']
-        #sort_order = 'reverse'
 
         all_content = []
-        #import pdb; pdb.set_trace()
         if(not session['portlet_data']['tags']):
             all_content = catalog(
                 portal_type=portal_type,
