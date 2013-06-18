@@ -236,7 +236,7 @@ class SidebarForm(form.SchemaForm):
         session.set("portlet_data", data)
         session.set("content_list", articles(session))
         url = api.portal.get().absolute_url()
-        self.request.response.redirect("{0}/@@main-page".format(url))
+        self.request.response.redirect("{0}/@@home-page".format(url))
 
     @button.buttonAndHandler(_(u'Text'))
     def handleApply(self, action):

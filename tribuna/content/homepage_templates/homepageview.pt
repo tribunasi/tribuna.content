@@ -43,7 +43,7 @@
         </script>
         <div style="min-height: 800px" >
         <tal:block repeat="article view/articles">
-            <tal:block tal:condition="view/is_text_view">
+            <tal:block tal:condition="python: view.is_text_view() == 'text'">
                 <div id="${article/UID}" class="ui-widget-content text-view">
                     <h3>
                         <a tal:attributes="href article/absolute_url" tal:content="article/title" />
@@ -51,7 +51,7 @@
                    <p tal:content="article/description" />
                </div>
            </tal:block>
-           <tal:block tal:condition="not:view/is_text_view">
+           <tal:block tal:condition="python: view.is_text_view() == 'drag'">
                 <div id="${article/UID}" class="ui-widget-content drag-view">
                     <h3>
                         <a tal:attributes="href article/absolute_url" tal:content="article/title" />
