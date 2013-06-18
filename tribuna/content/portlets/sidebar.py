@@ -15,10 +15,95 @@ from zope.schema.vocabulary import SimpleTerm
 
 
 from tribuna.content import _
+from tribuna.content import limit
 from tribuna.content.utils import tagsPublished
 
 
 # SimpleTerm(value (actual value), token (request), title (shown in browser))
+# tags, sort_choice, content_filters, sort_type
+
+def articles(session):
+        """
+            Returns a list of all articles depending on the specified filters
+        """
+
+        """
+            Treba dodati se:
+                - portal_type: osnova so vsi tipi
+        """
+        catalog = api.portal.get_tool(name='portal_catalog')
+        portal_type = ["tribuna.content.article"]
+        review_state = "published"
+        sort_on = "Date"
+        query = None
+        operator = "or"
+
+        # portal_type
+        if(session['portlet_data']['content_filters']):
+            portal_type = []
+            for i in session['portlet_data']['content_filters']:
+                if(i == 'articles'):
+                    portal_type.append("tribuna.content.article")
+                elif(i == 'comments'):
+                    pass
+                elif(i == 'images'):
+                    pass
+
+        # sort_on
+        tmp = session['portlet_data']['sort_choice']
+        if(tmp == 'latest'):
+            sort_on = 'Date'
+        elif(tmp == 'alphabetical'):
+            sort_on = 'sortable_title'
+        elif(tmp == 'comments'):
+            pass
+
+        sort_order = session['portlet_data']['sort_order']
+        #sort_order = 'reverse'
+
+        all_content = []
+        #import pdb; pdb.set_trace()
+        if(not session['portlet_data']['tags']):
+            all_content = catalog(
+                portal_type=portal_type,
+                locked_on_home=True,
+                review_state=review_state,
+                sort_on=sort_on,
+                sort_order=sort_order,
+                sort_limit=limit
+            )[:limit]
+            currentLen = len(all_content)
+
+            if currentLen < limit:
+                all_content += catalog(
+                    portal_type=portal_type,
+                    locked_on_home=False,
+                    review_state=review_state,
+                    sort_on=sort_on,
+                    sort_order=sort_order,
+                    sort_limit=limit-currentLen
+                )[:limit-currentLen]
+        else:
+            query = session['portlet_data']['tags']
+            tmp = session['portlet_data']['sort_type']
+            if(tmp == 'union'):
+                operator = 'or'
+            elif(tmp == 'intersection'):
+                operator = 'and'
+
+            all_content = catalog(
+                portal_type=portal_type,
+                review_state=review_state,
+                sort_on=sort_on,
+                sort_order=sort_order,
+                Subject={'query': query, 'operator': operator},
+                sort_limit=limit
+            )[:limit]
+
+        if not all_content:
+            return []
+        return [content.getObject() for content in all_content]
+
 
 class TagsList(object):
     grok.implements(IContextSourceBinder)
@@ -42,10 +127,19 @@ class ISidebarForm(form.Schema):
     )
 
     sort_choice = schema.Choice(
-        title=_(u"Type of sorting articles"),
+        title=_(u"Type of sorting"),
         vocabulary=SimpleVocabulary([
-            SimpleTerm(u'comments', u'comments', _(u'Nr. of comments')),
-            SimpleTerm(u'latest', u'latest', _(u'Latest')),
+            SimpleTerm('alphabetical', 'alphabetical', _(u'Alphabetical')),
+            SimpleTerm('comments', 'comments', _(u'Nr. of comments')),
+            SimpleTerm('latest', 'latest', _(u'Latest')),
+        ]),
+    )
+
+    sort_order = schema.Choice(
+        title=_(u"Order of sorting"),
+        vocabulary=SimpleVocabulary([
+            SimpleTerm('ascending', 'ascending', _(u'Ascending')),
+            SimpleTerm('descending', 'descending', _(u'Descending')),
         ]),
     )
 
@@ -53,17 +147,17 @@ class ISidebarForm(form.Schema):
     content_filters = schema.List(
         title=_(u"Content filters"),
         value_type=schema.Choice(source=SimpleVocabulary([
-            SimpleTerm(u'articles', u'articles', _(u'Articles')),
-            SimpleTerm(u'comments', u'comments', _(u'Comments')),
-            SimpleTerm(u'images', u'images', _(u'Images')),
+            SimpleTerm('articles', 'articles', _(u'Articles')),
+            SimpleTerm('comments', 'comments', _(u'Comments')),
+            SimpleTerm('images', 'images', _(u'Images')),
         ])),
     )
 
     sort_type = schema.Choice(
         title=_(u"How to apply tags"),
         vocabulary=SimpleVocabulary([
-            SimpleTerm(u'union', u'union', _(u'Union')),
-            SimpleTerm(u'intersection', u'intersection', _(u'Intersection')),
+            SimpleTerm('union', 'union', _(u'Union')),
+            SimpleTerm('intersection', 'intersection', _(u'Intersection')),
         ]),
     )
 
@@ -72,8 +166,8 @@ class ISidebarForm(form.Schema):
 def default_tags(data):
     sdm = data.context.session_data_manager
     session = sdm.getSessionData(create=True)
-    if(u"portlet_data" in session.keys()):
-        return session[u"portlet_data"][u"tags"]
+    if("portlet_data" in session.keys()):
+        return session["portlet_data"]["tags"]
     else:
         return []
 
@@ -82,18 +176,28 @@ def default_tags(data):
 def default_sort_choice(data):
     sdm = data.context.session_data_manager
     session = sdm.getSessionData(create=True)
-    if(u"portlet_data" in session.keys()):
-            return session[u"portlet_data"][u"sort_choice"]
+    if("portlet_data" in session.keys()):
+            return session["portlet_data"]["sort_choice"]
     else:
-        return u"latest"
+        return "latest"
+
+
+@form.default_value(field=ISidebarForm['sort_order'])
+def default_sort_order(data):
+    sdm = data.context.session_data_manager
+    session = sdm.getSessionData(create=True)
+    if("portlet_data" in session.keys()):
+            return session["portlet_data"]["sort_order"]
+    else:
+        return "descending"
 
 
 @form.default_value(field=ISidebarForm['content_filters'])
 def default_content_filters(data):
     sdm = data.context.session_data_manager
     session = sdm.getSessionData(create=True)
-    if(u"portlet_data" in session.keys()):
-        return session[u"portlet_data"][u"content_filters"]
+    if("portlet_data" in session.keys()):
+        return session["portlet_data"]["content_filters"]
     else:
         return []
 
@@ -102,10 +206,10 @@ def default_content_filters(data):
 def default_sort_type(data):
     sdm = data.context.session_data_manager
     session = sdm.getSessionData(create=True)
-    if(u"portlet_data" in session.keys()):
-            return session[u"portlet_data"][u"sort_type"]
+    if("portlet_data" in session.keys()):
+            return session["portlet_data"]["sort_type"]
     else:
-        return u"union"
+        return "union"
 
 
 class SidebarForm(form.SchemaForm):
@@ -131,7 +235,8 @@ class SidebarForm(form.SchemaForm):
 
         sdm = self.context.session_data_manager
         session = sdm.getSessionData(create=True)
-        session.set(u"portlet_data", data)
+        session.set("portlet_data", data)
+        session.set("content_list", articles(session))
         url = api.portal.get().absolute_url()
         self.request.response.redirect("{0}/@@main-page".format(url))
 
@@ -139,26 +244,26 @@ class SidebarForm(form.SchemaForm):
     def handleApply(self, action):
         sdm = self.context.session_data_manager
         session = sdm.getSessionData(create=True)
-        session.set(u'view_type', u'text')
+        session.set('view_type', 'text')
         self.request.response.redirect(self.request.getURL())
 
     @button.buttonAndHandler(_(u'Drag\'n\'drop'))
     def handleApply(self, action):
         sdm = self.context.session_data_manager
         session = sdm.getSessionData(create=True)
-        session.set(u'view_type', u'drag')
+        session.set('view_type', 'drag')
         self.request.response.redirect(self.request.getURL())
 
 
-    # @button.buttonAndHandler(u'Send-Union')
+    # @button.buttonAndHandler('Send-Union')
     # def handleApply(self, action):
     #     self._handleApply(action, True)
 
-    # @button.buttonAndHandler(u'Send-Intersection')
+    # @button.buttonAndHandler('Send-Intersection')
     # def handleApply(self, action):
     #     self._handleApply(action, False)
 
-    # @button.buttonAndHandler(u"Cancel")
+    # @button.buttonAndHandler("Cancel")
     # def handleCancel(self, action):
     #     """User cancelled. Redirect back to the front page.
     #     """

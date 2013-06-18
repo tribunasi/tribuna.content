@@ -4,6 +4,7 @@
 from zope.i18nmessageid import MessageFactory
 
 _ = MessageFactory('tribuna.content')
+limit = 15
 
 
 def initialize(context):

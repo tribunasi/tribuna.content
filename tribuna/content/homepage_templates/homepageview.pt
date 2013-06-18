@@ -86,7 +86,6 @@
                         image.load(function(){
                             var imageHeight = image.height();
                             var imageWidth = image.width();
-                            console.info(imageHeight, imageWidth);
                             $(articleUID).css({'height': imageHeight})
                             $(articleUID).css({'width': imageWidth})
                         });

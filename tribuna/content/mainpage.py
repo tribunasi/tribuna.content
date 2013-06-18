@@ -14,6 +14,13 @@ class MainPageView(grok.View):
         """ Return a catalog search result of articles that have this tag
         """
 
+        sdm = self.context.session_data_manager
+        session = sdm.getSessionData(create=True)
+        if('content_list' in session.keys()):
+            return session[u'content_list']
+        return []
+
+        """
         catalog = api.portal.get_tool(name='portal_catalog')
 
         sdm = self.context.session_data_manager
@@ -37,3 +44,4 @@ class MainPageView(grok.View):
             )
             articles = [article.getObject() for article in articles]
             return articles
+        """
