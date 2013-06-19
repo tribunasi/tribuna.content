@@ -1,5 +1,6 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:cmf="http://namespaces.zope.org/cmf"
     xmlns:five="http://namespaces.zope.org/five"
     xmlns:grok="http://namespaces.zope.org/grok"
@@ -29,6 +30,22 @@
         directory="profiles/default"
         description="Extension profile for tribuna.content."
         provides="Products.GenericSetup.interfaces.EXTENSION"
+        />
+
+    <browser:viewlet
+        name="tribuna.content.gallery"
+        manager="plone.app.layout.viewlets.interfaces.IBelowContentBody"
+        class="tribuna.content.viewlet.GalleryViewlet"
+        permission="zope2.View"
+        layer=".interfaces.ITribunaContentLayer"
+        />
+
+    <browser:viewlet
+        name="tribuna.content.defaultsession"
+        manager="plone.app.layout.viewlets.interfaces.IHtmlHead"
+        class="tribuna.content.viewlet.DefaultSessionViewlet"
+        permission="zope2.View"
+        layer=".interfaces.ITribunaContentLayer"
         />
 
 </configure>

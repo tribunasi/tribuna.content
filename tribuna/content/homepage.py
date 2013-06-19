@@ -1,9 +1,7 @@
 from five import grok
-from plone import api
 from zope.interface import Interface
 
 from tribuna.content import _
-from tribuna.content.portlets.sidebar import articles
 
 
 class HomePageView(grok.View):
@@ -31,19 +29,3 @@ class HomePageView(grok.View):
         if('content_list' in session.keys()):
             return session['content_list']
         return []
-
-    def checkGET(self):
-        sdm = self.context.session_data_manager
-        session = sdm.getSessionData(create=True)
-
-        # defaults
-        if('content_list' not in session.keys()):
-            articles(session)
-        if('view_type' not in session.keys()):
-            session.set('view_type', 'text')
-        session.set('index', 0)
-
-        get_article = self.request.get('article')
-        if(get_article is not None):
-            session.set('view_type', 'gallery')
-            session.set('index', [i.tpURL() for i in session['content_list']].index(get_article))

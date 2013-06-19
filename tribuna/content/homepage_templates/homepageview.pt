@@ -5,6 +5,7 @@
       lang="en"
       metal:use-macro="context/main_template/macros/master"
       i18n:domain="tribuna.content">
+
 <body>
 
 <metal:main fill-slot="main">
@@ -34,7 +35,6 @@
             tal:attributes="src string:${navroot}/++resource++tribuna.theme/js/jquery.timers-1.2.js"
             ></script>
 
-        <tal:block tal:replace="view/checkGET" />
         <div tal:replace="structure provider:plone.abovecontenttitle" />
 
         <h1 class="documentFirstHeading"> Home page </h1>
@@ -80,21 +80,11 @@
                 </div>
 
                 <script>
-                    function get_random_color() {
-                        var letters = '0123456789ABCDEF'.split('');
-                        var color = '#';
-                        for (var i = 0; i < 6; i++ ) {
-                            color += letters[Math.round(Math.random() * 15)];
-                        }
-                        return color;
-                    }
-
                     $(function() {
                         var articleUID= "#${article/UID}"
                         var numRand = Math.floor(Math.random()*tableGrid.length);
-                        $(articleUID).css({'margin-left': tableGrid[numRand]["left"]});
-                        $(articleUID).css({'margin-top': tableGrid[numRand]["top"]});
-                        // $(articleUID).css({'background-color': get_random_color()});
+                        $(articleUID).css({'left': tableGrid[numRand]["left"]});
+                        $(articleUID).css({'top': tableGrid[numRand]["top"]});
                         tableGrid.splice(numRand, 1);
                         $(articleUID).css({'position' : 'absolute'});
                         $(articleUID).draggable({containment: "parent", stack: "div"});
@@ -135,22 +125,7 @@
                   </ul>
                 </div>
 
-                <script>
-                 $('#gallery').galleryView({
-                    panel_width: 1200,
-                    panel_height: 600,
-                    frame_width: 120,
-                    frame_height: 90,
-                    pause_on_hover: true,
-                    autoplay: false,
-                    filmstrip_position: "top",
-                    enable_overlay: true,
-                    show_captions: true,
-                    transition_interval: 0
-                    // wrapper_width: 800;
-                    // wrapper_height 600;
-                });
-                </script>
+
             </tal:block>
 
 
