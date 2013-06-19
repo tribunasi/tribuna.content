@@ -27,6 +27,11 @@
         <div>
         <img tal:attributes="src string:${context/absolute_url}/@@images/image; title context/title" />
 
+        <tal:block define="form view/change_page">
+                <tal:block define="view nocall:form">
+                    <metal:block use-macro="form/@@ploneform-macros/titlelessform" />
+                </tal:block>
+            </tal:block>
         </div>
 
 

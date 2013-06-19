@@ -20,15 +20,23 @@ class IEntryPage(form.Schema):
     )
 
 
+class ChangePageForm(form.schema):
+    title = schema.TextLine(
+        title=_(u"Name"),
+    )
+
+    picture = NamedBlobImage(
+        title=_(u"Please upload an image"),
+        required=False,
+    )
+
 class View(grok.View):
     grok.context(IEntryPage)
     grok.require('zope2.View')
 
-    # def articles(self):
-    #     """Return a catalog search result of articles that have this tag
-    #     """
-    #     #import pdb; pdb.set_trace()
-    #     catalog = api.portal.get_tool(name='portal_catalog')
-    #     all_articles = catalog(portal_type="tribuna.content.article")
-    #     return [article for article in all_articles
-    #             if article.review_state == 'published']
+    def change_page(self):
+        """Return a form which can change the entry page
+        """
+        form1 = ChangePageForm(self.context, self.request)
+        form1.update()
+        return form1
