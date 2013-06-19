@@ -20,7 +20,7 @@ class IEntryPage(form.Schema):
     )
 
 
-class ChangePageForm(form.schema):
+class ChangePageForm(form.Schema):
     title = schema.TextLine(
         title=_(u"Name"),
     )
