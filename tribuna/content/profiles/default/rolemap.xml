@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+ <rolemap>
+   <permissions>
+     <permission name="Reply to item" acquire="False">
+       <role name="Anonymous"/>
+     </permission>
+   </permissions>
+ </rolemap>

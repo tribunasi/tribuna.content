@@ -8,9 +8,8 @@
 
 <body>
 
-<metal:main fill-slot="main">
-    <tal:main-macro metal:define-macro="main">
-        <link rel="stylesheet" type="text/css"
+<metal:block fill-slot="style_slot">
+    <link rel="stylesheet" type="text/css"
             tal:define="navroot context/@@plone_portal_state/navigation_root_url"
             tal:attributes="href string:${navroot}/++resource++tribuna.theme/css/jquery-ui-1.10.3.custom.min.css"
             />
@@ -34,7 +33,12 @@
             tal:define="navroot context/@@plone_portal_state/navigation_root_url"
             tal:attributes="src string:${navroot}/++resource++tribuna.theme/js/jquery.timers-1.2.js"
             ></script>
+</metal:block>
+<metal:main fill-slot="main">
+    <tal:main-macro metal:define-macro="main">
 
+
+<!--         <tal:block tal:replace="view/checkGET" /> -->
         <div tal:replace="structure provider:plone.abovecontenttitle" />
 
         <h1 class="documentFirstHeading"> Home page </h1>
@@ -87,11 +91,11 @@
                         $(articleUID).css({'top': tableGrid[numRand]["top"]});
                         tableGrid.splice(numRand, 1);
                         $(articleUID).css({'position' : 'absolute'});
-                        $(articleUID).draggable({containment: "parent", stack: "div"});
+                        $(articleUID).draggable({containment: "parent", stack: "div", cancel: "h3" });
                         $(articleUID).draggable("option", "distance", 0 );
 
                         // We put a 1ms delay to draggable so we can still click on links
-                        $(articleUID).draggable("option", "delay", 1);
+                        //$(articleUID).draggable("option", "delay", 1);
 
                         // Add the current height and width (defined by img) to the style, so the div doesn't shrink on hover. Need to add this on img.load, so it can always find the information
                         var image = $(articleUID).find('img')
@@ -118,6 +122,7 @@
                           <h3  tal:content="article/title" />
                           <img tal:attributes="src string:${article/absolute_url}/@@images/image" />
                           <p tal:content="structure article/text" />
+                          <div tal:replace="structure provider:plone.belowcontentbody" />
                       </div>
 
                     </li>
