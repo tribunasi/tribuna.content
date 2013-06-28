@@ -5,7 +5,7 @@ standard Subject field.
 """
 
 from collective.miscbehaviors.behavior.utils import context_property
-from five import grok
+from collective.z3cform.widgets.token_input_widget import TokenInputFieldWidget
 from plone import api
 from plone.dexterity.interfaces import IDexterityContent
 from plone.directives import form
@@ -18,10 +18,9 @@ from zope import schema
 from zope.component import adapts
 from zope.interface import alsoProvides
 from zope.interface import implements
-from zope.schema.interfaces import IContextSourceBinder
-from zope.schema.vocabulary import SimpleVocabulary
 
 from tribuna.content import _
+from tribuna.content.utils import TagsList
 
 
 class ITermitnjakLeadImage(form.Schema):
@@ -56,45 +55,6 @@ class TermitnjakLeadImage(object):
     # -*- Your behavior property setters & getters here ... -*-
     imageCaption = context_property('imageCaption')
     image = context_property('image')
-
-
-class TagsList(object):
-    grok.implements(IContextSourceBinder)
-
-    def __init__(self):
-        pass
-
-    def __call__(self, context):
-        catalog = api.portal.get_tool(name='portal_catalog')
-        items = catalog({
-            'portal_type': 'tribuna.content.tag',
-            'review_state': 'published',
-        })
-
-        terms = []
-
-        for item in items:
-            term = item.Title
-            terms.append(SimpleVocabulary.createTerm(term, term, term))
-
-        return SimpleVocabulary(terms)
-
-
-# class ITags(form.Schema):
-#     """Add tags to content
-#     """
-
-#     form.widget(tags=CheckBoxFieldWidget)
-#     tags = schema.List(
-#         title=_(u'label_tags'),
-#         description=_(
-#             u'help_tags',
-#             default=u'Mine test.'
-#         ),
-#         value_type=schema.Choice(source=TagsList()),
-#     )
-
-from collective.z3cform.widgets.token_input_widget import TokenInputFieldWidget
 
 
 class ITags(form.Schema):
@@ -135,6 +95,7 @@ class Tags(object):
     @getproperty
     def tags_old(self):
         return set(self.context.Subject())
+
     @setproperty
     def tags_old(self, value):
         if value is None:
@@ -144,13 +105,12 @@ class Tags(object):
     @getproperty
     def tags_new(self):
         return set(self.context.Subject())
+
     @setproperty
     def tags_new(self, value):
         if value is None:
-            value = ()
+            value = []
         old_tags = set(self.context.Subject())
-        # Set Subject as an union of  tags in tags_old and tags_new
-        self.context.setSubject(tuple(old_tags.union(value)))
 
         # Get all 'new' tags
         catalog = api.portal.get_tool(name='portal_catalog')
@@ -158,14 +118,41 @@ class Tags(object):
             'portal_type': 'tribuna.content.tag',
         })
         titles = set(i.Title for i in items)
-        svalue = set(value)
-        svalue -= titles
+        titles = [j.lower().replace(' ', '') for j in titles]
+
+        # Compare tags with the one already in our system, if they're the
+        # "same" (lower and ignore spaces), use those tags
+        new_titles = [(it.Title, it.Title.lower().replace(' ', ''))
+                      for it in items]
+        for val in value[:]:
+            for tup in new_titles:
+                if val.lower().replace(' ', '') == tup[-1]:
+                    #if val in value:
+                    value.remove(val)
+                    value.append(tup[0])
+
+        # Change all "same" (as above) tags to the first appearance
+        counter = []
+        for val in value[:]:
+            if val.lower().replace(' ', '') in counter:
+                value.remove(val)
+            else:
+                counter.append(val.lower().replace(' ', ''))
+
+        new_value = [k for k in value
+                     if k.lower().replace(' ', '') not in titles]
+
+        # Set Subject as an union of tags in tags_old and tags_new but use the
+        # titles that are already there, don't make new ones (above)
+        self.context.setSubject(tuple(old_tags.union(value)))
 
         site = api.portal.get()
-        for title in svalue:
-            name = title.replace(' ', '-').lower()
-            site['tags'].invokeFactory('tribuna.content.tag', name)
-            site['tags'][name].title = title
+        for title in new_value:
+            obj = api.content.create(
+                type='tribuna.content.tag',
+                title=title,
+                container=site['tags'])
+            api.content.transition(obj=obj, transition='publish')
 
 
 class ILockOnHomePage(form.Schema):

@@ -10,19 +10,6 @@ from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.vocabulary import SimpleVocabulary
 
 from tribuna.content import _
-from tribuna.content.utils import tagsPublished
-
-
-class TagsList(object):
-    grok.implements(IContextSourceBinder)
-
-    def __init__(self):
-        pass
-
-    def __call__(self, context):
-        items = tagsPublished()
-        terms = [SimpleVocabulary.createTerm(i, i, i) for i in items]
-        return SimpleVocabulary(terms)
 
 
 class ITag(form.Schema):
@@ -55,10 +42,10 @@ def object_added(context, event):
 
 
 """
-Right now, we don't want to delete tags from all content. The tags will be saved
-and everything will "magically" appear again if we re-add the tag with the same
-name. Need to decide if we want to give the option to delete tag from all content
-on deletion and what to do on tag renaming.
+Right now, we don't want to delete tags from all content. The tags will be
+saved and everything will "magically" appear again if we re-add the tag with
+the same name. Need to decide if we want to give the option to delete tag from
+all content on deletion and what to do on tag renaming.
 """
 # @grok.subscribe(ITag, IObjectRemovedEvent)
 # def object_deleted(context, event):
@@ -91,7 +78,6 @@ class View(grok.View):
     def articles(self):
         """Return a catalog search result of articles that have this tag
         """
-        #import pdb; pdb.set_trace()
         catalog = api.portal.get_tool(name='portal_catalog')
         all_articles = catalog(portal_type="tribuna.content.article")
         return [article for article in all_articles

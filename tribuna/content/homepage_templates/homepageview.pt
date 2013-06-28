@@ -122,7 +122,6 @@
                           <h3  tal:content="article/title" />
                           <img tal:attributes="src string:${article/absolute_url}/@@images/image" />
                           <p tal:content="structure article/text" />
-                          <div tal:replace="structure provider:plone.belowcontentbody" />
                       </div>
 
                     </li>
