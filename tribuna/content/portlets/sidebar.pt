@@ -33,29 +33,6 @@
           </div>
 
         </tal:main-macro>
-      <div id="testtest">
-        <a href="http://localhost:8087/Tribuna/@@home-page">tralala</a>
-      </div>
-      <script type="text/javascript">
-                  jQuery(function($){
-                  //   $('#form-buttons-gallery input').prepOverlay(
-                  //       {
-                  //           subtype: 'ajax',
-                  //           filter: common_content_filter,
-                  //           formselector: 'form.kssattr-formname-my-form, form[name="groups"]',
-                  //           noform: function(el) {return $.plonepopups.noformerrorshow(el, 'redirect');},
-                  //           redirect: function () {return location.href;}
-                  //       }
-                  //   );
-
-
-                    $('#testtest a').prepOverlay({
-                          subtype: 'iframe',
-
-                          });
-                  });
-                </script>
-
     <dd class="portletFooter">
         <span class="portletBottomLeft"></span>
         <span class="portletBottomRight"></span>

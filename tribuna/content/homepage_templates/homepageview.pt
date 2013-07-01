@@ -63,21 +63,25 @@
             });
         </script>
         <div id="homepage_div" style="min-height: 800px" >
-         <tal:block tal:condition="python: view.is_text_view() == 'text'">
+         <tal:block tal:condition="view/is_text_view">
             <tal:block repeat="article view/articles">
                 <div id="${article/UID}" class="ui-widget-content text-view">
                     <h3>
-                        <a href="${context/absolute_url}/@@home-page?article=${article/tpURL}" tal:content="article/title" />
+                      <div id="gallery-link">
+                        <a href="${context/absolute_url}/@@main-page?article=${article/tpURL}" tal:content="article/title" />
+                      </div>
                    </h3>
                    <p tal:content="article/description" />
                </div>
             </tal:block>
         </tal:block>
-        <tal:block tal:condition="python: view.is_text_view() == 'drag'">
+        <tal:block tal:condition="not: view/is_text_view">
             <tal:block repeat="article view/articles">
                 <div id="${article/UID}" class="ui-widget-content drag-view">
                     <h3>
-                        <a href="${context/absolute_url}/@@home-page?article=${article/tpURL}" tal:content="article/title" />
+                      <div id="gallery-link">
+                        <a href="${context/absolute_url}/@@main-page?article=${article/tpURL}" tal:content="article/title" />
+                      </div>
                    </h3>
                        <img tal:attributes="src string:${article/absolute_url}/@@images/image/preview" />
                 <p tal:content="article/description" />
@@ -94,9 +98,6 @@
                         $(articleUID).draggable({containment: "parent", stack: "div", cancel: "h3" });
                         $(articleUID).draggable("option", "distance", 0 );
 
-                        // We put a 1ms delay to draggable so we can still click on links
-                        //$(articleUID).draggable("option", "delay", 1);
-
                         // Add the current height and width (defined by img) to the style, so the div doesn't shrink on hover. Need to add this on img.load, so it can always find the information
                         var image = $(articleUID).find('img')
                         image.load(function(){
@@ -109,31 +110,36 @@
               </script>
             </tal:block>
         </tal:block>
-            <tal:block tal:condition="python: view.is_text_view() == 'gallery'">
-                <div>
-                  <ul id="gallery">
-
-                  <tal:block tal:repeat="article view/articles">
-                    <li>
-
-                      <img tal:attributes="src string:${article/absolute_url}/@@images/image; title article/title" />
-                      <div class="gv-panel-content">
-
-                          <h3  tal:content="article/title" />
-                          <img tal:attributes="src string:${article/absolute_url}/@@images/image" />
-                          <p tal:content="structure article/text" />
-                      </div>
-
-                    </li>
-                  </tal:block>
-                  </ul>
-                </div>
-
-
-            </tal:block>
-
-
         </div>
+        <script type="text/javascript">
+          jQuery(function($){
+          //   $('#form-buttons-gallery input').prepOverlay(
+          //       {
+          //           subtype: 'ajax',
+          //           filter: common_content_filter,
+          //           formselector: 'form.kssattr-formname-my-form, form[name="groups"]',
+          //           noform: function(el) {return $.plonepopups.noformerrorshow(el, 'redirect');},
+          //           redirect: function () {return location.href;}
+          //       }
+          //   );
+
+
+            $('#gallery-link a').prepOverlay({
+              subtype: 'iframe',
+              width: '95%',
+            });
+          });
+
+          // $(window).resize(function() {
+          //   console.info("Hablahabla");
+          // });
+
+          $(window).resize(function() {
+              // console.info("Resized outer!");
+              $('iframe').attr('width', $(window).width()*0.95);
+          });
+        </script>
+
         <div tal:replace="structure provider:plone.belowcontentbody" />
 
     </tal:main-macro>

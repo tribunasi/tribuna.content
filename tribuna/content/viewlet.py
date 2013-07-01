@@ -5,6 +5,7 @@ from Products.Five.browser import BrowserView
 from Products.CMFPlone.utils import safe_unicode
 
 from tribuna.content.homepage import HomePageView
+from tribuna.content.mainpage import MainPageView
 from tribuna.content.portlets.sidebar import articles
 # from zope.component import getUtility
 # from plone.registry.interfaces import IRegistry
@@ -27,10 +28,10 @@ class GalleryViewlet(BrowserView):
 
     def available(self, session):
         """
-            If we are on the HomePageView and are viewing the gallery, return True
+            If we are on the MainPageView and are viewing the gallery, return True
         """
 
-        if(isinstance(self.__parent__, HomePageView) and session['view_type'] == "gallery"):
+        if isinstance(self.__parent__, MainPageView):
             return True
         return False
 
@@ -85,16 +86,17 @@ class DefaultSessionViewlet(BrowserView):
         self.checkGET(session)
 
     def render(self):
-        if(isinstance(self.__parent__, HomePageView)):
+        if(isinstance(self.__parent__, HomePageView)
+                or isinstance(self.__parent__, MainPageView)):
             self.check_session()
         return ""
 
 js_template = """
 <script>
     $('#gallery').galleryView({
-        panel_width: 1200,
+        panel_width: $(window).width()*0.95,
         panel_height: 600,
-        frame_width: 120,
+        frame_width: $(window).width()*0.95/8,
         frame_height: 90,
         pause_on_hover: true,
         autoplay: false,

@@ -6,7 +6,15 @@
       metal:use-macro="context/main_template/macros/master"
       i18n:domain="tribuna.content">
 <body>
-  <metal:block fill-slot="style_slot">
+<metal:block fill-slot="style_slot">
+    <link rel="stylesheet" type="text/css"
+            tal:define="navroot context/@@plone_portal_state/navigation_root_url"
+            tal:attributes="href string:${navroot}/++resource++tribuna.theme/css/jquery-ui-1.10.3.custom.min.css"
+            />
+        <script type="text/javascript"
+            tal:define="navroot context/@@plone_portal_state/navigation_root_url"
+            tal:attributes="src string:${navroot}/++resource++tribuna.theme/js/jquery-ui-1.10.3.custom.min.js"
+            ></script>
         <link rel="stylesheet" type="text/css"
             tal:define="navroot context/@@plone_portal_state/navigation_root_url"
             tal:attributes="href string:${navroot}/++resource++tribuna.theme/css/jquery.galleryview-3.0.css"
@@ -23,22 +31,22 @@
             tal:define="navroot context/@@plone_portal_state/navigation_root_url"
             tal:attributes="src string:${navroot}/++resource++tribuna.theme/js/jquery.timers-1.2.js"
             ></script>
-    </metal:block>
+</metal:block>
+
+
 <metal:main fill-slot="main">
     <tal:main-macro metal:define-macro="main"
         >
 
-        <div tal:replace="structure provider:plone.abovecontenttitle" />
+<!--         <div tal:replace="structure provider:plone.abovecontenttitle" /> -->
 
         <h1 class="documentFirstHeading"> Main page </h1>
 
 
-        <div tal:replace="structure provider:plone.belowcontenttitle" />
+        <!-- <div tal:replace="structure provider:plone.belowcontenttitle" />
+        <div tal:replace="structure provider:plone.abovecontentbody" /> -->
 
-
-        <div tal:replace="structure provider:plone.abovecontentbody" />
-
-        <h2 i18n:translate="heading_sessions">Articles</h2>
+        <h2 i18n:translate="">Articles</h2>
         <div>
           <ul id="gallery">
 
@@ -57,23 +65,34 @@
           </tal:block>
           </ul>
         </div>
-
-        <script>
-         $('#gallery').galleryView({
-            panel_width: 1200,
-            panel_height: 600,
-            frame_width: 120,
-            frame_height: 90,
-            pause_on_hover: true,
-            filmstrip_position: "top",
-            enable_overlay: true,
-            show_captions: true,
-            // wrapper_width: 800;
-            // wrapper_height 600;
-        });
-        </script>
         <div tal:replace="structure provider:plone.belowcontentbody" />
 
+        <script>
+          // var gal;
+          // $(document).ready(function(){
+          //   setGallery($(window).width()*0.95);
+          // });
+          // var gal;
+          // function setGallery(width){
+          //   gal = $('#gallery').galleryView({
+          //       panel_width: width,
+          //       panel_height: 600,
+          //       frame_width: width/8,
+          //       frame_height: 90,
+          //       pause_on_hover: true,
+          //       autoplay: false,
+          //       filmstrip_position: "top",
+          //       enable_overlay: true,
+          //       show_captions: true,
+          //       transition_interval: 0,
+          //       start_frame: 0
+          //   });
+          // }
+
+          // $(window).resize(function() {
+          //   setGallery($(window).width()*0.95);
+          // });
+        </script>
     </tal:main-macro>
 </metal:main>
 

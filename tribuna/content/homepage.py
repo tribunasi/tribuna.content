@@ -1,8 +1,6 @@
 from five import grok
 from zope.interface import Interface
 
-from tribuna.content import _
-
 
 class HomePageView(grok.View):
     grok.context(Interface)
@@ -17,8 +15,9 @@ class HomePageView(grok.View):
         sdm = self.context.session_data_manager
         session = sdm.getSessionData(create=True)
         if('view_type' in session.keys()):
-            return session['view_type']
-        return "view"
+            if session['view_type'] == 'drag':
+                return False
+        return True
 
     def articles(self):
         """ Return a catalog search result of articles that have this tag
