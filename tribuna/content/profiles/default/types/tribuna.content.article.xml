@@ -27,6 +27,7 @@
      <element value="tribuna.content.behaviors.behaviors.ITags" />
      <element value="tribuna.content.behaviors.behaviors.ILockOnHomePage" />
      <element value="collective.miscbehaviors.behavior.bodytext.IBodyText" />
+     <element value="plone.app.dexterity.behaviors.discussion.IAllowDiscussion" />
  </property>
 
  <!-- View information -->
