@@ -48,4 +48,10 @@
         layer=".interfaces.ITribunaContentLayer"
         />
 
+    <!-- Adapter for the highlight_in_navgation indexer for Tags -->
+    <adapter
+        factory=".tag.highlight_in_navigation_indexer"
+        name="highlight_in_navigation"
+        />
+
 </configure>

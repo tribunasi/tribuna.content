@@ -9,14 +9,14 @@ from z3c.form import button
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from zope import schema
 from zope.interface import implements
-from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.vocabulary import SimpleVocabulary
 from zope.schema.vocabulary import SimpleTerm
 
 
 from tribuna.content import _
 from tribuna.content import limit
-from tribuna.content.utils import tagsPublished
+from tribuna.content.utils import TagsList
+from tribuna.content.utils import TagsListHighlighted
 
 
 # SimpleTerm(value (actual value), token (request), title (shown in browser))
@@ -60,7 +60,8 @@ def articles(session):
 
             if not all_content:
                 session.set('content_list', [])
-            session.set('content_list', [content.getObject() for content in all_content])
+            session.set('content_list',
+                        [content.getObject() for content in all_content])
             return True
 
         # portal_type
@@ -86,6 +87,8 @@ def articles(session):
         sort_order = session['portlet_data']['sort_order']
 
         all_content = []
+        session['portlet_data']['tags'] = \
+            list(set(session['portlet_data']['tags'] + session['portlet_data']['all_tags']))
         if(not session['portlet_data']['tags']):
             all_content = catalog(
                 portal_type=portal_type,
@@ -128,24 +131,18 @@ def articles(session):
         session.set('content_list', [content.getObject() for content in all_content])
 
 
-class TagsList(object):
-    grok.implements(IContextSourceBinder)
-
-    def __init__(self):
-        pass
-
-    def __call__(self, context):
-        items = tagsPublished()
-        terms = [SimpleVocabulary.createTerm(i, i, i) for i in items]
-        return SimpleVocabulary(terms)
-
-
 class ISidebarForm(form.Schema):
     """ Defining form fields for sidebar portlet """
 
     form.widget(tags=CheckBoxFieldWidget)
     tags = schema.List(
         title=_(u"Tags"),
+        value_type=schema.Choice(source=TagsListHighlighted()),
+    )
+
+    form.widget(all_tags=CheckBoxFieldWidget)
+    all_tags = schema.List(
+        title=_(u"All tags"),
         value_type=schema.Choice(source=TagsList()),
     )
 
@@ -187,6 +184,16 @@ class ISidebarForm(form.Schema):
 
 @form.default_value(field=ISidebarForm['tags'])
 def default_tags(data):
+    sdm = data.context.session_data_manager
+    session = sdm.getSessionData(create=True)
+    if("portlet_data" in session.keys()):
+        return session["portlet_data"]["tags"]
+    else:
+        return []
+
+
+@form.default_value(field=ISidebarForm['all_tags'])
+def default_all_tags(data):
     sdm = data.context.session_data_manager
     session = sdm.getSessionData(create=True)
     if("portlet_data" in session.keys()):

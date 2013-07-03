@@ -51,18 +51,22 @@
 
         <h2 i18n:translate="heading_sessions">Articles</h2>
         <script>
-            var tableGrid = []
-            $(document).ready(function() {
-                var x = 150
-                var y = 100
-                for (var i = 0; i<7; i++) {
-                    for (var j = 0; j<7; j++) {
-                    tableGrid.push({"left": i*x, "top": j*y})
-                    }
-                }
-            });
+            // var tableGrid = []
+            // $(document).ready(function() {
+            //     var x = 150
+            //     var y = 100
+            //     for (var i = 0; i<7; i++) {
+            //         for (var j = 0; j<7; j++) {
+            //         tableGrid.push({"left": i*x, "top": j*y})
+            //         }
+            //     }
+            // });
         </script>
-        <div id="homepage_div" style="min-height: 800px" >
+        <div id="homepage_div" style="min-height: 600px; position: absolute">
+        <script>
+          $('#homepage_div').css({'width': $('#content').width()});
+          $('#homepage_div').css({'height': ($(window).height() - $('#portal-top').height() - $('#edit-bar').height() - $('#content').height() - 25)});
+        </script>
          <tal:block tal:condition="view/is_text_view">
             <tal:block repeat="article view/articles">
                 <div id="${article/UID}" class="ui-widget-content text-view">
@@ -88,12 +92,13 @@
                 </div>
 
                 <script>
+
                     $(function() {
                         var articleUID= "#${article/UID}"
-                        var numRand = Math.floor(Math.random()*tableGrid.length);
-                        $(articleUID).css({'left': tableGrid[numRand]["left"]});
-                        $(articleUID).css({'top': tableGrid[numRand]["top"]});
-                        tableGrid.splice(numRand, 1);
+                        // var numRand = Math.floor(Math.random()*tableGrid.length);
+                        // $(articleUID).css({'left': tableGrid[numRand]["left"]});
+                        // $(articleUID).css({'top': tableGrid[numRand]["top"]});
+                        // tableGrid.splice(numRand, 1);
                         $(articleUID).css({'position' : 'absolute'});
                         $(articleUID).draggable({containment: "parent", stack: "div", cancel: "h3" });
                         $(articleUID).draggable("option", "distance", 0 );
@@ -101,10 +106,24 @@
                         // Add the current height and width (defined by img) to the style, so the div doesn't shrink on hover. Need to add this on img.load, so it can always find the information
                         var image = $(articleUID).find('img')
                         image.load(function(){
+                            console.info("Dogaja!");
                             var imageHeight = image.height();
                             var imageWidth = image.width();
-                            $(articleUID).css({'height': imageHeight})
-                            $(articleUID).css({'width': imageWidth})
+                            var numRandx = Math.floor(Math.random() * ($('#homepage_div').width() - imageWidth));
+                            var numRandy = Math.floor(Math.random() * ($('#homepage_div').height() - imageHeight));
+
+                            if(numRandx < 0) {
+                              numRandx = 0;
+                            }
+                            if(numRandy < 0) {
+                              numRandy = 0;
+                            }
+
+                            $(articleUID).css({'height': imageHeight});
+                            $(articleUID).css({'width': imageWidth});
+                            $(articleUID).css({'left': numRandx});
+                            $(articleUID).css({'top': numRandy});
+                            console.info($('#homepage_div').width(), $('#homepage_div').height(), imageWidth, imageHeight, numRandx, numRandy);
                         });
                     });
               </script>
@@ -141,9 +160,9 @@
         </script>
 
         <div tal:replace="structure provider:plone.belowcontentbody" />
-
     </tal:main-macro>
 </metal:main>
+
 
 </body>
 </html>

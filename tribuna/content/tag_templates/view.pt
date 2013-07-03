@@ -10,7 +10,6 @@
 <metal:main fill-slot="main">
     <tal:main-macro metal:define-macro="main"
         tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime">
-
         <div tal:replace="structure provider:plone.abovecontenttitle" />
 
         <h1 class="documentFirstHeading" tal:content="context/title" />
@@ -37,8 +36,11 @@
 
         <div tal:replace="structure provider:plone.belowcontentbody" />
 
+
     </tal:main-macro>
 </metal:main>
+
+
 
 </body>
 </html>

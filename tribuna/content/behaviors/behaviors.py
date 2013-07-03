@@ -20,7 +20,7 @@ from zope.interface import alsoProvides
 from zope.interface import implements
 
 from tribuna.content import _
-from tribuna.content.utils import TagsList
+from tribuna.content.utils import TagsListHighlighted
 
 
 class ITermitnjakLeadImage(form.Schema):
@@ -69,7 +69,7 @@ class ITags(form.Schema):
             u'help_tags',
             default=u'Mine test.'
         ),
-        value_type=schema.Choice(source=TagsList()),
+        value_type=schema.Choice(source=TagsListHighlighted()),
     )
 
     form.widget(tags_new=TokenInputFieldWidget)
@@ -152,7 +152,7 @@ class Tags(object):
                 type='tribuna.content.tag',
                 title=title,
                 container=site['tags'])
-            api.content.transition(obj=obj, transition='publish')
+            api.content.transition(obj=obj, transition='submit')
 
 
 class ILockOnHomePage(form.Schema):

@@ -1,13 +1,11 @@
 from five import grok
 from plone import api
 from plone.directives import form
-from plone.namedfile.field import NamedImage
+from plone.indexer.decorator import indexer
 from zope import schema
 from zope.container.interfaces import IObjectAddedEvent
 from zope.container.interfaces import IObjectRemovedEvent
 from zope.lifecycleevent.interfaces import IObjectModifiedEvent
-from zope.schema.interfaces import IContextSourceBinder
-from zope.schema.vocabulary import SimpleVocabulary
 
 from tribuna.content import _
 
@@ -24,11 +22,17 @@ class ITag(form.Schema):
         title=_(u"A short summary"),
     )
 
-    # picture = NamedImage(
-    #     title=_(u"Picture"),
-    #     description=_(u"Please upload an image"),
-    #     required=False,
-    # )
+    highlight_in_navigation = schema.Bool(
+        title=_(u"Highlight article in navigation?")
+    )
+
+
+@indexer(ITag)
+def highlight_in_navigation_indexer(obj):
+    """
+        Indexed for highlight_in_navigation for Tags
+    """
+    return obj.highlight_in_navigation
 
 
 @grok.subscribe(ITag, IObjectModifiedEvent)
