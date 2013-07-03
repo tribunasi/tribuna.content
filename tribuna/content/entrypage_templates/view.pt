@@ -39,9 +39,25 @@
         </div>
 
         <div id="change-form">
-          <h3>Section 1</h3>
+          <h3>Text</h3>
             <div>
-            <tal:block define="form view/change_page">
+            <tal:block define="form view/change_page_text">
+                    <tal:block define="view nocall:form">
+                        <metal:block use-macro="form/@@ploneform-macros/titlelessform" />
+                    </tal:block>
+                </tal:block>
+            </div>
+            <h3>Picture</h3>
+            <div>
+            <tal:block define="form view/change_page_picture">
+                    <tal:block define="view nocall:form">
+                        <metal:block use-macro="form/@@ploneform-macros/titlelessform" />
+                    </tal:block>
+                </tal:block>
+            </div>
+            <h3>Old pages</h3>
+            <div>
+            <tal:block define="form view/change_page_old">
                     <tal:block define="view nocall:form">
                         <metal:block use-macro="form/@@ploneform-macros/titlelessform" />
                     </tal:block>

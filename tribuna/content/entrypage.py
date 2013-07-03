@@ -50,19 +50,6 @@ class IEntryPage(form.Schema):
         title=_(u"Name"),
     )
 
-    picture = NamedBlobImage(
-        title=_(u"Please upload an image"),
-        required=False,
-    )
-
-
-class IChangePageForm(form.Schema):
-
-    title = schema.TextLine(
-        title=_(u"Name"),
-        required=False
-    )
-
     text = schema.TextLine(
         title=_(u"Text"),
         required=False
@@ -73,38 +60,109 @@ class IChangePageForm(form.Schema):
         required=False,
     )
 
-    #form.widget(old_pages=ContentTreeFieldWidget)
-    old_pages = schema.Choice(title=u"Select one of the old pages",
-                              source=OldEntryPages(),
-                              )
 
-    @invariant
-    def validateOneSelected(data):
-        if data.text is None and data.picture is None:
-            raise SelectOne(_(u"Only select text or image"))
-        if data.text is not None and data.picture is not None:
-            raise SelectOne(_(u"Only select text or image"))
+class IChangePagePictureForm(form.Schema):
+
+    title = schema.TextLine(
+        title=_(u"Title"),
+        required=False
+    )
+
+    author = schema.TextLine(
+        title=_(u"Author"),
+        required=False
+    )
+
+    picture = NamedBlobImage(
+        title=_(u"Please upload an image"),
+        required=False,
+    )
 
 
-class ChangePageForm(form.SchemaForm):
+    # @invariant
+    # def validateOneSelected(data):
+    #     if data.text is None and data.picture is None:
+    #         raise SelectOne(_(u"Only select text or image"))
+    #     if data.text is not None and data.picture is not None:
+    #         raise SelectOne(_(u"Only select text or image"))
+
+
+class ChangePagePictureForm(form.SchemaForm):
     """ Defining form handler for change page form
 
     """
     grok.name('change-bar-form')
     grok.require('zope2.View')
     grok.permissions('zope.Public')
-    grok.context(IChangePageForm)
+    grok.context(IChangePagePictureForm)
 
-    schema = IChangePageForm
+    schema = IChangePagePictureForm
     ignoreContext = True
     label = _(u"Select new page")
     description = _(u"New entry page form")
 
-    @button.buttonAndHandler(_(u'Change'))
+    @button.buttonAndHandler(_(u'Change Picture'))
     def handleApply(self, action):
         data, errors = self.extractData()
         if errors:
-            #import pdb; pdb.set_trace()
+            self.status = self.formErrorsMessage
+            return
+        catalog = api.portal.get_tool(name='portal_catalog')
+        folder = catalog(id="entry-pages")[0].getObject()
+        new_title = data["title"]
+        if not new_title or new_title == "":
+            new_title = unicode(datetime.now())
+        new_page = createContentInContainer(folder, "tribuna.content.entrypage", title=new_title)
+        api.content.get_state(obj=new_page)
+        api.content.transition(obj=new_page, transition='publish')
+        new_page.picture = data["picture"]
+        folder.setDefaultPage(new_page.id)
+        self.request.response.redirect(api.portal.get().absolute_url())
+
+
+class IChangePageTextForm(form.Schema):
+
+    title = schema.TextLine(
+        title=_(u"Name"),
+        required=False
+    )
+
+    author = schema.TextLine(
+        title=_(u"Author"),
+        required=False
+    )
+
+    text = schema.TextLine(
+        title=_(u"Text"),
+        required=False
+    )
+
+    # @invariant
+    # def validateOneSelected(data):
+    #     if data.text is None and data.picture is None:
+    #         raise SelectOne(_(u"Only select text or image"))
+    #     if data.text is not None and data.picture is not None:
+    #         raise SelectOne(_(u"Only select text or image"))
+
+
+class ChangePageTextForm(form.SchemaForm):
+    """ Defining form handler for change page form
+
+    """
+    grok.name('change-bar-form')
+    grok.require('zope2.View')
+    grok.permissions('zope.Public')
+    grok.context(IChangePageTextForm)
+
+    schema = IChangePageTextForm
+    ignoreContext = True
+    label = _(u"Select new page")
+    description = _(u"New entry page form")
+
+    @button.buttonAndHandler(_(u'Change Text'))
+    def handleApply(self, action):
+        data, errors = self.extractData()
+        if errors:
             self.status = self.formErrorsMessage
             return
         catalog = api.portal.get_tool(name='portal_catalog')
@@ -116,12 +174,38 @@ class ChangePageForm(form.SchemaForm):
         api.content.get_state(obj=new_page)
         api.content.transition(obj=new_page, transition='publish')
         new_page.text = data["text"]
-        new_page.picture = data["picture"]
-        #import pdb; pdb.set_trace()
         folder.setDefaultPage(new_page.id)
         self.request.response.redirect(api.portal.get().absolute_url())
 
-    @button.buttonAndHandler(_(u'Change to old page'))
+
+class IChangePageOldForm(form.Schema):
+
+    old_pages = schema.Choice(title=u"Select one of the old pages",
+                              source=OldEntryPages(),
+                              )
+    # @invariant
+    # def validateOneSelected(data):
+    #     if data.text is None and data.picture is None:
+    #         raise SelectOne(_(u"Only select text or image"))
+    #     if data.text is not None and data.picture is not None:
+    #         raise SelectOne(_(u"Only select text or image"))
+
+
+class ChangePageOldForm(form.SchemaForm):
+    """ Defining form handler for change page form
+
+    """
+    grok.name('change-bar-form')
+    grok.require('zope2.View')
+    grok.permissions('zope.Public')
+    grok.context(IChangePageOldForm)
+
+    schema = IChangePageOldForm
+    ignoreContext = True
+    label = _(u"Select new page")
+    description = _(u"New entry page form")
+
+    @button.buttonAndHandler(_(u'Change old'))
     def handleApply(self, action):
         data, errors = self.extractData()
         #if errors:
@@ -130,7 +214,6 @@ class ChangePageForm(form.SchemaForm):
 
         catalog = api.portal.get_tool(name='portal_catalog')
         folder = catalog(id="entry-pages")[0].getObject()
-        #import pdb; pdb.set_trace()
         page_id = data["old_pages"]
         folder.setDefaultPage(page_id)
         self.request.response.redirect(api.portal.get().absolute_url())
@@ -145,9 +228,23 @@ class View(grok.View):
         self.request.set('disable_plone.rightcolumn', 1)
         self.request.set('disable_plone.leftcolumn', 1)
 
-    def change_page(self):
+    def change_page_picture(self):
         """Return a form which can change the entry page
         """
-        form1 = ChangePageForm(self.context, self.request)
+        form1 = ChangePagePictureForm(self.context, self.request)
+        form1.update()
+        return form1
+
+    def change_page_text(self):
+        """Return a form which can change the entry page
+        """
+        form1 = ChangePageTextForm(self.context, self.request)
+        form1.update()
+        return form1
+
+    def change_page_old(self):
+        """Return a form which can change the entry page
+        """
+        form1 = ChangePageOldForm(self.context, self.request)
         form1.update()
         return form1
