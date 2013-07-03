@@ -15,6 +15,7 @@ from zope.schema.vocabulary import SimpleTerm
 
 from tribuna.content import _
 from tribuna.content import limit
+from tribuna.content.utils import countSame
 from tribuna.content.utils import TagsList
 from tribuna.content.utils import TagsListHighlighted
 
@@ -88,8 +89,12 @@ def articles(session):
 
         all_content = []
         session['portlet_data']['tags'] = \
-            list(set(session['portlet_data']['tags'] + session['portlet_data']['all_tags']))
+            list(set(session['portlet_data']['tags'] +
+                 session['portlet_data']['all_tags']))
+
         if(not session['portlet_data']['tags']):
+            # Ce ni nicesar pokaze zadnje
+            # Naj se spremeni v to, da izbira med highlightanimi tagi
             all_content = catalog(
                 portal_type=portal_type,
                 locked_on_home=True,
@@ -111,11 +116,11 @@ def articles(session):
                 )[:limit-currentLen]
         else:
             query = session['portlet_data']['tags']
-            tmp = session['portlet_data']['operator']
-            if(tmp == 'union'):
-                operator = 'or'
-            elif(tmp == 'intersection'):
-                operator = 'and'
+            # tmp = session['portlet_data']['operator']
+            # if(tmp == 'union'):
+            #     operator = 'or'
+            # elif(tmp == 'intersection'):
+            #     operator = 'and'
 
             all_content = catalog(
                 portal_type=portal_type,
@@ -123,12 +128,16 @@ def articles(session):
                 sort_on=sort_on,
                 sort_order=sort_order,
                 Subject={'query': query, 'operator': operator},
-                sort_limit=limit
-            )[:limit]
+            )
+
+            all_content = [content for content in all_content]
+            all_content.sort(key=lambda x: countSame(x.Subject, query), reverse=True)
+            all_content = all_content[:15]
 
         if not all_content:
             session.set('content_list', [])
-        session.set('content_list', [content.getObject() for content in all_content])
+        session.set('content_list',
+                    [content.getObject() for content in all_content])
 
 
 class ISidebarForm(form.Schema):
@@ -173,13 +182,13 @@ class ISidebarForm(form.Schema):
         ])),
     )
 
-    operator = schema.Choice(
-        title=_(u"How to apply tags"),
-        vocabulary=SimpleVocabulary([
-            SimpleTerm('union', 'union', _(u'Union')),
-            SimpleTerm('intersection', 'intersection', _(u'Intersection')),
-        ]),
-    )
+    # operator = schema.Choice(
+    #     title=_(u"How to apply tags"),
+    #     vocabulary=SimpleVocabulary([
+    #         SimpleTerm('union', 'union', _(u'Union')),
+    #         SimpleTerm('intersection', 'intersection', _(u'Intersection')),
+    #     ]),
+    # )
 
 
 @form.default_value(field=ISidebarForm['tags'])
@@ -232,14 +241,14 @@ def default_content_filters(data):
         return []
 
 
-@form.default_value(field=ISidebarForm['operator'])
-def default_operator(data):
-    sdm = data.context.session_data_manager
-    session = sdm.getSessionData(create=True)
-    if("portlet_data" in session.keys()):
-            return session["portlet_data"]["operator"]
-    else:
-        return "union"
+# @form.default_value(field=ISidebarForm['operator'])
+# def default_operator(data):
+#     sdm = data.context.session_data_manager
+#     session = sdm.getSessionData(create=True)
+#     if("portlet_data" in session.keys()):
+#             return session["portlet_data"]["operator"]
+#     else:
+#         return "union"
 
 
 class SidebarForm(form.SchemaForm):

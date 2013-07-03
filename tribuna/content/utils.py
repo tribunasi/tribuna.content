@@ -23,6 +23,10 @@ def tagsPublished():
     return tags
 
 
+def countSame(li1, li2):
+    return len(set(li1).intersection(set(li2)))
+
+
 class TagsListHighlighted(object):
     grok.implements(IContextSourceBinder)
 
