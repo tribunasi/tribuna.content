@@ -34,17 +34,33 @@
                                  width picture/_width | nothing;"
                 />
         </div>
+        <div tal:condition="context/text">
+          <p  tal:replace="structure context/text" />
+        </div>
 
-        <tal:block define="form view/change_page">
-                <tal:block define="view nocall:form">
-                    <metal:block use-macro="form/@@ploneform-macros/titlelessform" />
+        <div id="change-form">
+          <h3>Section 1</h3>
+            <div>
+            <tal:block define="form view/change_page">
+                    <tal:block define="view nocall:form">
+                        <metal:block use-macro="form/@@ploneform-macros/titlelessform" />
+                    </tal:block>
                 </tal:block>
-            </tal:block>
+            </div>
+        </div>
         </div>
 
 
         <div tal:replace="structure provider:plone.belowcontentbody" />
 
+        <script>
+          $(function() {
+            $( "#change-form" ).accordion({
+              collapsible: true,
+              active: false
+            });
+          });
+          </script>
     </tal:main-macro>
 </metal:main>
 
