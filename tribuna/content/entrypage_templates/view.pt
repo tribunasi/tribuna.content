@@ -37,46 +37,52 @@
         <div tal:condition="context/text">
           <p  tal:replace="structure context/text" />
         </div>
-
         <div id="change-form">
-          <h3>Text</h3>
-            <div>
-            <tal:block define="form view/change_page_text">
-                    <tal:block define="view nocall:form">
-                        <metal:block use-macro="form/@@ploneform-macros/titlelessform" />
-                    </tal:block>
-                </tal:block>
-            </div>
-            <h3>Picture</h3>
-            <div>
-            <tal:block define="form view/change_page_picture">
-                    <tal:block define="view nocall:form">
-                        <metal:block use-macro="form/@@ploneform-macros/titlelessform" />
-                    </tal:block>
-                </tal:block>
-            </div>
-            <h3>Old pages</h3>
-            <div>
-            <tal:block define="form view/change_page_old">
-                    <tal:block define="view nocall:form">
-                        <metal:block use-macro="form/@@ploneform-macros/titlelessform" />
-                    </tal:block>
-                </tal:block>
-            </div>
+        <h3 i18n:translate="">Change entry page</h3>
+          <div>
+          <div id="change-form-multiple">
+            <h3 i18n:translate="">Text</h3>
+              <div>
+              <tal:block define="form view/change_page_text">
+                      <tal:block define="view nocall:form">
+                          <metal:block use-macro="form/@@ploneform-macros/titlelessform" />
+                      </tal:block>
+                  </tal:block>
+              </div>
+              <h3 i18n:translate="">Picture</h3>
+              <div>
+              <tal:block define="form view/change_page_picture">
+                      <tal:block define="view nocall:form">
+                          <metal:block use-macro="form/@@ploneform-macros/titlelessform" />
+                      </tal:block>
+                  </tal:block>
+              </div>
+              <h3 i18n:translate="">Old pages</h3>
+              <div>
+              <tal:block define="form view/change_page_old">
+                      <tal:block define="view nocall:form">
+                          <metal:block use-macro="form/@@ploneform-macros/titlelessform" />
+                      </tal:block>
+                  </tal:block>
+              </div>
+          </div>
         </div>
         </div>
-
+        </div>
 
         <div tal:replace="structure provider:plone.belowcontentbody" />
 
         <script>
           $(function() {
-            $( "#change-form" ).accordion({
+            $( "#change-form, #change-form-multiple" ).accordion({
               collapsible: true,
               active: false
             });
           });
           </script>
+          <style type="text/css">
+            #change-form-multiple .ui-widget-content {height:200px}
+          </style>
     </tal:main-macro>
 </metal:main>
 
