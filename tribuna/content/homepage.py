@@ -46,4 +46,6 @@ class HomePageView(grok.View):
             Title=title,
             portal_type='tribuna.content.tag',
         )[0].getObject()
+        if tag.description == "":
+            return u"Description not added yet!"
         return tag.description
