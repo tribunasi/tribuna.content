@@ -16,7 +16,7 @@ from zope.schema.vocabulary import SimpleVocabulary
 from zope.schema.vocabulary import SimpleTerm
 
 from tribuna.content import _
-from tribuna.content.utils import countSame
+from tribuna.content.utils import count_same
 from tribuna.content.utils import TagsList
 from tribuna.content.utils import TagsListHighlighted
 
@@ -134,7 +134,7 @@ def articles(session):
 
     all_content = [content for content in all_content]
     all_content.sort(
-        key=lambda x: countSame(x.Subject, query), reverse=True)
+        key=lambda x: count_same(x.Subject, query), reverse=True)
     all_content = all_content[:LIMIT]
 
     if not all_content:

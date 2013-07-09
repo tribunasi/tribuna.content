@@ -1,9 +1,12 @@
+# -*- coding: utf-8 -*-
+"""Keywords widget related code."""
+
 from redomino.advancedkeyword.browser.keywords import KeywordsWidgetGenerator \
     as BaseKeywordsWidgetGenerator
 from redomino.advancedkeyword.browser.keywords import KeywordsMapGenerator \
     as BaseKeywordsMapGenerator
 
-from tribuna.content.utils import tagsPublished
+from tribuna.content.utils import tags_published
 
 
 class KeywordsMapGenerator(BaseKeywordsMapGenerator):
@@ -14,7 +17,7 @@ class KeywordsMapGenerator(BaseKeywordsMapGenerator):
     """
 
     def get_all_kw(self):
-        return tagsPublished()
+        return tags_published()
 
 
 class KeywordsWidgetGenerator(BaseKeywordsWidgetGenerator):
@@ -25,4 +28,4 @@ class KeywordsWidgetGenerator(BaseKeywordsWidgetGenerator):
     """
 
     def get_all_kw(self):
-        return tagsPublished()
+        return tags_published()

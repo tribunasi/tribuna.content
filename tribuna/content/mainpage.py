@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+"""Views for the main page."""
+
 from five import grok
 from zope.interface import Interface
 
@@ -8,7 +11,8 @@ class MainPageView(grok.View):
     grok.name('main-page')
 
     def articles(self):
-        """ Return a catalog search result of articles that have this tag
+        """Return a catalog search result of articles that have the selected
+        tag.
         """
 
         sdm = self.context.session_data_manager

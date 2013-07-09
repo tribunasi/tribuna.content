@@ -1,18 +1,20 @@
+# -*- coding: utf-8 -*-
+"""Tag content type."""
+
 from five import grok
 from plone import api
 from plone.directives import form
 from plone.indexer.decorator import indexer
 from zope import schema
 from zope.container.interfaces import IObjectAddedEvent
-from zope.container.interfaces import IObjectRemovedEvent
+#from zope.container.interfaces import IObjectRemovedEvent
 from zope.lifecycleevent.interfaces import IObjectModifiedEvent
 
 from tribuna.content import _
 
 
 class ITag(form.Schema):
-    """Interface for Tag content type
-    """
+    """Interface for Tag content type."""
 
     title = schema.TextLine(
         title=_(u"Name"),
@@ -29,9 +31,7 @@ class ITag(form.Schema):
 
 @indexer(ITag)
 def highlight_in_navigation_indexer(obj):
-    """
-        Indexed for highlight_in_navigation for Tags
-    """
+    """Indexed for highlight_in_navigation for Tags."""
     return obj.highlight_in_navigation
 
 
@@ -45,12 +45,11 @@ def object_added(context, event):
     context.subject = (context.title, )
 
 
-"""
-Right now, we don't want to delete tags from all content. The tags will be
-saved and everything will "magically" appear again if we re-add the tag with
-the same name. Need to decide if we want to give the option to delete tag from
-all content on deletion and what to do on tag renaming.
-"""
+# XXX: Right now, we don't want to delete tags from all content. The tags will
+# be saved and everything will "magically" appear again if we re-add the tag
+# with the same name. Need to decide if we want to give the option to delete
+# tag from all content on deletion and what to do on tag renaming.
+
 # @grok.subscribe(ITag, IObjectRemovedEvent)
 # def object_deleted(context, event):
 #     # First time it's called, before the "delete or no" popup
@@ -80,7 +79,8 @@ class View(grok.View):
     grok.require('zope2.View')
 
     def articles(self):
-        """Return a catalog search result of articles that have this tag
+        """Return a catalog search result of articles that have the selected
+        tag.
         """
         catalog = api.portal.get_tool(name='portal_catalog')
         all_articles = catalog(portal_type="tribuna.content.article")

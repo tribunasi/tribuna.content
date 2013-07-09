@@ -1,10 +1,13 @@
+# -*- coding: utf-8 -*-
+"""Various utilites."""
+
 from five import grok
 from plone import api
 from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.vocabulary import SimpleVocabulary
 
 
-def tagsPublishedHighlighted():
+def tags_published_highlighted():
     catalog = api.portal.get_tool(name='portal_catalog')
     tags = tuple(i.Title for i in catalog(
         portal_type='tribuna.content.tag',
@@ -14,7 +17,7 @@ def tagsPublishedHighlighted():
     return tags
 
 
-def tagsPublished():
+def tags_published():
     catalog = api.portal.get_tool(name='portal_catalog')
     tags = tuple(i.Title for i in catalog(
         portal_type='tribuna.content.tag',
@@ -23,7 +26,7 @@ def tagsPublished():
     return tags
 
 
-def countSame(li1, li2):
+def count_same(li1, li2):
     return len(set(li1).intersection(set(li2)))
 
 
@@ -34,7 +37,7 @@ class TagsListHighlighted(object):
         pass
 
     def __call__(self, context):
-        items = tagsPublishedHighlighted()
+        items = tags_published_highlighted()
         terms = [SimpleVocabulary.createTerm(i, i, i) for i in items]
         return SimpleVocabulary(terms)
 
@@ -46,6 +49,6 @@ class TagsList(object):
         pass
 
     def __call__(self, context):
-        items = tagsPublished()
+        items = tags_published()
         terms = [SimpleVocabulary.createTerm(i, i, i) for i in items]
         return SimpleVocabulary(terms)

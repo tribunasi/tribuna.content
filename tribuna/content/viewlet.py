@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+"""Viewlets."""
+
 from zope.interface import implements
 from zope.viewlet.interfaces import IViewlet
 
@@ -27,8 +30,10 @@ class GalleryViewlet(BrowserView):
         pass
 
     def available(self, session):
-        """
-            If we are on the MainPageView and are viewing the gallery, return True
+        """Condition to determine if we should display the viewlet.
+
+        If we are on the MainPageView and are viewing the gallery, return
+        True.
         """
 
         if isinstance(self.__parent__, MainPageView):
@@ -72,9 +77,8 @@ class DefaultSessionViewlet(BrowserView):
             session.set('index', 0)
 
     def check_session(self):
-        """
-            Check if we have the data, if we don't, input defaults.
-            Check for the get parameter and find the appropriate index
+        """Check if we have the data, if we don't, input defaults. Check
+        for the get parameter and find the appropriate index.
         """
         sdm = self.context.session_data_manager
         session = sdm.getSessionData(create=True)

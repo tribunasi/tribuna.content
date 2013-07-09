@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+"""Views for the home page."""
+
 from five import grok
 from plone import api
 from zope.interface import Interface
@@ -9,9 +12,9 @@ class HomePageView(grok.View):
     grok.name('home-page')
 
     def is_text_view(self):
-        """
-            Get data from session, if it isn't there, send True (text is the
-            basic view)
+        """Check if text view (this is the basic view) is selected.
+
+        Read data from the session, if it isn't there, return True.
         """
         sdm = self.context.session_data_manager
         session = sdm.getSessionData(create=True)
@@ -21,9 +24,9 @@ class HomePageView(grok.View):
         return True
 
     def articles(self):
-        """ Return a catalog search result of articles that have this tag
+        """Return a catalog search result of articles that have the
+        selected tag.
         """
-
         sdm = self.context.session_data_manager
         session = sdm.getSessionData(create=True)
         if('content_list' in session.keys()):

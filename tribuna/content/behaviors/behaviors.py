@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Behaviours to assign tags (to ideas).
 
 Includes a form field and a behaviour adapter that stores the data in the
@@ -24,8 +25,7 @@ from tribuna.content.utils import TagsListHighlighted
 
 
 class ITermitnjakLeadImage(form.Schema):
-    """Add tags to content
-    """
+    """Add tags to content."""
 
     image = namedfile.NamedBlobImage(
         title=_(u"Lead Image"),
@@ -43,9 +43,7 @@ alsoProvides(ITermitnjakLeadImage, form.IFormFieldProvider)
 
 
 class TermitnjakLeadImage(object):
-    """
-       Adapter for Lead Image
-    """
+    """Adapter for Lead Image."""
     implements(ITermitnjakLeadImage)
     adapts(IDexterityContent)
 
@@ -58,9 +56,7 @@ class TermitnjakLeadImage(object):
 
 
 class ITags(form.Schema):
-    """
-        Auto-complete tags
-    """
+    """Auto-complete tags."""
 
     form.widget(tags_old=CheckBoxFieldWidget)
     tags_old = schema.List(
@@ -156,8 +152,7 @@ class Tags(object):
 
 
 class ILockOnHomePage(form.Schema):
-    """Behavior for locking our content item on home page
-    """
+    """Behavior for locking our content item on home page."""
 
     locked_on_home = schema.Bool(
         title=_(u"Is article locked on first page?"),
@@ -168,9 +163,7 @@ alsoProvides(ILockOnHomePage, form.IFormFieldProvider)
 
 
 class LockOnHomePage(object):
-    """
-       Adapter for LockOnHomePage
-    """
+    """Adapter for LockOnHomePage."""
     implements(ILockOnHomePage)
     adapts(IDexterityContent)
 
@@ -183,6 +176,5 @@ class LockOnHomePage(object):
 
 @indexer(ILockOnHomePage)
 def lock_on_home_page_indexer(obj):
-    """
-    """
+    """ """
     return obj.locked_on_home

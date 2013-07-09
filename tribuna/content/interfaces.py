@@ -1,6 +1,8 @@
+# -*- coding: utf-8 -*-
 """Module where all interfaces, events and exceptions live."""
 
-from redomino.advancedkeyword.browser.interfaces import IRedominoAdvancedKeywordLayer
+from redomino.advancedkeyword.browser.interfaces import \
+    IRedominoAdvancedKeywordLayer
 
 
 class ITribunaContentLayer(IRedominoAdvancedKeywordLayer):
