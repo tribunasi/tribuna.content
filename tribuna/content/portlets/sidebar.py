@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+"""Portlet for filterting/searching the content."""
+
 from five import grok
 from plone import api
 from plone.app.portlets.portlets import base
@@ -12,132 +15,134 @@ from zope.interface import implements
 from zope.schema.vocabulary import SimpleVocabulary
 from zope.schema.vocabulary import SimpleTerm
 
-
 from tribuna.content import _
-from tribuna.content import limit
 from tribuna.content.utils import countSame
 from tribuna.content.utils import TagsList
 from tribuna.content.utils import TagsListHighlighted
 
+# Number of items to display
+LIMIT = 15
 
 # SimpleTerm(value (actual value), token (request), title (shown in browser))
 # tags, sort_on, content_filters, operator
 
+
 def articles(session):
-        """
-            Returns a list of all articles depending on the specified filters
-        """
+    """Return a list of all articles depending on the specified filters
 
-        """
-            Treba dodati se:
-                - portal_type: osnova so vsi tipi
-        """
+    XXX: Treba dodati se:
+          - portal_type: osnova so vsi tipi
+    """
 
-        catalog = api.portal.get_tool(name='portal_catalog')
-        portal_type = ["tribuna.content.article"]
-        review_state = "published"
-        sort_on = "Date"
-        query = None
-        operator = "or"
+    catalog = api.portal.get_tool(name='portal_catalog')
+    portal_type = ["tribuna.content.article"]
+    review_state = "published"
+    sort_on = "Date"
+    query = None
+    operator = "or"
 
-        if('portlet_data' not in session.keys() or session['portlet_data']['tags'] == []):
-            all_content = catalog(
+    if('portlet_data' not in session.keys() or
+       session['portlet_data']['tags'] == []):
+        all_content = catalog(
+            portal_type=portal_type,
+            locked_on_home=True,
+            review_state=review_state,
+            sort_on=sort_on,
+            sort_limit=LIMIT
+        )[:LIMIT]
+
+        currentLen = len(all_content)
+
+        if currentLen < LIMIT:
+            all_content += catalog(
                 portal_type=portal_type,
-                locked_on_home=True,
+                locked_on_home=False,
                 review_state=review_state,
                 sort_on=sort_on,
-                sort_limit=limit
-            )[:limit]
-            currentLen = len(all_content)
+                sort_limit=(LIMIT - currentLen)
+            )[:(LIMIT - currentLen)]
 
-            if currentLen < limit:
-                all_content += catalog(
-                    portal_type=portal_type,
-                    locked_on_home=False,
-                    review_state=review_state,
-                    sort_on=sort_on,
-                    sort_limit=(limit-currentLen)
-                )[:(limit-currentLen)]
-
-            if not all_content:
-                session.set('content_list', [])
+        if not all_content:
+            session.set('content_list', [])
             session.set('content_list',
                         [content.getObject() for content in all_content])
             return True
 
-        # portal_type
-        if(session['portlet_data']['content_filters']):
-            portal_type = []
-            for i in session['portlet_data']['content_filters']:
-                if(i == 'articles'):
-                    portal_type.append("tribuna.content.article")
-                elif(i == 'comments'):
-                    pass
-                elif(i == 'images'):
-                    pass
+    # portal_type
+    if session['portlet_data']['content_filters']:
+        portal_type = []
+        for i in session['portlet_data']['content_filters']:
+            if(i == 'articles'):
+                portal_type.append("tribuna.content.article")
+            elif(i == 'comments'):
+                pass
+            elif(i == 'images'):
+                pass
 
-        # sort_on
-        tmp = session['portlet_data']['sort_on']
-        if(tmp == 'latest'):
-            sort_on = 'Date'
-        elif(tmp == 'alphabetical'):
-            sort_on = 'sortable_title'
-        elif(tmp == 'comments'):
-            pass
+    # sort_on
+    tmp = session['portlet_data']['sort_on']
+    if tmp == 'latest':
+        sort_on = 'Date'
+    elif tmp == 'alphabetical':
+        sort_on = 'sortable_title'
+    elif tmp == 'comments':
+        pass
 
-        sort_order = session['portlet_data']['sort_order']
+    sort_order = session['portlet_data']['sort_order']
 
-        all_content = []
-        session['portlet_data']['tags'] = \
-            list(set(session['portlet_data']['tags'] +
+    all_content = []
+    session['portlet_data']['tags'] = \
+        list(set(session['portlet_data']['tags'] +
                  session['portlet_data']['all_tags']))
 
-        # if(not session['portlet_data']['tags']):
-        #     # Ce ni nicesar pokaze zadnje
-        #     # Naj se spremeni v to, da izbira med highlightanimi tagi
-        #     all_content = catalog(
-        #         portal_type=portal_type,
-        #         locked_on_home=True,
-        #         review_state=review_state,
-        #         sort_on=sort_on,
-        #         sort_order=sort_order,
-        #         sort_limit=limit
-        #     )[:limit]
-        #     currentLen = len(all_content)
+    # if(not session['portlet_data']['tags']):
+    #     # Ce ni nicesar pokaze zadnje
+    #     # Naj se spremeni v to, da izbira med highlightanimi tagi
+    #     all_content = catalog(
+    #         portal_type=portal_type,
+    #         locked_on_home=True,
+    #         review_state=review_state,
+    #         sort_on=sort_on,
+    #         sort_order=sort_order,
+    #         sort_limit=LIMIT
+    #     )[:LIMIT]
+    #     currentLen = len(all_content)
+    #     if currentLen < LIMIT:
+    #         all_content += catalog(
+    #             portal_type=portal_type,
+    #             locked_on_home=False,
+    #             review_state=review_state,
+    #             sort_on=sort_on,
+    #             sort_order=sort_order,
+    #             sort_limit=(LIMIT - currentLen)
+    #         )[:LIMIT - currentLen]
+    # else:
+    query = session['portlet_data']['tags']
+    # tmp = session['portlet_data']['operator']
+    # if(tmp == 'union'):
+    #     operator = 'or'
+    # elif(tmp == 'intersection'):
+    #     operator = 'and'
 
-        #     if currentLen < limit:
-        #         all_content += catalog(
-        #             portal_type=portal_type,
-        #             locked_on_home=False,
-        #             review_state=review_state,
-        #             sort_on=sort_on,
-        #             sort_order=sort_order,
-        #             sort_limit=(limit-currentLen)
-        #         )[:limit-currentLen]
-        # else:
-        query = session['portlet_data']['tags']
-        # tmp = session['portlet_data']['operator']
-        # if(tmp == 'union'):
-        #     operator = 'or'
-        # elif(tmp == 'intersection'):
-        #     operator = 'and'
+    all_content = catalog(
+        portal_type=portal_type,
+        review_state=review_state,
+        sort_on=sort_on,
+        sort_order=sort_order,
+        Subject={'query': query, 'operator': operator},
+    )
 
-        all_content = catalog(
-            portal_type=portal_type,
-            review_state=review_state,
-            sort_on=sort_on,
-            sort_order=sort_order,
-            Subject={'query': query, 'operator': operator},
-        )
+    all_content = [content for content in all_content]
+    all_content.sort(
+        key=lambda x: countSame(x.Subject, query), reverse=True)
+    all_content = all_content[:LIMIT]
 
-        all_content = [content for content in all_content]
-        all_content.sort(key=lambda x: countSame(x.Subject, query), reverse=True)
-        all_content = all_content[:15]
-
-        if not all_content:
-            session.set('content_list', [])
-        session.set('content_list',
-                    [content.getObject() for content in all_content])
+    if not all_content:
+        session.set('content_list', [])
+    session.set(
+        'content_list',
+        [content.getObject() for content in all_content]
+    )
 
 
 class ISidebarForm(form.Schema):
@@ -195,7 +200,7 @@ class ISidebarForm(form.Schema):
 def default_tags(data):
     sdm = data.context.session_data_manager
     session = sdm.getSessionData(create=True)
-    if("portlet_data" in session.keys()):
+    if "portlet_data" in session.keys():
         return session["portlet_data"]["tags"]
     else:
         return []
@@ -205,7 +210,7 @@ def default_tags(data):
 def default_all_tags(data):
     sdm = data.context.session_data_manager
     session = sdm.getSessionData(create=True)
-    if("portlet_data" in session.keys()):
+    if "portlet_data" in session.keys():
         return session["portlet_data"]["tags"]
     else:
         return []
@@ -215,8 +220,8 @@ def default_all_tags(data):
 def default_sort_on(data):
     sdm = data.context.session_data_manager
     session = sdm.getSessionData(create=True)
-    if("portlet_data" in session.keys()):
-            return session["portlet_data"]["sort_on"]
+    if "portlet_data" in session.keys():
+        return session["portlet_data"]["sort_on"]
     else:
         return "latest"
 
@@ -225,8 +230,8 @@ def default_sort_on(data):
 def default_sort_order(data):
     sdm = data.context.session_data_manager
     session = sdm.getSessionData(create=True)
-    if("portlet_data" in session.keys()):
-            return session["portlet_data"]["sort_order"]
+    if "portlet_data" in session.keys():
+        return session["portlet_data"]["sort_order"]
     else:
         return "descending"
 
@@ -235,7 +240,7 @@ def default_sort_order(data):
 def default_content_filters(data):
     sdm = data.context.session_data_manager
     session = sdm.getSessionData(create=True)
-    if("portlet_data" in session.keys()):
+    if "portlet_data" in session.keys():
         return session["portlet_data"]["content_filters"]
     else:
         return []
