@@ -17,4 +17,4 @@ products
 fabfile.py
 .fabfile-progress.txt
 Paste*
-
+*egg-info
