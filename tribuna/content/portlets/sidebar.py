@@ -40,7 +40,7 @@ def articles(session):
         query = None
         operator = "or"
 
-        if('portlet_data' not in session.keys()):
+        if('portlet_data' not in session.keys() or session['portlet_data']['tags'] == []):
             all_content = catalog(
                 portal_type=portal_type,
                 locked_on_home=True,
@@ -56,8 +56,8 @@ def articles(session):
                     locked_on_home=False,
                     review_state=review_state,
                     sort_on=sort_on,
-                    sort_limit=limit-currentLen
-                )[:limit-currentLen]
+                    sort_limit=(limit-currentLen)
+                )[:(limit-currentLen)]
 
             if not all_content:
                 session.set('content_list', [])
@@ -92,47 +92,47 @@ def articles(session):
             list(set(session['portlet_data']['tags'] +
                  session['portlet_data']['all_tags']))
 
-        if(not session['portlet_data']['tags']):
-            # Ce ni nicesar pokaze zadnje
-            # Naj se spremeni v to, da izbira med highlightanimi tagi
-            all_content = catalog(
-                portal_type=portal_type,
-                locked_on_home=True,
-                review_state=review_state,
-                sort_on=sort_on,
-                sort_order=sort_order,
-                sort_limit=limit
-            )[:limit]
-            currentLen = len(all_content)
+        # if(not session['portlet_data']['tags']):
+        #     # Ce ni nicesar pokaze zadnje
+        #     # Naj se spremeni v to, da izbira med highlightanimi tagi
+        #     all_content = catalog(
+        #         portal_type=portal_type,
+        #         locked_on_home=True,
+        #         review_state=review_state,
+        #         sort_on=sort_on,
+        #         sort_order=sort_order,
+        #         sort_limit=limit
+        #     )[:limit]
+        #     currentLen = len(all_content)
 
-            if currentLen < limit:
-                all_content += catalog(
-                    portal_type=portal_type,
-                    locked_on_home=False,
-                    review_state=review_state,
-                    sort_on=sort_on,
-                    sort_order=sort_order,
-                    sort_limit=limit-currentLen
-                )[:limit-currentLen]
-        else:
-            query = session['portlet_data']['tags']
-            # tmp = session['portlet_data']['operator']
-            # if(tmp == 'union'):
-            #     operator = 'or'
-            # elif(tmp == 'intersection'):
-            #     operator = 'and'
+        #     if currentLen < limit:
+        #         all_content += catalog(
+        #             portal_type=portal_type,
+        #             locked_on_home=False,
+        #             review_state=review_state,
+        #             sort_on=sort_on,
+        #             sort_order=sort_order,
+        #             sort_limit=(limit-currentLen)
+        #         )[:limit-currentLen]
+        # else:
+        query = session['portlet_data']['tags']
+        # tmp = session['portlet_data']['operator']
+        # if(tmp == 'union'):
+        #     operator = 'or'
+        # elif(tmp == 'intersection'):
+        #     operator = 'and'
 
-            all_content = catalog(
-                portal_type=portal_type,
-                review_state=review_state,
-                sort_on=sort_on,
-                sort_order=sort_order,
-                Subject={'query': query, 'operator': operator},
-            )
+        all_content = catalog(
+            portal_type=portal_type,
+            review_state=review_state,
+            sort_on=sort_on,
+            sort_order=sort_order,
+            Subject={'query': query, 'operator': operator},
+        )
 
-            all_content = [content for content in all_content]
-            all_content.sort(key=lambda x: countSame(x.Subject, query), reverse=True)
-            all_content = all_content[:15]
+        all_content = [content for content in all_content]
+        all_content.sort(key=lambda x: countSame(x.Subject, query), reverse=True)
+        all_content = all_content[:15]
 
         if not all_content:
             session.set('content_list', [])
