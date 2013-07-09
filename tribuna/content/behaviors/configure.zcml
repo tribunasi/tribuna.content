@@ -33,6 +33,6 @@
     <adapter
         factory=".behaviors.lock_on_home_page_indexer"
         name="locked_on_home"
-    />
+        />
 
 </configure>

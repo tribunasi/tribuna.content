@@ -6,11 +6,11 @@
 <div class="documentDescription" i18n:translate="descr_keywordsmap">An overview of the available arguments on this site.</div>
 
 <div id="content">
-
     <div id="keywordstree" tal:define="tree view/getTree">
         <metal:use-macro use-macro="context/@@keywordsmacros/keywordsmapmacro"/>
     </div>
 </div>
+
 </metal:fill-slot>
 
 </metal:use-macro>

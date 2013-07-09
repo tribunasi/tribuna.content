@@ -15,8 +15,8 @@
       /> -->
 
 
-  <!-- Temporarily disable overrides -->
-  <!-- <browser:view
+    <!-- Temporarily disable overrides -->
+    <!-- <browser:view
       for="*"
       name="keywordsmapgenerator"
       class=".keywords.KeywordsMapGenerator"
