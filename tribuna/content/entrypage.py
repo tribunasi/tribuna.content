@@ -110,8 +110,7 @@ class ChangePagePictureForm(form.SchemaForm):
         catalog = api.portal.get_tool(name='portal_catalog')
         folder = catalog(id="entry-pages")[0].getObject()
         new_title = data["title"]
-        if not new_title or new_title == "":
-            new_title = unicode(datetime.now())
+        new_title = str(data["title"]) + " - " + str(unicode(datetime.now()))
         new_page = createContentInContainer(folder, "tribuna.content.entrypage", title=new_title)
         api.content.get_state(obj=new_page)
         api.content.transition(obj=new_page, transition='publish')
@@ -168,8 +167,7 @@ class ChangePageTextForm(form.SchemaForm):
         catalog = api.portal.get_tool(name='portal_catalog')
         folder = catalog(id="entry-pages")[0].getObject()
         new_title = data["title"]
-        if not new_title or new_title == "":
-            new_title = unicode(datetime.now())
+        new_title = str(data["title"]) + " - " + str(unicode(datetime.now()))
         new_page = createContentInContainer(folder, "tribuna.content.entrypage", title=new_title)
         api.content.get_state(obj=new_page)
         api.content.transition(obj=new_page, transition='publish')

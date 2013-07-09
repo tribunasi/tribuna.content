@@ -160,7 +160,8 @@ class ILockOnHomePage(form.Schema):
     """
 
     locked_on_home = schema.Bool(
-        title=_(u"Is article locked on first page?")
+        title=_(u"Is article locked on first page?"),
+        required=True,
     )
 
 alsoProvides(ILockOnHomePage, form.IFormFieldProvider)

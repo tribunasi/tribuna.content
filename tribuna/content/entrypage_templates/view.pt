@@ -35,7 +35,7 @@
                 />
         </div>
         <div tal:condition="context/text">
-          <p  tal:replace="structure context/text" />
+          <p tal:content="context/text" style="font-size:40px;line-height: 1.5em;"/>
         </div>
         <div id="change-form">
         <h3 i18n:translate="">Change entry page</h3>
