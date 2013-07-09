@@ -1,19 +1,24 @@
+# -*- coding: utf-8 -*-
+"""Entry Page content type."""
 
 from five import grok
 from plone.directives import form
 from plone.namedfile.field import NamedBlobImage
 from tribuna.content import _
+from tribuna.content.config import ENTRY_PAGES_PATH
 from zope import schema
 from z3c.form import button
 from plone.dexterity.utils import createContentInContainer
 from plone import api
 from datetime import datetime
-from plone.formwidget.contenttree import ContentTreeFieldWidget
+#from plone.formwidget.contenttree import ContentTreeFieldWidget
 from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.vocabulary import SimpleVocabulary
-from zope.schema.vocabulary import SimpleTerm
-from z3c.form import field
-from zope.interface import invariant, Invalid
+#from zope.schema.vocabulary import SimpleTerm
+#from z3c.form import field
+#from zope.interface import invariant
+from zope.interface import Invalid
+
 
 class SelectOne(Invalid):
     __doc__ = _(u"Only select text or image")
@@ -21,7 +26,9 @@ class SelectOne(Invalid):
 
 def old_entry_pages():
     catalog = api.portal.get_tool(name='portal_catalog')
-    folder = catalog(id="entry-pages")[0].getObject()
+    folder = api.content.get(path=ENTRY_PAGES_PATH)
+    if not folder:
+        return []
     current_id = folder.getDefaultPage()
     old_pages = tuple((i.id, i.Title) for i in catalog(
         portal_type='tribuna.content.entrypage',
@@ -36,15 +43,13 @@ class OldEntryPages(object):
         pass
 
     def __call__(self, context):
-        #import pdb; pdb.set_trace()
         items = old_entry_pages()
         terms = [SimpleVocabulary.createTerm(i[0], i[0], i[1]) for i in items]
         return SimpleVocabulary(terms)
 
 
 class IEntryPage(form.Schema):
-    """Interface for EntryPage content type
-    """
+    """Interface for EntryPage content type"""
 
     title = schema.TextLine(
         title=_(u"Name"),
@@ -78,7 +83,6 @@ class IChangePagePictureForm(form.Schema):
         required=False,
     )
 
-
     # @invariant
     # def validateOneSelected(data):
     #     if data.text is None and data.picture is None:
@@ -88,9 +92,8 @@ class IChangePagePictureForm(form.Schema):
 
 
 class ChangePagePictureForm(form.SchemaForm):
-    """ Defining form handler for change page form
+    """Defining form handler for change page form."""
 
-    """
     grok.name('change-bar-form')
     grok.require('zope2.View')
     grok.permissions('zope.Public')
@@ -107,11 +110,11 @@ class ChangePagePictureForm(form.SchemaForm):
         if errors:
             self.status = self.formErrorsMessage
             return
-        catalog = api.portal.get_tool(name='portal_catalog')
-        folder = catalog(id="entry-pages")[0].getObject()
+        folder = api.content.get(path=ENTRY_PAGES_PATH)
         new_title = data["title"]
         new_title = str(data["title"]) + " - " + str(unicode(datetime.now()))
-        new_page = createContentInContainer(folder, "tribuna.content.entrypage", title=new_title)
+        new_page = createContentInContainer(
+            folder, "tribuna.content.entrypage", title=new_title)
         api.content.get_state(obj=new_page)
         api.content.transition(obj=new_page, transition='publish')
         new_page.picture = data["picture"]
@@ -145,9 +148,8 @@ class IChangePageTextForm(form.Schema):
 
 
 class ChangePageTextForm(form.SchemaForm):
-    """ Defining form handler for change page form
+    """ Defining form handler for change page form"""
 
-    """
     grok.name('change-bar-form')
     grok.require('zope2.View')
     grok.permissions('zope.Public')
@@ -164,11 +166,11 @@ class ChangePageTextForm(form.SchemaForm):
         if errors:
             self.status = self.formErrorsMessage
             return
-        catalog = api.portal.get_tool(name='portal_catalog')
-        folder = catalog(id="entry-pages")[0].getObject()
+        folder = api.content.get(path=ENTRY_PAGES_PATH)
         new_title = data["title"]
         new_title = str(data["title"]) + " - " + str(unicode(datetime.now()))
-        new_page = createContentInContainer(folder, "tribuna.content.entrypage", title=new_title)
+        new_page = createContentInContainer(
+            folder, "tribuna.content.entrypage", title=new_title)
         api.content.get_state(obj=new_page)
         api.content.transition(obj=new_page, transition='publish')
         new_page.text = data["text"]
@@ -190,9 +192,8 @@ class IChangePageOldForm(form.Schema):
 
 
 class ChangePageOldForm(form.SchemaForm):
-    """ Defining form handler for change page form
+    """ Defining form handler for change page form."""
 
-    """
     grok.name('change-bar-form')
     grok.require('zope2.View')
     grok.permissions('zope.Public')
@@ -210,14 +211,15 @@ class ChangePageOldForm(form.SchemaForm):
         #    self.status = self.formErrorsMessage
         #    return
 
-        catalog = api.portal.get_tool(name='portal_catalog')
-        folder = catalog(id="entry-pages")[0].getObject()
+        folder = api.content.get(path=ENTRY_PAGES_PATH)
         page_id = data["old_pages"]
         folder.setDefaultPage(page_id)
         self.request.response.redirect(api.portal.get().absolute_url())
 
 
 class View(grok.View):
+    """Entry page view"""
+
     grok.context(IEntryPage)
     grok.require('zope2.View')
 
@@ -227,22 +229,19 @@ class View(grok.View):
         self.request.set('disable_plone.leftcolumn', 1)
 
     def change_page_picture(self):
-        """Return a form which can change the entry page
-        """
+        """Return a form which can change the entry page."""
         form1 = ChangePagePictureForm(self.context, self.request)
         form1.update()
         return form1
 
     def change_page_text(self):
-        """Return a form which can change the entry page
-        """
+        """Return a form which can change the entry page."""
         form1 = ChangePageTextForm(self.context, self.request)
         form1.update()
         return form1
 
     def change_page_old(self):
-        """Return a form which can change the entry page
-        """
+        """Return a form which can change the entry page."""
         form1 = ChangePageOldForm(self.context, self.request)
         form1.update()
         return form1
