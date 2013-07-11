@@ -69,7 +69,7 @@ def articles(session):
                 sort_limit=(LIMIT - currentLen)
             )[:(LIMIT - currentLen)]
 
-        session['content_list']['union'] =\
+        session['content_list']['intersection'] =\
             [content.getObject() for content in all_content]
         return True
 
