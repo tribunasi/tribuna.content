@@ -53,4 +53,10 @@
         name="highlight_in_navigation"
         />
 
+    <adapter name="Subject" factory=".comment.subject" />
+
+    <utility
+        component=".comment.TribunaCommentFactory"
+        name="tribuna.content.Comment"
+        />
 </configure>

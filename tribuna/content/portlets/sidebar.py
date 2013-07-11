@@ -80,7 +80,7 @@ def articles(session):
             if(i == 'articles'):
                 portal_type.append("tribuna.content.article")
             elif(i == 'comments'):
-                pass
+                portal_type.append("Discussion Item")
             elif(i == 'images'):
                 pass
 

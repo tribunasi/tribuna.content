@@ -31,6 +31,11 @@
             tal:define="navroot context/@@plone_portal_state/navigation_root_url"
             tal:attributes="src string:${navroot}/++resource++tribuna.diazotheme/js/jquery.timers-1.2.js"
             ></script>
+        <script type="text/javascript"
+            tal:define="navroot context/@@plone_portal_state/navigation_root_url"
+            tal:attributes="src string:${navroot}/++resource++tribuna.diazotheme/js/jquery.inview.js"
+            ></script>
+
 </metal:block>
 
 
@@ -40,31 +45,55 @@
 
 <!--         <div tal:replace="structure provider:plone.abovecontenttitle" /> -->
 
-        <h1 class="documentFirstHeading"> Main page </h1>
+        <!-- <h1 class="documentFirstHeading"> Main page </h1> -->
 
 
         <!-- <div tal:replace="structure provider:plone.belowcontenttitle" />
         <div tal:replace="structure provider:plone.abovecontentbody" /> -->
 
-        <h2 i18n:translate="">Articles</h2>
+        <!-- <h2 i18n:translate="">Articles</h2> -->
+
+
+
+
         <div>
           <ul id="gallery">
 
           <tal:block tal:repeat="article view/articles_all">
             <li>
-
-              <img tal:attributes="src string:${article/absolute_url}/@@images/image; title article/title" />
+              <h3 tal:condition="python: article.portal_type == 'tribuna.content.article'" tal:content="article/title"></h3>
+              <h3 tal:condition="python: article.portal_type == 'Discussion Item'" tal:content="article/author_name" />   
               <div class="gv-panel-content">
+                  <tal:block tal:condition="python: article.portal_type == 'tribuna.content.article'">
+                    <h3 tal:content="article/title" />
+                    <img tal:attributes="src string:${article/absolute_url}/@@images/image" />
+                    <p tal:content="structure article/text" />
+                    <div id="${article/UID}"> PLACEHOLDER </div>
+                    <script>
+                      $(document).ready(function() {
+                        $('#${article/UID}').bind('inview', function (event, visible) {
+                            if (visible == true) {
+                              $('#${article/UID}').load('${article/absolute_url}/@@comments-view');
 
-                  <h3  tal:content="article/title" />
-                  <img tal:attributes="src string:${article/absolute_url}/@@images/image" />
-                  <p tal:content="structure article/text" />
+                            } else {
+                              $('#${article/UID}').html('');
+                            }
+                          });
+                        });
+                    </script>
+                </tal:block>
+                <tal:block tal:condition="python: article.portal_type == 'Discussion Item'">
+                  <h3 tal:content="article/author_name" />                 
+                  <img tal:attributes="src string:http://localhost:8087/Tribuna/IMU-logo-wt.png/@@images/image/thumb" />
+                  <p tal:content="structure article/getText" />
+                </tal:block>
               </div>
-
             </li>
+
           </tal:block>
           </ul>
         </div>
+
         <div tal:replace="structure provider:plone.belowcontentbody" />
 
         <script>

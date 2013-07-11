@@ -2,4 +2,5 @@
  <object name="tribuna.content.tag" meta_type="Dexterity FTI" />
  <object name="tribuna.content.article" meta_type="Dexterity FTI" />
  <object name="tribuna.content.entrypage" meta_type="Dexterity FTI" />
+ <object name="Discussion Item" meta_type="Dexterity FTI"/>
 </object>

@@ -71,8 +71,10 @@ class DefaultSessionViewlet(BrowserView):
         get_article = self.request.get('article')
         if(get_article is not None):
             session.set('view_type', 'gallery')
+            #import pdb; pdb.set_trace()
             session.set('index', [
-                i.tpURL() for i in session['content_list']].index(get_article))
+                i.id for i in session['content_list']['intersection'] +
+                session['content_list']['union']].index(get_article))
         else:
             session.set('index', 0)
 

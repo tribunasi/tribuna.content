@@ -74,15 +74,19 @@
               $('#homepage-div').css({'height': ($(window).height() - $('#portal-top').height() - $('#edit-bar').height() - $('#content').height() - 25)});
             </script>
            <tal:block tal:condition="view/is_text_view">
+
               <div class="articles_intersection">
                 <h3 i18n:translate="">Intersection</h3>
                 <tal:block repeat="article view/articles_intersection">
                     <div id="${article/UID}" class="ui-widget-content text-view">
-                          <div id="gallery-link">
-                            <a href="${context/absolute_url}/@@main-page?article=${article/tpURL}" tal:content="article/title" />
-                          </div>
-                       <p class="text-view" tal:content="article/description" />
-                   </div>
+                        <div id="gallery-link">
+
+                          <a tal:condition="python: article.portal_type == 'tribuna.content.article'" href="${context/absolute_url}/@@main-page?article=${article/id}" tal:content="article/title" />
+                          <a tal:condition="python: article.portal_type == 'Discussion Item'" class="text-view" href="${context/absolute_url}/@@main-page?article=${article/id}" tal:content="structure article/getText" />
+                        </div>
+                     <p tal:condition="python: article.portal_type == 'tribuna.content.article'" class="text-view" tal:content="article/description" />
+
+                 </div>
                 </tal:block>
               </div>
 
@@ -90,23 +94,27 @@
                 <h3 i18n:translate="">Union</h3>
                 <tal:block repeat="article view/articles_union">
                     <div id="${article/UID}" class="ui-widget-content text-view">
-                          <div id="gallery-link">
-                            <a href="${context/absolute_url}/@@main-page?article=${article/tpURL}" tal:content="article/title" />
-                          </div>
-                       <p class="text-view" tal:content="article/description" />
-                   </div>
+                        <div id="gallery-link">
+
+                          <a tal:condition="python: article.portal_type == 'tribuna.content.article'" href="${context/absolute_url}/@@main-page?article=${article/id}" tal:content="article/title" />
+                          <a tal:condition="python: article.portal_type == 'Discussion Item'" class="text-view" href="${context/absolute_url}/@@main-page?article=${article/id}" tal:content="structure article/getText" />
+                        </div>
+                     <p tal:condition="python: article.portal_type == 'tribuna.content.article'" class="text-view" tal:content="article/description" />
+
+                    </div>
                 </tal:block>
               </div>
           </tal:block>
           <tal:block tal:condition="not: view/is_text_view">
               <tal:block repeat="article view/articles_all">
                   <div id="${article/UID}" class="ui-widget-content drag-view">
-                    <img tal:attributes="src string:${article/absolute_url}/@@images/image/preview" />
+                    <img tal:condition="python: article.portal_type == 'tribuna.content.article'" tal:attributes="src string:${article/absolute_url}/@@images/image/preview" />
                     <div id="text">
                       <div id="gallery-link">
-                        <a href="${context/absolute_url}/@@main-page?article=${article/tpURL}" tal:content="article/title" />
+                        <a href="${context/absolute_url}/@@main-page?article=${article/id}" tal:content="article/title" />
+                        <a tal:condition="python: article.portal_type == 'Discussion Item'" class="text-view" href="${context/absolute_url}/@@main-page?article=${article/id}" tal:content="structure article/getText" />
                       </div>
-                      <p class="drag-view" tal:content="article/description" />
+                      <p tal:condition="python: article.portal_type == 'tribuna.content.article'" class="drag-view" tal:content="article/description" />
                     </div>
                   </div>
 
@@ -171,7 +179,7 @@
 
             $('#gallery-link a').prepOverlay({
               subtype: 'iframe',
-              width: '95%',
+              width: '95%'
             });
           });
 

@@ -6,4 +6,7 @@
     <index name="highlight_in_navigation" meta_type="BooleanIndex">
         <indexed_attr value="highlight_in_navigation"/>
     </index>
+    <index name="Subject" meta_type="KeywordIndex">
+        <indexed_attr value="subject"/>
+    </index>
 </object>
