@@ -1,4 +1,6 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 """Portlet for filterting/searching the content."""
 
 from five import grok
@@ -41,6 +43,9 @@ def articles(session):
     query = None
     operator = "or"
 
+    session.set('content_list', {'union': [], 'intersection': []})
+
+    # import pdb; pdb.set_trace()
     if('portlet_data' not in session.keys() or
        session['portlet_data']['tags'] == []):
         all_content = catalog(
@@ -48,6 +53,7 @@ def articles(session):
             locked_on_home=True,
             review_state=review_state,
             sort_on=sort_on,
+            sort_order="descending",
             sort_limit=LIMIT
         )[:LIMIT]
 
@@ -59,14 +65,13 @@ def articles(session):
                 locked_on_home=False,
                 review_state=review_state,
                 sort_on=sort_on,
+                sort_order="descending",
                 sort_limit=(LIMIT - currentLen)
             )[:(LIMIT - currentLen)]
 
-        if not all_content:
-            session.set('content_list', [])
-            session.set('content_list',
-                        [content.getObject() for content in all_content])
-            return True
+        session['content_list']['union'] =\
+            [content.getObject() for content in all_content]
+        return True
 
     # portal_type
     if session['portlet_data']['content_filters']:
@@ -137,12 +142,18 @@ def articles(session):
         key=lambda x: count_same(x.Subject, query), reverse=True)
     all_content = all_content[:LIMIT]
 
-    if not all_content:
-        session.set('content_list', [])
-    session.set(
-        'content_list',
-        [content.getObject() for content in all_content]
-    )
+    intersection_count = 0
+    num_all_tags = len(session['portlet_data']['tags'])
+    for i in all_content:
+        if count_same(i.Subject, query) == num_all_tags:
+            intersection_count += 1
+        else:
+            break
+
+    all_content = [content.getObject() for content in all_content]
+
+    session['content_list']['intersection'] = all_content[:intersection_count]
+    session['content_list']['union'] = all_content[intersection_count:]
 
 
 class ISidebarForm(form.Schema):

@@ -1,4 +1,6 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 """Behaviours to assign tags (to ideas).
 
 Includes a form field and a behaviour adapter that stores the data in the

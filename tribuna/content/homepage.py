@@ -1,4 +1,6 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 """Views for the home page."""
 
 from five import grok
@@ -23,14 +25,38 @@ class HomePageView(grok.View):
                 return False
         return True
 
-    def articles(self):
-        """Return a catalog search result of articles that have the
-        selected tag.
+    def articles_union(self):
+        """Return a catalog search result of articles that have the selected
+        tag.
         """
+
         sdm = self.context.session_data_manager
         session = sdm.getSessionData(create=True)
         if('content_list' in session.keys()):
-            return session['content_list']
+            return session['content_list']['union']
+        return []
+
+    def articles_intersection(self):
+        """Return a catalog search result of articles that have the selected
+        tag.
+        """
+
+        sdm = self.context.session_data_manager
+        session = sdm.getSessionData(create=True)
+        if('content_list' in session.keys()):
+            return session['content_list']['intersection']
+        return []
+
+    def articles_all(self):
+        """Return a catalog search result of articles that have the selected
+        tag.
+        """
+
+        sdm = self.context.session_data_manager
+        session = sdm.getSessionData(create=True)
+        if('content_list' in session.keys()):
+            return(session['content_list']['intersection'] +
+                   session['content_list']['union'])
         return []
 
     def only_one_tag(self):

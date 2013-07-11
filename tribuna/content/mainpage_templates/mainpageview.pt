@@ -50,7 +50,7 @@
         <div>
           <ul id="gallery">
 
-          <tal:block tal:repeat="article view/articles">
+          <tal:block tal:repeat="article view/articles_all">
             <li>
 
               <img tal:attributes="src string:${article/absolute_url}/@@images/image; title article/title" />

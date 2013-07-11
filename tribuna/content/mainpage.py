@@ -1,4 +1,6 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 """Views for the main page."""
 
 from five import grok
@@ -10,7 +12,7 @@ class MainPageView(grok.View):
     grok.require('zope2.View')
     grok.name('main-page')
 
-    def articles(self):
+    def articles_all(self):
         """Return a catalog search result of articles that have the selected
         tag.
         """
@@ -18,7 +20,8 @@ class MainPageView(grok.View):
         sdm = self.context.session_data_manager
         session = sdm.getSessionData(create=True)
         if('content_list' in session.keys()):
-            return session['content_list']
+            return(session['content_list']['intersection'] +
+                   session['content_list']['union'])
         return []
 
     def update(self):
