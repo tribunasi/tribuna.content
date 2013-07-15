@@ -29,10 +29,11 @@
         <div>
         <div tal:define="picture nocall:context/picture"
              tal:condition="nocall:picture">
-            <img tal:attributes="src string:${context/absolute_url}/@@download/picture/${picture/filename};
+            <img tal:attributes="src string:${context/absolute_url}/@@images/picture;
                                  height picture/_height | nothing;
                                  width picture/_width | nothing;"
                 />
+            <p id="background-placeholder" style="background: url('${context/absolute_url}/@@images/picture') repeat scroll 0 0 transparent" />
         </div>
         <div tal:condition="context/text">
           <p tal:content="context/text" style="font-size:40px;line-height: 1.5em;"/>
@@ -42,7 +43,7 @@
           <div>
           <div id="change-form-multiple">
             <h3 i18n:translate="">Text</h3>
-              <div>
+              <div id="text-change">
               <tal:block define="form view/change_page_text">
                       <tal:block define="view nocall:form">
                           <metal:block use-macro="form/@@ploneform-macros/titlelessform" />
@@ -50,7 +51,7 @@
                   </tal:block>
               </div>
               <h3 i18n:translate="">Picture</h3>
-              <div>
+              <div id= "picture-change">
               <tal:block define="form view/change_page_picture">
                       <tal:block define="view nocall:form">
                           <metal:block use-macro="form/@@ploneform-macros/titlelessform" />
@@ -58,7 +59,7 @@
                   </tal:block>
               </div>
               <h3 i18n:translate="">Old pages</h3>
-              <div>
+              <div id="old-pages">
               <tal:block define="form view/change_page_old">
                       <tal:block define="view nocall:form">
                           <metal:block use-macro="form/@@ploneform-macros/titlelessform" />

@@ -102,7 +102,7 @@ class ChangePagePictureForm(form.SchemaForm):
     schema = IChangePagePictureForm
     ignoreContext = True
     label = _(u"Select new page")
-    description = _(u"New entry page form")
+    #description = _(u"New entry page form")
 
     @button.buttonAndHandler(_(u'Change Picture'))
     def handleApply(self, action):
@@ -158,7 +158,7 @@ class ChangePageTextForm(form.SchemaForm):
     schema = IChangePageTextForm
     ignoreContext = True
     label = _(u"Select new page")
-    description = _(u"New entry page form")
+    #description = _(u"New entry page form")
 
     @button.buttonAndHandler(_(u'Change Text'))
     def handleApply(self, action):
@@ -202,7 +202,7 @@ class ChangePageOldForm(form.SchemaForm):
     schema = IChangePageOldForm
     ignoreContext = True
     label = _(u"Select new page")
-    description = _(u"New entry page form")
+    #description = _(u"New entry page form")
 
     @button.buttonAndHandler(_(u'Change old'))
     def handleApply(self, action):
