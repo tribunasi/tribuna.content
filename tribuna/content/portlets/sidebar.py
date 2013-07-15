@@ -96,9 +96,9 @@ def articles(session):
     sort_order = session['portlet_data']['sort_order']
 
     all_content = []
-    session['portlet_data']['tags'] = \
-        list(set(session['portlet_data']['tags'] +
-                 session['portlet_data']['all_tags']))
+    # session['portlet_data']['tags'] = \
+    #     list(set(session['portlet_data']['tags'] +
+    #              session['portlet_data']['all_tags']))
 
     # if(not session['portlet_data']['tags']):
     #     # Ce ni nicesar pokaze zadnje
@@ -162,14 +162,14 @@ class ISidebarForm(form.Schema):
     form.widget(tags=CheckBoxFieldWidget)
     tags = schema.List(
         title=_(u"Tags"),
-        value_type=schema.Choice(source=TagsListHighlighted()),
-    )
-
-    form.widget(all_tags=CheckBoxFieldWidget)
-    all_tags = schema.List(
-        title=_(u"All tags"),
         value_type=schema.Choice(source=TagsList()),
     )
+
+    # form.widget(all_tags=CheckBoxFieldWidget)
+    # all_tags = schema.List(
+    #     title=_(u"All tags"),
+    #     value_type=schema.Choice(source=TagsList()),
+    # )
 
     sort_on = schema.Choice(
         title=_(u"Type of sorting"),
@@ -217,14 +217,14 @@ def default_tags(data):
         return []
 
 
-@form.default_value(field=ISidebarForm['all_tags'])
-def default_all_tags(data):
-    sdm = data.context.session_data_manager
-    session = sdm.getSessionData(create=True)
-    if "portlet_data" in session.keys():
-        return session["portlet_data"]["tags"]
-    else:
-        return []
+# @form.default_value(field=ISidebarForm['all_tags'])
+# def default_all_tags(data):
+#     sdm = data.context.session_data_manager
+#     session = sdm.getSessionData(create=True)
+#     if "portlet_data" in session.keys():
+#         return session["portlet_data"]["tags"]
+#     else:
+#         return []
 
 
 @form.default_value(field=ISidebarForm['sort_on'])

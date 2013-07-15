@@ -8,26 +8,6 @@
 <dl class="portlet portletSidebar"
     i18n:domain="tribuna.content">
 
-    <script>
-    $(function() {
-      function runEffect() {
-        // Show the div if it's hidden, hide if it it's shown
-        var all_tags = $( "#formfield-form-widgets-all_tags" );
-        if(all_tags.css("display") == "none"){
-          $( "#formfield-form-widgets-all_tags" ).show("fast");
-        }
-        else{
-          $( "#formfield-form-widgets-all_tags" ).hide("fast");
-        }
-      };
-
-      // Show/hide "button" (actually just a link)
-      $( "#show-all-tags" ).click(function() {
-        runEffect();
-        return false;
-      });
-    });
-  </script>
     <dt class="portletHeader">
         <span class="portletTopLeft"></span>
         Sidebar tag navigation
