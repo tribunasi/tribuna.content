@@ -75,6 +75,7 @@ class ITags(form.Schema):
         title=_(u"Categories"),
         value_type=schema.TextLine(),
         default=[],
+        required=False
     )
 
 alsoProvides(ITags, form.IFormFieldProvider)
