@@ -62,21 +62,20 @@
             // });
         </script>
         <tal:block
-            tal:define="has_one_tag view/only_one_tag;
-                        class python: has_one_tag and 'half-width' or 'full-width'">
+            tal:define="has_one_tag view/only_one_tag">
           <div id="tag-description-div" tal:condition="has_one_tag">
             <h2 i18n:translate="">Description</h2>
             ${view/tag_description}
           </div>
-          <div id="homepage-div" tal:attributes="class class">
-            <h2 i18n:translate="">Articles</h2>
+          <div id="homepage-div" class="full-width">
+            <h2 i18n:translate="" tal:condition="view/is_text_view">Articles</h2>
             <script>
               $('#homepage-div').css({'height': ($(window).height() - $('#portal-top').height() - $('#edit-bar').height() - $('#content').height() - 25)});
             </script>
            <tal:block tal:condition="view/is_text_view">
 
               <div class="articles_intersection">
-                <h3 i18n:translate="">Intersection</h3>
+                <h3 i18n:translate="" tal:condition="view/show_intersection">Intersection</h3>
                 <tal:block repeat="article view/articles_intersection">
                     <div id="${article/UID}" class="ui-widget-content text-view">
                         <div id="gallery-link">
@@ -93,7 +92,7 @@
               </div>
 
               <div class="articles_union">
-                <h3 i18n:translate="">Union</h3>
+                <h3 i18n:translate="" tal:condition="view/show_union">Union</h3>
                 <tal:block repeat="article view/articles_union">
                     <div id="${article/UID}" class="ui-widget-content text-view">
                         <div id="gallery-link">
@@ -124,21 +123,22 @@
 
                   <script>
                       $(function() {
-                        console.info("Badum badum");
+                        // console.info("Badum badum");
                           var articleUID= "#${article/UID}";
                           // var numRand = Math.floor(Math.random()*tableGrid.length);
                           // $(articleUID).css({'left': tableGrid[numRand]["left"]});
                           // $(articleUID).css({'top': tableGrid[numRand]["top"]});
                           // tableGrid.splice(numRand, 1);
                           $(articleUID).css({'position' : 'absolute'});
-                          $(articleUID).draggable({containment: "parent", stack: "div", cancel: "h3" });
+                          // $(articleUID).draggable({containment: "parent", stack: "div", cancel: "h3" });
+                          $(articleUID).draggable({stack: "div", cancel: "a" });
                           $(articleUID).draggable("option", "distance", 0 );
 
                           // Add the current height and width (defined by img) to the style, so the div doesn't shrink on hover. Need to add this on img.load, so it can always find the information
                           var image = $(articleUID).find('img')
                           console.info(image)
                           image.load(function(){
-                              console.info("Dogaja!");
+                              // console.info("Dogaja!");
                               var imageHeight = image.height();
                               var imageWidth = image.width();
                               var numRandx = Math.floor(Math.random() * ($('#homepage-div').width() - imageWidth));
@@ -155,10 +155,10 @@
                               $(articleUID).css({'width': imageWidth});
                               $(articleUID).css({'left': numRandx});
                               $(articleUID).css({'top': numRandy});
-                              console.info($('#homepage-div').width(), $('#homepage-div').height(), imageWidth, imageHeight, numRandx, numRandy);
+                              // console.info($('#homepage-div').width(), $('#homepage-div').height(), imageWidth, imageHeight, numRandx, numRandy);
                           });
                           image.one('load', function() {
-                            console.info('Image Loaded');
+                            // console.info('Image Loaded');
                           }).each(function() {
                             if(this.complete) $(this).load();
                           });

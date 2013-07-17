@@ -19,6 +19,7 @@ from zope.schema.vocabulary import SimpleTerm
 
 from tribuna.content import _
 from tribuna.content.utils import count_same
+from tribuna.content.utils import tags_published_highlighted
 from tribuna.content.utils import TagsList
 from tribuna.content.utils import TagsListHighlighted
 
@@ -37,7 +38,7 @@ def articles(session):
     """
 
     catalog = api.portal.get_tool(name='portal_catalog')
-    portal_type = ["tribuna.content.article"]
+    portal_type = ["tribuna.content.article", "Discussion Item"]
     review_state = "published"
     sort_on = "Date"
     query = None
@@ -50,13 +51,15 @@ def articles(session):
     if('portlet_data' not in session.keys() or
       (session['portlet_data']['tags'] == [] and
        session['portlet_data']['all_tags'] == [])):
+        query = tags_published_highlighted()
         all_content = catalog(
             portal_type=portal_type,
             locked_on_home=True,
             review_state=review_state,
             sort_on=sort_on,
             sort_order="descending",
-            sort_limit=LIMIT
+            sort_limit=LIMIT,
+            Subject={'query': query, 'operator': operator}
         )[:LIMIT]
 
         currentLen = len(all_content)
@@ -68,7 +71,8 @@ def articles(session):
                 review_state=review_state,
                 sort_on=sort_on,
                 sort_order="descending",
-                sort_limit=(LIMIT - currentLen)
+                sort_limit=(LIMIT - currentLen),
+                Subject={'query': query, 'operator': operator}
             )[:(LIMIT - currentLen)]
 
         session['content_list']['intersection'] =\
@@ -165,12 +169,14 @@ class ISidebarForm(form.Schema):
     tags = schema.List(
         title=_(u"Tags"),
         value_type=schema.Choice(source=TagsListHighlighted()),
+        required=False,
     )
 
     form.widget(all_tags=CheckBoxFieldWidget)
     all_tags = schema.List(
         title=_(u"All tags"),
         value_type=schema.Choice(source=TagsList()),
+        required=False,
     )
 
     sort_on = schema.Choice(
@@ -180,6 +186,7 @@ class ISidebarForm(form.Schema):
             SimpleTerm('comments', 'comments', _(u'Nr. of comments')),
             SimpleTerm('latest', 'latest', _(u'Latest')),
         ]),
+        required=False,
     )
 
     sort_order = schema.Choice(
@@ -188,6 +195,7 @@ class ISidebarForm(form.Schema):
             SimpleTerm('ascending', 'ascending', _(u'Ascending')),
             SimpleTerm('descending', 'descending', _(u'Descending')),
         ]),
+        required=False,
     )
 
     form.widget(content_filters=CheckBoxFieldWidget)
@@ -198,6 +206,7 @@ class ISidebarForm(form.Schema):
             SimpleTerm('comments', 'comments', _(u'Comments')),
             SimpleTerm('images', 'images', _(u'Images')),
         ])),
+        required=False,
     )
 
     # operator = schema.Choice(

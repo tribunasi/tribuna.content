@@ -78,3 +78,17 @@ class HomePageView(grok.View):
         if tag.description == "":
             return u"Description not added yet!"
         return tag.description
+
+    def show_intersection(self):
+        if self.only_one_tag() is True:
+            return False
+        if self.articles_intersection() == []:
+            return False
+        return True
+
+    def show_union(self):
+        if self.only_one_tag() is True:
+            return False
+        if self.articles_union() == []:
+            return False
+        return True
