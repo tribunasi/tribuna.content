@@ -211,13 +211,12 @@ class ISidebarForm(form.Schema):
 
 @form.default_value(field=ISidebarForm['tags'])
 def default_tags(data):
-    return []
-    # sdm = data.context.session_data_manager
-    # session = sdm.getSessionData(create=True)
-    # if "portlet_data" in session.keys():
-    #     return session["portlet_data"]["tags"]
-    # else:
-    #     return []
+    sdm = data.context.session_data_manager
+    session = sdm.getSessionData(create=True)
+    if "portlet_data" in session.keys():
+        return session["portlet_data"]["tags"]
+    else:
+        return []
 
 
 @form.default_value(field=ISidebarForm['all_tags'])
