@@ -85,8 +85,8 @@
 
                         </div>
                      <p tal:condition="python: article.portal_type == 'tribuna.content.article'" class="text-view" tal:content="article/description" />
-                     <p tal:condition="python: article.portal_type == 'tribuna.content.article'" class="content-type" style="color: red">članek</p>
-                     <p tal:condition="python: article.portal_type == 'Discussion Item'" class="content-type" style="color: red">komentar</p>
+                     <p i18n:translate="" tal:condition="python: article.portal_type == 'tribuna.content.article'" class="content-type" style="color: red">article</p>
+                     <p i18n:translate="" tal:condition="python: article.portal_type == 'Discussion Item'" class="content-type" style="color: red">comment</p>
                  </div>
                 </tal:block>
               </div>
@@ -101,8 +101,8 @@
                           <a tal:condition="python: article.portal_type == 'Discussion Item'" class="text-view" href="${context/absolute_url}/@@main-page?article=${article/id}" tal:content="structure article/getText" />
                         </div>
                      <p tal:condition="python: article.portal_type == 'tribuna.content.article'" class="text-view" tal:content="article/description" />
-                     <p tal:condition="python: article.portal_type == 'tribuna.content.article'" class="content-type" style="color: red">članek</p>
-                     <p tal:condition="python: article.portal_type == 'Discussion Item'" class="content-type" style="color: red">komentar</p>
+                     <p i18n:translate="" tal:condition="python: article.portal_type == 'tribuna.content.article'" class="content-type" style="color: red">article</p>
+                     <p i18n:translate="" tal:condition="python: article.portal_type == 'Discussion Item'" class="content-type" style="color: red">comment</p>
 
                     </div>
                 </tal:block>
@@ -110,7 +110,9 @@
           </tal:block>
           <tal:block tal:condition="not: view/is_text_view">
               <tal:block repeat="article view/articles_all">
-                  <div id="${article/UID}" class="ui-widget-content drag-view">
+                <tal:block tal:define="addedClass python: article.portal_type == 'tribuna.content.article' and 'article' or 'comment';
+                                       addedUID   python: article.portal_type == 'tribuna.content.article' and 'article' or 'comment'">
+                  <div id="${article/UID}-${addedUID}" class="ui-widget-content drag-view-${addedClass}">
                     <img tal:condition="python: article.portal_type == 'tribuna.content.article'" tal:attributes="src string:${article/absolute_url}/@@images/image/preview" />
                     <div id="text">
                       <div id="gallery-link">
@@ -118,13 +120,17 @@
                         <a tal:condition="python: article.portal_type == 'Discussion Item'" class="text-view" href="${context/absolute_url}/@@main-page?article=${article/id}" tal:content="structure article/getText" />
                       </div>
                       <p tal:condition="python: article.portal_type == 'tribuna.content.article'" class="drag-view" tal:content="article/description" />
+                      <div id="drag-view-extras">
+                        <p i18n:translate="" tal:condition="python: article.portal_type == 'tribuna.content.article'" class="content-type" style="color: red">article</p>
+                        <p i18n:translate="" tal:condition="python: article.portal_type == 'Discussion Item'" class="content-type" style="color: red">comment</p>
+                      </div>
                     </div>
                   </div>
 
                   <script>
                       $(function() {
                         // console.info("Badum badum");
-                          var articleUID= "#${article/UID}";
+                          var articleUID = "#${article/UID}-${addedUID}";
                           // var numRand = Math.floor(Math.random()*tableGrid.length);
                           // $(articleUID).css({'left': tableGrid[numRand]["left"]});
                           // $(articleUID).css({'top': tableGrid[numRand]["top"]});
@@ -135,33 +141,51 @@
                           $(articleUID).draggable("option", "distance", 0 );
 
                           // Add the current height and width (defined by img) to the style, so the div doesn't shrink on hover. Need to add this on img.load, so it can always find the information
-                          var image = $(articleUID).find('img')
-                          console.info(image)
-                          image.load(function(){
-                              // console.info("Dogaja!");
-                              var imageHeight = image.height();
-                              var imageWidth = image.width();
-                              var numRandx = Math.floor(Math.random() * ($('#homepage-div').width() - imageWidth));
-                              var numRandy = Math.floor(Math.random() * ($('#homepage-div').height() - imageHeight));
 
-                              if(numRandx < 0) {
-                                numRandx = 0;
-                              }
-                              if(numRandy < 0) {
-                                numRandy = 0;
-                              }
+                          if("${addedUID}" === "article"){
+                            var image = $(articleUID).find('img');
+                            image.load(function(){
+                                // console.info("Dogaja!");
+                                var imageHeight = $(this).height();
+                                var imageWidth = $(this).width();
+                                var numRandx = Math.floor(Math.random() * ($('#homepage-div').width() - imageWidth));
+                                var numRandy = Math.floor(Math.random() * ($('#homepage-div').height() - imageHeight));
 
-                              $(articleUID).css({'height': imageHeight});
-                              $(articleUID).css({'width': imageWidth});
-                              $(articleUID).css({'left': numRandx});
-                              $(articleUID).css({'top': numRandy});
-                              // console.info($('#homepage-div').width(), $('#homepage-div').height(), imageWidth, imageHeight, numRandx, numRandy);
-                          });
-                          image.one('load', function() {
-                            // console.info('Image Loaded');
-                          }).each(function() {
-                            if(this.complete) $(this).load();
-                          });
+                                if(numRandx < 0) {
+                                  numRandx = 0;
+                                }
+                                if(numRandy < 0) {
+                                  numRandy = 0;
+                                }
+
+                                var article = $(articleUID);
+                                article.css({'height': imageHeight});
+                                article.css({'width': imageWidth});
+                                article.css({'left': numRandx});
+                                article.css({'top': numRandy});
+                            });
+                            image.one('load', function() {
+                            }).each(function() {
+                              if(this.complete) $(this).load();
+                            });
+                          }
+                          else{
+                            // Set the width so it doesn't get squished if we go over the border
+                            var numRandx = Math.floor(Math.random() * ($('#homepage-div').width() - $(articleUID).width()));
+                            var numRandy = Math.floor(Math.random() * ($('#homepage-div').height() - $(articleUID).height()));
+
+                            if(numRandx < 0) {
+                              numRandx = 0;
+                            }
+                            if(numRandy < 0) {
+                              numRandy = 0;
+                            }
+
+                            var article = $(articleUID);
+                            article.css({'width': article.width()});
+                            article.css({'left': numRandx});
+                            article.css({'top': numRandy});
+                          }
                       });
                 </script>
               </tal:block>
