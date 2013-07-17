@@ -46,8 +46,10 @@ def articles(session):
     session.set('content_list', {'union': [], 'intersection': []})
 
     # import pdb; pdb.set_trace()
+
     if('portlet_data' not in session.keys() or
-       session['portlet_data']['tags'] == []):
+      (session['portlet_data']['tags'] == [] and
+       session['portlet_data']['all_tags'] == [])):
         all_content = catalog(
             portal_type=portal_type,
             locked_on_home=True,
@@ -209,12 +211,13 @@ class ISidebarForm(form.Schema):
 
 @form.default_value(field=ISidebarForm['tags'])
 def default_tags(data):
-    sdm = data.context.session_data_manager
-    session = sdm.getSessionData(create=True)
-    if "portlet_data" in session.keys():
-        return session["portlet_data"]["tags"]
-    else:
-        return []
+    return []
+    # sdm = data.context.session_data_manager
+    # session = sdm.getSessionData(create=True)
+    # if "portlet_data" in session.keys():
+    #     return session["portlet_data"]["tags"]
+    # else:
+    #     return []
 
 
 @form.default_value(field=ISidebarForm['all_tags'])
