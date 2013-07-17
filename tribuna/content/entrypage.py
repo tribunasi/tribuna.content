@@ -18,6 +18,8 @@ from zope.schema.vocabulary import SimpleVocabulary
 #from z3c.form import field
 #from zope.interface import invariant
 from zope.interface import Invalid
+from zope.schema.vocabulary import SimpleVocabulary
+from zope.schema.vocabulary import SimpleTerm
 
 
 class SelectOne(Invalid):
@@ -64,6 +66,22 @@ class IEntryPage(form.Schema):
         title=_(u"Please upload an image"),
         required=False,
     )
+
+    author = schema.TextLine(
+        title=_(u"Author"),
+        required=False
+    )
+
+    font_type = schema.Choice(
+        title=_(u"Type of sorting"),
+        vocabulary=SimpleVocabulary([
+            SimpleTerm('arial', 'arial', _(u'arial')),
+            SimpleTerm('times_new_roman', 'times_new_roman', _(u'times_new_roman')),
+            SimpleTerm('latest', 'latest', _(u'Latest')),
+        ]),
+        required=False,
+    )
+
 
 
 class IChangePagePictureForm(form.Schema):
@@ -118,6 +136,7 @@ class ChangePagePictureForm(form.SchemaForm):
         api.content.get_state(obj=new_page)
         api.content.transition(obj=new_page, transition='publish')
         new_page.picture = data["picture"]
+        new_page.author = data["author"]
         folder.setDefaultPage(new_page.id)
         self.request.response.redirect(api.portal.get().absolute_url())
 
@@ -137,6 +156,16 @@ class IChangePageTextForm(form.Schema):
     text = schema.TextLine(
         title=_(u"Text"),
         required=False
+    )
+
+    font_type = schema.Choice(
+        title=_(u"font type"),
+        vocabulary=SimpleVocabulary([
+            SimpleTerm('arial', 'arial', _(u'Arial')),
+            SimpleTerm('times', 'times', _(u'Times New Roman')),
+            SimpleTerm('helvetica', 'helvetica', _(u'Helvetica')),
+        ]),
+        required=True,
     )
 
     # @invariant
@@ -174,6 +203,8 @@ class ChangePageTextForm(form.SchemaForm):
         api.content.get_state(obj=new_page)
         api.content.transition(obj=new_page, transition='publish')
         new_page.text = data["text"]
+        new_page.author = data["author"]
+        new_page.font_type = data["font_type"]
         folder.setDefaultPage(new_page.id)
         self.request.response.redirect(api.portal.get().absolute_url())
 

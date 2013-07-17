@@ -36,7 +36,12 @@
             <p id="background-placeholder" style="background: url('${context/absolute_url}/@@images/picture') repeat scroll 0 0 transparent" />
         </div>
         <div tal:condition="context/text">
-          <p tal:content="context/text" style="font-size:40px;line-height: 1.5em;"/>
+          <div id="text-container" class="entrypage-text-container">
+            <p tal:condition="python: context.font_type == 'times'" id="entrypage-text" >${context/text}</p>
+            <p tal:condition="python: context.font_type == 'arial'" id="entrypage-text" class="arial">${context/text}</p>
+            <p tal:condition="python: context.font_type == 'helvetica'" id="entrypage-text" class="helvetica">${context/text}</p>
+
+          </div>
         </div>
         <div id="change-form">
         <h3 i18n:translate="">Change entry page</h3>
