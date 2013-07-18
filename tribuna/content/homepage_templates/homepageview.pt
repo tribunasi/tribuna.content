@@ -51,7 +51,8 @@
 
         <tal:block
             tal:define="has_one_tag view/only_one_tag;
-                        homepageClass python: has_one_tag and 'span7' or 'span10'">
+                        homepageClass python: has_one_tag and 'span3' or 'span10';
+                        hasOneTagClassAddition python: has_one_tag and '-one' or ''">
           <div id="tag-description-div" tal:condition="has_one_tag">
             <h2 i18n:translate="">Description</h2>
             ${view/tag_description}
@@ -62,11 +63,13 @@
            <tal:block tal:condition="view/is_text_view">
 
               <div class="articles_intersection">
-                <h3 i18n:translate="" tal:condition="view/show_intersection">Intersection</h3>
+                <h5 i18n:translate="" tal:condition="view/show_intersection">Intersection</h5>
                 <tal:block repeat="article view/articles_intersection">
-                    <div id="${article/UID}" class="ui-widget-content text-view"
+                    <div id="${article/UID}"
                          tal:define="isArticle python: article.portal_type == 'tribuna.content.article';
-                                     isComment python: article.portal_type == 'Discussion Item'"
+                                     isComment python: article.portal_type == 'Discussion Item';
+                                     typeClassAddition python: isArticle and 'article' or 'comment'"
+                         class="ui-widget-content text-view text-view-${typeClassAddition}${hasOneTagClassAddition}"
                     >
                         <div id="gallery-link">
 
@@ -82,20 +85,22 @@
               </div>
 
               <div class="articles_union">
-                <h3 i18n:translate="" tal:condition="view/show_union">Union</h3>
+                <h5 i18n:translate="" tal:condition="view/show_union">Union</h5>
                 <tal:block repeat="article view/articles_union">
-                    <div id="${article/UID}" class="ui-widget-content text-view"
+                    <div id="${article/UID}"
                          tal:define="isArticle python: article.portal_type == 'tribuna.content.article';
-                                     isComment python: article.portal_type == 'Discussion Item'"
+                                     isComment python: article.portal_type == 'Discussion Item';
+                                     typeClassAddition python: isArticle and 'article' or 'comment'"
+                         class="ui-widget-content text-view text-view-${typeClassAddition}${hasOneTagClassAddition}"
                     >
-                        <div id="gallery-link">
+                      <div id="gallery-link">
 
-                          <a tal:condition="isArticle" href="${context/absolute_url}/@@main-page?article=${article/id}" tal:content="article/title" />
-                          <a tal:condition="isComment" class="text-view" href="${context/absolute_url}/@@main-page?article=${article/id}" tal:content="structure article/getText" />
-                        </div>
-                     <p tal:condition="isArticle" class="text-view" tal:content="article/description" />
-                     <p i18n:translate="" tal:condition="isArticle" class="content-type" style="color: red">article</p>
-                     <p i18n:translate="" tal:condition="isComment" class="content-type" style="color: red">comment</p>
+                        <a tal:condition="isArticle" href="${context/absolute_url}/@@main-page?article=${article/id}" tal:content="article/title" />
+                        <a tal:condition="isComment" class="text-view" href="${context/absolute_url}/@@main-page?article=${article/id}" tal:content="structure article/getText" />
+                      </div>
+                    <p tal:condition="isArticle" class="text-view" tal:content="article/description" />
+                    <p i18n:translate="" tal:condition="isArticle" class="content-type" style="color: red">article</p>
+                    <p i18n:translate="" tal:condition="isComment" class="content-type" style="color: red">comment</p>
 
                     </div>
                 </tal:block>
