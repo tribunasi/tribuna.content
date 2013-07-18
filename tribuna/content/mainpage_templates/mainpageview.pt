@@ -56,35 +56,36 @@
 
 
 
-        <div>
+        <div id="gallery-container">
           <ul id="gallery">
 
           <tal:block tal:repeat="article view/articles_all">
             <li>
               <h3 tal:condition="python: article.portal_type == 'tribuna.content.article'" tal:content="article/title"></h3>
-              <h3 tal:condition="python: article.portal_type == 'Discussion Item'" tal:content="article/author_name" />   
+              <h3 tal:condition="python: article.portal_type == 'Discussion Item'" tal:content="article/author_name" />
               <div class="gv-panel-content">
                   <tal:block tal:condition="python: article.portal_type == 'tribuna.content.article'">
                     <h3 tal:content="article/title" />
                     <img tal:attributes="src string:${article/absolute_url}/@@images/image" />
                     <p tal:content="structure article/text" />
-                    <div id="${article/UID}"> PLACEHOLDER </div>
+                    <div id="${article/UID}" url="${article/absolute_url}/@@comments-view"> PLACEHOLDER </div>
                     <script>
                       $(document).ready(function() {
                         $('#${article/UID}').bind('inview', function (event, visible) {
                             if (visible == true) {
                               $('#${article/UID}').load('${article/absolute_url}/@@comments-view');
 
+
                             } else {
                               $('#${article/UID}').html('');
                             }
                           });
-                        });
+                       });
                     </script>
                 </tal:block>
                 <tal:block tal:condition="python: article.portal_type == 'Discussion Item'">
-                  <h3 tal:content="article/author_name" />                 
-                  <img tal:attributes="src string:http://localhost:8087/Tribuna/IMU-logo-wt.png/@@images/image/thumb" />
+                  <h3 tal:content="article/author_name" />
+                  <img tal:attributes="src string:IMU-logo-wt.png/@@images/image/thumb" />
                   <p tal:content="structure article/getText" />
                 </tal:block>
               </div>

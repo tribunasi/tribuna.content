@@ -33,13 +33,17 @@
                                  height picture/_height | nothing;
                                  width picture/_width | nothing;"
                 />
-            <p id="background-placeholder" style="background: url('${context/absolute_url}/@@images/picture') repeat scroll 0 0 transparent" />
+            <p tal:condition="python: context.image_type == 'tile'" id="background-placeholder" style="background: url('${context/absolute_url}/@@images/picture') repeat scroll 0 0 transparent" />
+            <p tal:condition="python: context.image_type == 'original'" id="background-placeholder" style="background: url('${context/absolute_url}/@@images/picture') no-repeat transparent; background-position: 50% 0%;" />
+            <p tal:condition="python: context.image_type == 'cover'" id="background-placeholder" style="background: url('${context/absolute_url}/@@images/picture') no-repeat transparent; background-size: cover;" />
+
         </div>
         <div tal:condition="context/text">
           <div id="text-container" class="entrypage-text-container">
             <p tal:condition="python: context.font_type == 'times'" id="entrypage-text" >${context/text}</p>
             <p tal:condition="python: context.font_type == 'arial'" id="entrypage-text" class="arial">${context/text}</p>
             <p tal:condition="python: context.font_type == 'helvetica'" id="entrypage-text" class="helvetica">${context/text}</p>
+
 
           </div>
         </div>

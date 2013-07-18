@@ -22,6 +22,11 @@
     <!-- Register all components defined with grok -->
     <grok:grok package="." />
 
+    <include package="z3c.jbot" file="meta.zcml" />
+
+      <browser:jbot
+        directory="overrides" />
+
     <!-- Register the installation GenericSetup extension profile -->
     <genericsetup:registerProfile
         name="default"
@@ -59,4 +64,14 @@
         component=".comment.TribunaCommentFactory"
         name="tribuna.content.Comment"
         />
+
+    <adapter
+        name="subjectExtenderFactory"
+        factory=".commentextender.CommentExtenderFactory"
+        provides=".commentextender.ICommentExtenderFields" />
+
+    <adapter
+      name="subjectExtender"
+      factory=".commentextender.CommentExtender"
+      provides="plone.z3cform.fieldsets.interfaces.IFormExtender" />
 </configure>

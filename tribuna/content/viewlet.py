@@ -99,19 +99,21 @@ class DefaultSessionViewlet(BrowserView):
         return ""
 
 js_template = """
-<script>
-    $('#gallery').galleryView({
-        panel_width: $(window).width()*0.95,
-        panel_height: 600,
-        frame_width: $(window).width()*0.95/8,
-        frame_height: 90,
-        pause_on_hover: true,
-        autoplay: false,
-        filmstrip_position: "top",
-        enable_overlay: true,
-        show_captions: true,
-        transition_interval: 0,
-        start_frame: %d
-    });
+<script id="gallery-start">
+    //$(document).ready(function(){
+        $('#gallery').galleryView({
+            panel_width: $(window).width(),
+            panel_height: $(document).height(),
+            frame_width: $(window).width()*0.95/8,
+            frame_height: 90,
+            pause_on_hover: true,
+            autoplay: false,
+            filmstrip_position: "top",
+            enable_overlay: true,
+            show_captions: true,
+            transition_interval: 0,
+            start_frame: %d
+        });
+    //});
 </script>
 """

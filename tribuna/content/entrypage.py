@@ -76,8 +76,18 @@ class IEntryPage(form.Schema):
         title=_(u"Type of sorting"),
         vocabulary=SimpleVocabulary([
             SimpleTerm('arial', 'arial', _(u'arial')),
-            SimpleTerm('times_new_roman', 'times_new_roman', _(u'times_new_roman')),
+            SimpleTerm('times', 'times', _(u'times_new_roman')),
             SimpleTerm('latest', 'latest', _(u'Latest')),
+        ]),
+        required=False,
+    )
+
+    image_type = schema.Choice(
+        title=_(u"image type"),
+        vocabulary=SimpleVocabulary([
+            SimpleTerm('tile', 'tile', _(u'Tiles over page')),
+            SimpleTerm('original', 'original', _(u'Original size')),
+            SimpleTerm('cover', 'cover', _(u'Cover everything')),
         ]),
         required=False,
     )
@@ -101,6 +111,15 @@ class IChangePagePictureForm(form.Schema):
         required=False,
     )
 
+    image_type = schema.Choice(
+        title=_(u"image type"),
+        vocabulary=SimpleVocabulary([
+            SimpleTerm('tile', 'tile', _(u'Tiles over page')),
+            SimpleTerm('original', 'original', _(u'Original size')),
+            SimpleTerm('cover', 'cover', _(u'Cover everything')),
+        ]),
+        required=True,
+    )
     # @invariant
     # def validateOneSelected(data):
     #     if data.text is None and data.picture is None:
@@ -131,14 +150,19 @@ class ChangePagePictureForm(form.SchemaForm):
         folder = api.content.get(path=ENTRY_PAGES_PATH)
         new_title = data["title"]
         new_title = str(data["title"]) + " - " + str(unicode(datetime.now()))
-        new_page = createContentInContainer(
-            folder, "tribuna.content.entrypage", title=new_title)
-        api.content.get_state(obj=new_page)
-        api.content.transition(obj=new_page, transition='publish')
-        new_page.picture = data["picture"]
-        new_page.author = data["author"]
-        folder.setDefaultPage(new_page.id)
-        self.request.response.redirect(api.portal.get().absolute_url())
+        with api.env.adopt_user(username="admin1"):
+            new_page = api.content.create(
+                type='tribuna.content.entrypage',
+                title=new_title,
+                container=folder)
+            api.content.get_state(obj=new_page)
+            api.content.transition(obj=new_page, transition='publish')
+            new_page.title = new_title
+            new_page.picture = data["picture"]
+            new_page.author = data["author"]
+            new_page.image_type = data["image_type"]
+            folder.setDefaultPage(new_page.id)
+            self.request.response.redirect(api.portal.get().absolute_url())
 
 
 class IChangePageTextForm(form.Schema):
@@ -198,15 +222,19 @@ class ChangePageTextForm(form.SchemaForm):
         folder = api.content.get(path=ENTRY_PAGES_PATH)
         new_title = data["title"]
         new_title = str(data["title"]) + " - " + str(unicode(datetime.now()))
-        new_page = createContentInContainer(
-            folder, "tribuna.content.entrypage", title=new_title)
-        api.content.get_state(obj=new_page)
-        api.content.transition(obj=new_page, transition='publish')
-        new_page.text = data["text"]
-        new_page.author = data["author"]
-        new_page.font_type = data["font_type"]
-        folder.setDefaultPage(new_page.id)
-        self.request.response.redirect(api.portal.get().absolute_url())
+        with api.env.adopt_user(username="admin1"):
+            new_page = api.content.create(
+                type='tribuna.content.entrypage',
+                title=new_title,
+                container=folder)
+            api.content.get_state(obj=new_page)
+            api.content.transition(obj=new_page, transition='publish')
+            new_page.title = new_title
+            new_page.text = data["text"]
+            new_page.author = data["author"]
+            new_page.font_type = data["font_type"]
+            folder.setDefaultPage(new_page.id)
+            self.request.response.redirect(api.portal.get().absolute_url())
 
 
 class IChangePageOldForm(form.Schema):

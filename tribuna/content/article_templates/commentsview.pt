@@ -1,1 +1,11 @@
-<div id="plone-comments-div" tal:replace="structure view/get_comment_viewlet" ></div>
+<div id="plone-comments-div" tal:content="structure view/get_comment_viewlet" ></div>
+<script>
+
+
+
+    $("#plone-comments-div").find("form").ajaxForm(function() {
+        $("#plone-comments-div").parent().load($("#plone-comments-div").parent().attr("url"));
+    });
+
+
+</script>
