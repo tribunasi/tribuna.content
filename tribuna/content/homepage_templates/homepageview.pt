@@ -62,31 +62,33 @@
             // });
         </script>
         <tal:block
-            tal:define="has_one_tag view/only_one_tag">
+            tal:define="has_one_tag view/only_one_tag;
+                        homepageClass python: has_one_tag and 'span7' or 'span10'">
           <div id="tag-description-div" tal:condition="has_one_tag">
             <h2 i18n:translate="">Description</h2>
             ${view/tag_description}
           </div>
-          <div id="homepage-div" class="full-width">
+          <div id="homepage-div" class="${homepageClass}">
             <h2 i18n:translate="" tal:condition="view/is_text_view">Articles</h2>
-            <script>
-              $('#homepage-div').css({'height': ($(window).height() - $('#portal-top').height() - $('#edit-bar').height() - $('#content').height() - 25)});
-            </script>
+
            <tal:block tal:condition="view/is_text_view">
 
               <div class="articles_intersection">
                 <h3 i18n:translate="" tal:condition="view/show_intersection">Intersection</h3>
                 <tal:block repeat="article view/articles_intersection">
-                    <div id="${article/UID}" class="ui-widget-content text-view">
+                    <div id="${article/UID}" class="ui-widget-content text-view"
+                         tal:define="isArticle python: article.portal_type == 'tribuna.content.article';
+                                     isComment python: article.portal_type == 'Discussion Item'"
+                    >
                         <div id="gallery-link">
 
-                          <a tal:condition="python: article.portal_type == 'tribuna.content.article'" href="${context/absolute_url}/@@main-page?article=${article/id}" tal:content="article/title" />
-                          <a tal:condition="python: article.portal_type == 'Discussion Item'" class="text-view" href="${context/absolute_url}/@@main-page?article=${article/id}" tal:content="structure article/getText" />
+                          <a tal:condition="isArticle" href="${context/absolute_url}/@@main-page?article=${article/id}" tal:content="article/title" />
+                          <a tal:condition="isComment" class="text-view" href="${context/absolute_url}/@@main-page?article=${article/id}" tal:content="structure article/getText" />
 
                         </div>
-                     <p tal:condition="python: article.portal_type == 'tribuna.content.article'" class="text-view" tal:content="article/description" />
-                     <p i18n:translate="" tal:condition="python: article.portal_type == 'tribuna.content.article'" class="content-type" style="color: red">article</p>
-                     <p i18n:translate="" tal:condition="python: article.portal_type == 'Discussion Item'" class="content-type" style="color: red">comment</p>
+                     <p tal:condition="isArticle" class="text-view" tal:content="article/description" />
+                     <p i18n:translate="" tal:condition="isArticle" class="content-type" style="color: red">article</p>
+                     <p i18n:translate="" tal:condition="isComment" class="content-type" style="color: red">comment</p>
                  </div>
                 </tal:block>
               </div>
@@ -94,15 +96,18 @@
               <div class="articles_union">
                 <h3 i18n:translate="" tal:condition="view/show_union">Union</h3>
                 <tal:block repeat="article view/articles_union">
-                    <div id="${article/UID}" class="ui-widget-content text-view">
+                    <div id="${article/UID}" class="ui-widget-content text-view"
+                         tal:define="isArticle python: article.portal_type == 'tribuna.content.article';
+                                     isComment python: article.portal_type == 'Discussion Item'"
+                    >
                         <div id="gallery-link">
 
-                          <a tal:condition="python: article.portal_type == 'tribuna.content.article'" href="${context/absolute_url}/@@main-page?article=${article/id}" tal:content="article/title" />
-                          <a tal:condition="python: article.portal_type == 'Discussion Item'" class="text-view" href="${context/absolute_url}/@@main-page?article=${article/id}" tal:content="structure article/getText" />
+                          <a tal:condition="isArticle" href="${context/absolute_url}/@@main-page?article=${article/id}" tal:content="article/title" />
+                          <a tal:condition="isComment" class="text-view" href="${context/absolute_url}/@@main-page?article=${article/id}" tal:content="structure article/getText" />
                         </div>
-                     <p tal:condition="python: article.portal_type == 'tribuna.content.article'" class="text-view" tal:content="article/description" />
-                     <p i18n:translate="" tal:condition="python: article.portal_type == 'tribuna.content.article'" class="content-type" style="color: red">article</p>
-                     <p i18n:translate="" tal:condition="python: article.portal_type == 'Discussion Item'" class="content-type" style="color: red">comment</p>
+                     <p tal:condition="isArticle" class="text-view" tal:content="article/description" />
+                     <p i18n:translate="" tal:condition="isArticle" class="content-type" style="color: red">article</p>
+                     <p i18n:translate="" tal:condition="isComment" class="content-type" style="color: red">comment</p>
 
                     </div>
                 </tal:block>
@@ -110,42 +115,38 @@
           </tal:block>
           <tal:block tal:condition="not: view/is_text_view">
               <tal:block repeat="article view/articles_all">
-                <tal:block tal:define="addedClass python: article.portal_type == 'tribuna.content.article' and 'article' or 'comment';
-                                       addedUID   python: article.portal_type == 'tribuna.content.article' and 'article' or 'comment'">
+                <tal:block tal:define="isArticle python: article.portal_type == 'tribuna.content.article';
+                                       isComment python: article.portal_type == 'Discussion Item';
+                                       addedClass python: isArticle and 'article' or 'comment';
+                                       addedUID   python: isArticle and 'article' or 'comment'"
+                >
                   <div id="${article/UID}-${addedUID}" class="ui-widget-content drag-view-${addedClass}">
-                    <img tal:condition="python: article.portal_type == 'tribuna.content.article'" tal:attributes="src string:${article/absolute_url}/@@images/image/preview" />
+                    <img tal:condition="isArticle" tal:attributes="src string:${article/absolute_url}/@@images/image/preview" />
                     <div id="text">
                       <div id="gallery-link">
                         <a href="${context/absolute_url}/@@main-page?article=${article/id}" tal:content="article/title" />
-                        <a tal:condition="python: article.portal_type == 'Discussion Item'" class="text-view" href="${context/absolute_url}/@@main-page?article=${article/id}" tal:content="structure article/getText" />
+                        <a tal:condition="isComment" class="text-view" href="${context/absolute_url}/@@main-page?article=${article/id}" tal:content="structure article/getText" />
                       </div>
-                      <p tal:condition="python: article.portal_type == 'tribuna.content.article'" class="drag-view" tal:content="article/description" />
+                      <p tal:condition="isArticle" class="drag-view" tal:content="article/description" />
                       <div id="drag-view-extras">
-                        <p i18n:translate="" tal:condition="python: article.portal_type == 'tribuna.content.article'" class="content-type" style="color: red">article</p>
-                        <p i18n:translate="" tal:condition="python: article.portal_type == 'Discussion Item'" class="content-type" style="color: red">comment</p>
+                        <p i18n:translate="" tal:condition="isArticle" class="content-type" style="color: red">article</p>
+                        <p i18n:translate="" tal:condition="isComment" class="content-type" style="color: red">comment</p>
                       </div>
                     </div>
                   </div>
 
                   <script>
                       $(function() {
-                        // console.info("Badum badum");
                           var articleUID = "#${article/UID}-${addedUID}";
-                          // var numRand = Math.floor(Math.random()*tableGrid.length);
-                          // $(articleUID).css({'left': tableGrid[numRand]["left"]});
-                          // $(articleUID).css({'top': tableGrid[numRand]["top"]});
-                          // tableGrid.splice(numRand, 1);
                           $(articleUID).css({'position' : 'absolute'});
                           // $(articleUID).draggable({containment: "parent", stack: "div", cancel: "h3" });
                           $(articleUID).draggable({stack: "div", cancel: "a" });
                           $(articleUID).draggable("option", "distance", 0 );
 
                           // Add the current height and width (defined by img) to the style, so the div doesn't shrink on hover. Need to add this on img.load, so it can always find the information
-
                           if("${addedUID}" === "article"){
                             var image = $(articleUID).find('img');
                             image.load(function(){
-                                // console.info("Dogaja!");
                                 var imageHeight = $(this).height();
                                 var imageWidth = $(this).width();
                                 var numRandx = Math.floor(Math.random() * ($('#homepage-div').width() - imageWidth));
@@ -192,35 +193,6 @@
           </tal:block>
           </div>
         </tal:block>
-        <script type="text/javascript">
-          jQuery(function($){
-          //   $('#form-buttons-gallery input').prepOverlay(
-          //       {
-          //           subtype: 'ajax',
-          //           filter: common_content_filter,
-          //           formselector: 'form.kssattr-formname-my-form, form[name="groups"]',
-          //           noform: function(el) {return $.plonepopups.noformerrorshow(el, 'redirect');},
-          //           redirect: function () {return location.href;}
-          //       }
-          //   );
-
-
-            $('#gallery-link a').prepOverlay({
-              subtype: 'iframe',
-              width: '95%'
-            });
-          });
-
-          // $(window).resize(function() {
-          //   console.info("Hablahabla");
-          // });
-
-          $(window).resize(function() {
-              // console.info("Resized outer!");
-              $('iframe').attr('width', $(window).width()*0.95);
-          });
-        </script>
-
         <div tal:replace="structure provider:plone.belowcontentbody" />
     </tal:main-macro>
 </metal:main>

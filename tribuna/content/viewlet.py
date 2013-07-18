@@ -1,4 +1,6 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 """Viewlets."""
 
 from zope.interface import implements
@@ -71,7 +73,6 @@ class DefaultSessionViewlet(BrowserView):
         get_article = self.request.get('article')
         if(get_article is not None):
             session.set('view_type', 'gallery')
-            #import pdb; pdb.set_trace()
             session.set('index', [
                 i.id for i in session['content_list']['intersection'] +
                 session['content_list']['union']].index(get_article))
