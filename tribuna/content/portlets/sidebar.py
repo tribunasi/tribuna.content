@@ -37,20 +37,7 @@ def articles(session):
           - portal_type: osnova so vsi tipi
     """
 
-    catalog = api.portal.get_tool(name='portal_catalog')
-    portal_type = ["tribuna.content.article", "Discussion Item"]
-    review_state = "published"
-    sort_on = "Date"
-    query = None
-    operator = "or"
-
-    session.set('content_list', {'union': [], 'intersection': []})
-
-    # import pdb; pdb.set_trace()
-
-    if('portlet_data' not in session.keys() or
-      (session['portlet_data']['tags'] == [] and
-       session['portlet_data']['all_tags'] == [])):
+    def returnDefaults():
         query = tags_published_highlighted()
         all_content = catalog(
             portal_type=portal_type,
@@ -79,6 +66,20 @@ def articles(session):
             [content.getObject() for content in all_content]
         return True
 
+    catalog = api.portal.get_tool(name='portal_catalog')
+    portal_type = ["tribuna.content.article", "Discussion Item"]
+    review_state = "published"
+    sort_on = "Date"
+    query = None
+    operator = "or"
+
+    session.set('content_list', {'union': [], 'intersection': []})
+
+    # import pdb; pdb.set_trace()
+
+    if('portlet_data' not in session.keys()):
+        return returnDefaults()
+
     # portal_type
     if session['portlet_data']['content_filters']:
         portal_type = []
@@ -101,39 +102,17 @@ def articles(session):
 
     sort_order = session['portlet_data']['sort_order']
 
+    if(session['portlet_data']['tags'] == [] and
+       session['portlet_data']['all_tags'] == []):
+        return returnDefaults()
+
     all_content = []
     session['portlet_data']['tags'] = \
         list(set(session['portlet_data']['tags'] +
                  session['portlet_data']['all_tags']))
 
-    # if(not session['portlet_data']['tags']):
-    #     # Ce ni nicesar pokaze zadnje
-    #     # Naj se spremeni v to, da izbira med highlightanimi tagi
-    #     all_content = catalog(
-    #         portal_type=portal_type,
-    #         locked_on_home=True,
-    #         review_state=review_state,
-    #         sort_on=sort_on,
-    #         sort_order=sort_order,
-    #         sort_limit=LIMIT
-    #     )[:LIMIT]
-    #     currentLen = len(all_content)
-    #     if currentLen < LIMIT:
-    #         all_content += catalog(
-    #             portal_type=portal_type,
-    #             locked_on_home=False,
-    #             review_state=review_state,
-    #             sort_on=sort_on,
-    #             sort_order=sort_order,
-    #             sort_limit=(LIMIT - currentLen)
-    #         )[:LIMIT - currentLen]
-    # else:
+
     query = session['portlet_data']['tags']
-    # tmp = session['portlet_data']['operator']
-    # if(tmp == 'union'):
-    #     operator = 'or'
-    # elif(tmp == 'intersection'):
-    #     operator = 'and'
 
     all_content = catalog(
         portal_type=portal_type,
@@ -313,7 +292,7 @@ class SidebarForm(form.SchemaForm):
         session.set('view_type', 'text')
         self.request.response.redirect(self.request.getURL())
 
-    @button.buttonAndHandler(_(u'Drag\'n\'drop'))
+    @button.buttonAndHandler(_(u'Drag'))
     def handleApply(self, action):
         sdm = self.context.session_data_manager
         session = sdm.getSessionData(create=True)

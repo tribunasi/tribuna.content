@@ -49,18 +49,6 @@
 
         <div tal:replace="structure provider:plone.abovecontentbody" />
 
-        <script>
-            // var tableGrid = []
-            // $(document).ready(function() {
-            //     var x = 150
-            //     var y = 100
-            //     for (var i = 0; i<7; i++) {
-            //         for (var j = 0; j<7; j++) {
-            //         tableGrid.push({"left": i*x, "top": j*y})
-            //         }
-            //     }
-            // });
-        </script>
         <tal:block
             tal:define="has_one_tag view/only_one_tag;
                         homepageClass python: has_one_tag and 'span7' or 'span10'">
