@@ -36,7 +36,6 @@ def articles(session):
     XXX: Treba dodati se:
           - portal_type: osnova so vsi tipi
     """
-
     def returnDefaults():
         query = tags_published_highlighted()
         all_content = catalog(
@@ -44,7 +43,7 @@ def articles(session):
             locked_on_home=True,
             review_state=review_state,
             sort_on=sort_on,
-            sort_order="descending",
+            sort_order=sort_order,
             sort_limit=LIMIT,
             Subject={'query': query, 'operator': operator}
         )[:LIMIT]
@@ -57,13 +56,29 @@ def articles(session):
                 locked_on_home=False,
                 review_state=review_state,
                 sort_on=sort_on,
-                sort_order="descending",
+                sort_order=sort_order,
                 sort_limit=(LIMIT - currentLen),
                 Subject={'query': query, 'operator': operator}
             )[:(LIMIT - currentLen)]
 
-        session['content_list']['intersection'] =\
-            [content.getObject() for content in all_content]
+        all_content = [content for content in all_content]
+        all_content.sort(
+            key=lambda x: count_same(x.Subject, query), reverse=True)
+        all_content = all_content[:LIMIT]
+
+        intersection_count = 0
+        num_all_tags = len(query)
+        for i in all_content:
+            if count_same(i.Subject, query) == num_all_tags:
+                intersection_count += 1
+            else:
+                break
+
+        all_content = [content.getObject() for content in all_content]
+
+        session['content_list']['intersection'] = all_content[:intersection_count]
+        session['content_list']['union'] = all_content[intersection_count:]
+
         return True
 
     catalog = api.portal.get_tool(name='portal_catalog')
@@ -72,6 +87,7 @@ def articles(session):
     sort_on = "Date"
     query = None
     operator = "or"
+    sort_order = "descending"
 
     session.set('content_list', {'union': [], 'intersection': []})
 
@@ -95,12 +111,12 @@ def articles(session):
     tmp = session['portlet_data']['sort_on']
     if tmp == 'latest':
         sort_on = 'Date'
+        sort_order = 'descending'
     elif tmp == 'alphabetical':
         sort_on = 'sortable_title'
+        sort_order = 'ascending'
     elif tmp == 'comments':
         pass
-
-    sort_order = session['portlet_data']['sort_order']
 
     if(session['portlet_data']['tags'] == [] and
        session['portlet_data']['all_tags'] == []):
@@ -110,7 +126,6 @@ def articles(session):
     session['portlet_data']['tags'] = \
         list(set(session['portlet_data']['tags'] +
                  session['portlet_data']['all_tags']))
-
 
     query = session['portlet_data']['tags']
 
@@ -128,7 +143,7 @@ def articles(session):
     all_content = all_content[:LIMIT]
 
     intersection_count = 0
-    num_all_tags = len(session['portlet_data']['tags'])
+    num_all_tags = len(query)
     for i in all_content:
         if count_same(i.Subject, query) == num_all_tags:
             intersection_count += 1
@@ -165,17 +180,16 @@ class ISidebarForm(form.Schema):
             SimpleTerm('comments', 'comments', _(u'Nr. of comments')),
             SimpleTerm('latest', 'latest', _(u'Latest')),
         ]),
-        required=False,
     )
 
-    sort_order = schema.Choice(
-        title=_(u"Order of sorting"),
-        vocabulary=SimpleVocabulary([
-            SimpleTerm('ascending', 'ascending', _(u'Ascending')),
-            SimpleTerm('descending', 'descending', _(u'Descending')),
-        ]),
-        required=False,
-    )
+    # sort_order = schema.Choice(
+    #     title=_(u"Order of sorting"),
+    #     vocabulary=SimpleVocabulary([
+    #         SimpleTerm('ascending', 'ascending', _(u'Ascending')),
+    #         SimpleTerm('descending', 'descending', _(u'Descending')),
+    #     ]),
+    #     required=False,
+    # )
 
     form.widget(content_filters=CheckBoxFieldWidget)
     content_filters = schema.List(
@@ -227,14 +241,14 @@ def default_sort_on(data):
         return "latest"
 
 
-@form.default_value(field=ISidebarForm['sort_order'])
-def default_sort_order(data):
-    sdm = data.context.session_data_manager
-    session = sdm.getSessionData(create=True)
-    if "portlet_data" in session.keys():
-        return session["portlet_data"]["sort_order"]
-    else:
-        return "descending"
+# @form.default_value(field=ISidebarForm['sort_order'])
+# def default_sort_order(data):
+#     sdm = data.context.session_data_manager
+#     session = sdm.getSessionData(create=True)
+#     if "portlet_data" in session.keys():
+#         return session["portlet_data"]["sort_order"]
+#     else:
+#         return "descending"
 
 
 @form.default_value(field=ISidebarForm['content_filters'])

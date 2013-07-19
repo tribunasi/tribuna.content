@@ -76,11 +76,11 @@
                     >
                       <div id="gallery-link">
 
-                        <a tal:condition="isArticle" href="${context/absolute_url}/@@main-page?article=${article/id}" tal:content="article/title" />
-                        <a tal:condition="isComment" class="text-view" href="${context/absolute_url}/@@main-page?article=${article/id}" tal:content="structure article/getText" />
+                        <a tal:condition="isArticle" class="article-header" href="${context/absolute_url}/@@main-page?article=${article/id}" tal:content="article/title" />
+                        <a tal:condition="isComment" class="comment-header" href="${context/absolute_url}/@@main-page?article=${article/id}" tal:content="structure article/getText" />
 
                       </div>
-                     <p tal:condition="isArticle" class="text-view" tal:content="article/description" />
+                     <p tal:condition="isArticle" class="article-body" tal:content="article/description" />
                      <p i18n:translate="" tal:condition="isArticle" class="content-type" style="color: red">article</p>
                      <p i18n:translate="" tal:condition="isComment" class="content-type" style="color: red">comment</p>
                     </div>
@@ -101,10 +101,10 @@
                     >
                       <div id="gallery-link">
 
-                        <a tal:condition="isArticle" href="${context/absolute_url}/@@main-page?article=${article/id}" tal:content="article/title" />
-                        <a tal:condition="isComment" class="text-view" href="${context/absolute_url}/@@main-page?article=${article/id}" tal:content="structure article/getText" />
+                        <a tal:condition="isArticle" class="article-header" href="${context/absolute_url}/@@main-page?article=${article/id}" tal:content="article/title" />
+                        <a tal:condition="isComment" class="comment-header" href="${context/absolute_url}/@@main-page?article=${article/id}" tal:content="structure article/getText" />
                       </div>
-                    <p tal:condition="isArticle" class="text-view" tal:content="article/description" />
+                    <p tal:condition="isArticle" class="article-body" tal:content="article/description" />
                     <p i18n:translate="" tal:condition="isArticle" class="content-type" style="color: red">article</p>
                     <p i18n:translate="" tal:condition="isComment" class="content-type" style="color: red">comment</p>
 
@@ -124,14 +124,21 @@
                     <img tal:condition="isArticle" tal:attributes="src string:${article/absolute_url}/@@images/image/preview" />
                     <div id="text">
                       <div id="gallery-link">
-                        <a href="${context/absolute_url}/@@main-page?article=${article/id}" tal:content="article/title" />
-                        <a tal:condition="isComment" class="text-view" href="${context/absolute_url}/@@main-page?article=${article/id}" tal:content="structure article/getText" />
+                        <a tal:condition="isArticle" class="article-header" href="${context/absolute_url}/@@main-page?article=${article/id}" tal:content="article/title" />
+                        <a tal:condition="isComment" class="comment-header" href="${context/absolute_url}/@@main-page?article=${article/id}" tal:content="structure article/getText" />
                       </div>
-                      <p tal:condition="isArticle" class="drag-view" tal:content="article/description" />
-                      <div id="drag-view-extras">
+                      <div id="drag-view-type">
                         <p i18n:translate="" tal:condition="isArticle" class="content-type" style="color: red">article</p>
                         <p i18n:translate="" tal:condition="isComment" class="content-type" style="color: red">comment</p>
                       </div>
+                      <div id="drag-view-tags">
+                        <span id="drag-view-tags-list">
+                          <tal:block tal:condition="isArticle" tal:repeat="tag article/Subject">
+                            ${tag},
+                          </tal:block>
+                        </span>
+                      </div>
+                      <p tal:condition="isArticle" class="article-body" tal:content="article/description" />
                     </div>
                   </div>
 
@@ -144,7 +151,8 @@
                           $(articleUID).draggable("option", "distance", 0 );
 
                           // Add the current height and width (defined by img) to the style, so the div doesn't shrink on hover. Need to add this on img.load, so it can always find the information
-                          if("${isArticle}"){
+                          if("${isArticle}" === "True"){
+                            console.info("Article");
                             var image = $(articleUID).find('img');
                             image.load(function(){
                                 var imageHeight = $(this).height();
@@ -171,6 +179,7 @@
                             });
                           }
                           else{
+                            console.info("Other");
                             // Set the width so it doesn't get squished if we go over the border
                             var numRandx = Math.floor(Math.random() * ($('#homepage-div').width() - $(articleUID).width()));
                             var numRandy = Math.floor(Math.random() * ($('#homepage-div').height() - $(articleUID).height()));
