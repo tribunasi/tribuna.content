@@ -15,12 +15,18 @@ from plone.directives import form
 from plone.app.discussion.browser.comments import CommentForm
 from tribuna.content.comment import Comment
 from collective.z3cform.widgets.token_input_widget import TokenInputFieldWidget
+from z3c.form.browser.checkbox import CheckBoxFieldWidget
+
+from tribuna.content import _
+from tribuna.content.utils import TagsListHighlighted
+
 
 # Interface to define the fields we want to add to the comment form.
 class ICommentExtenderFields(Interface):
+    
     form.widget(subject=TokenInputFieldWidget)
     subject = schema.List(
-        title=(u"Categories"),
+        title=(u"Tags"),
         value_type=schema.TextLine(),
         default=[],
         required=False
@@ -30,7 +36,7 @@ class ICommentExtenderFields(Interface):
 class CommentExtenderFields(Persistent):
     interface.implements(ICommentExtenderFields)
     adapts(Comment)
-    subject = u""
+    subject = u""    
 
 # CommentExtenderFields factory
 CommentExtenderFactory = factory(CommentExtenderFields)
@@ -52,3 +58,4 @@ class CommentExtender(extensible.FormExtender):
         self.add(ICommentExtenderFields, prefix="")
         # Move the website field to the top of the comment form.
         self.move('subject', before='text', prefix="")
+                

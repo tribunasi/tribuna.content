@@ -67,21 +67,21 @@
                             Poster Name
                         </a>
                         <span tal:condition="not: has_author_link"
-                              tal:replace="reply/author_name" />
+                              tal:replace="reply/author_name" />                        
                         <span tal:condition="not: reply/author_name"
                               i18n:translate="label_anonymous">Anonymous</span>
                     </tal:name>
                     <tal:posted i18n:translate="label_says">says:</tal:posted>
-                    <div class="commentDate"
-                         tal:content="python:view.format_time(reply.modification_date)">
-                         8/23/2001 12:40:44 PM
-                    </div>
+                    
                 </div>
 
                 <div class="commentBody">
 
-                    <span tal:replace="structure reply/getText" />
-
+                    <p tal:content="structure reply/getText" />
+                    <div class="commentDate"
+                         tal:content="python:view.format_time(reply.modification_date)">
+                         8/23/2001 12:40:44 PM
+                    </div>
                     <div class="commentActions">
                         <form name="delete"
                               action=""
@@ -114,10 +114,13 @@
                                    i18n:attributes="value"
                                    />
                         </form>
-                    </div>
-
+                    </div>               
 
                 </div>
+                <ul tal:condition="reply/subject"
+                        tal:repeat="tag reply/subject">
+                      <li tal:content="tag" />
+                    </ul>
                 <button class="context reply-to-comment-button hide allowMultiSubmit"
                         tal:condition="python:isDiscussionAllowed and (isAnon and isAnonymousDiscussionAllowed or userHasReplyPermission)"
                         i18n:translate="label_reply">

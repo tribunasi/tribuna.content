@@ -56,19 +56,34 @@
 
 
 
-        <div id="gallery-container">
+        <div id="gallery-container" class="slider-header">
           <ul id="gallery">
 
           <tal:block tal:repeat="article view/articles_all">
             <li>
-              <h3 tal:condition="python: article.portal_type == 'tribuna.content.article'" tal:content="article/title"></h3>
-              <h3 tal:condition="python: article.portal_type == 'Discussion Item'" tal:content="article/author_name" />
+              <tal:block tal:condition="python: article.portal_type == 'tribuna.content.article'">
+                <div tal:content="article/title" />
+                <div class="red">
+                  članek
+                </div>
+              </tal:block>
+              <tal:block tal:condition="python: article.portal_type == 'Discussion Item'">
+                <div tal:content="article/title" />
+                <div class="red">
+                  komentar
+                </div>
+              </tal:block>
+             
+              
               <div class="gv-panel-content">
                   <tal:block tal:condition="python: article.portal_type == 'tribuna.content.article'">
+                    <div id="left-column" class="span2" />
+                    <div id="center-column" class="span10">
                     <h3 tal:content="article/title" />
                     <img tal:attributes="src string:${article/absolute_url}/@@images/image" />
                     <p tal:content="structure article/text" />
-                    <div id="${article/UID}" url="${article/absolute_url}/@@comments-view"> PLACEHOLDER </div>
+                    </div>
+                    <div id="${article/UID}" class="span4" url="${article/absolute_url}/@@comments-view"> PLACEHOLDER </div>
                     <script>
                       $(document).ready(function() {
                         $('#${article/UID}').bind('inview', function (event, visible) {

@@ -91,6 +91,10 @@ class IEntryPage(form.Schema):
         ]),
         required=False,
     )
+    locked_page = schema.Bool(
+        title=_(u"Is entry page locked on this?"),
+        required=False,
+    )
 
 
 

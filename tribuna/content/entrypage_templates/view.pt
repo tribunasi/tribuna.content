@@ -47,7 +47,7 @@
 
           </div>
         </div>
-        <div id="change-form">
+        <div tal:condition="not:context/locked_page" id="change-form">
         <h3 i18n:translate="">Change entry page</h3>
           <div>
           <div id="change-form-multiple">
