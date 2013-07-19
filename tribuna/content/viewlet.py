@@ -109,9 +109,11 @@ js_template = """
             pause_on_hover: true,
             autoplay: false,
             filmstrip_position: "top",
+            show_filmstrip_nav: true,
             enable_overlay: true,
             show_captions: true,
             transition_interval: 0,
+            pointer_size: 0,
             start_frame: %d
         });
     //});

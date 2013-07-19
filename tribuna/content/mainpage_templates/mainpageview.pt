@@ -73,11 +73,17 @@
                   komentar
                 </div>
               </tal:block>
-             
-              
+
+
               <div class="gv-panel-content">
                   <tal:block tal:condition="python: article.portal_type == 'tribuna.content.article'">
-                    <div id="left-column" class="span2" />
+                    <div id="left-column" class="span2" >
+                      <div id="selected-tags">
+                        <div tal:repeat="tag article/subject" class="unstyled" id="selected-tags-list">
+                            <span class="selected">${tag}</span><br />
+                        </div>
+                      </div>
+                    </div>
                     <div id="center-column" class="span10">
                     <h3 tal:content="article/title" />
                     <img tal:attributes="src string:${article/absolute_url}/@@images/image" />
@@ -99,9 +105,19 @@
                     </script>
                 </tal:block>
                 <tal:block tal:condition="python: article.portal_type == 'Discussion Item'">
-                  <h3 tal:content="article/author_name" />
-                  <img tal:attributes="src string:IMU-logo-wt.png/@@images/image/thumb" />
-                  <p tal:content="structure article/getText" />
+                  <div id="left-column" class="span2" >
+                      <div id="selected-tags">
+                        <div tal:repeat="tag article/subject" class="unstyled" id="selected-tags-list">
+                            <span class="selected">${tag}</span><br />
+                        </div>
+                      </div>
+                    </div>
+                    <div id="center-column" class="span10">
+                      <h3 tal:content="article/author_name" />
+                      <img tal:attributes="src string:++theme++tribuna.diazotheme/img/blank.gif" />
+                      <p tal:content="structure article/getText" />
+                    </div>
+
                 </tal:block>
               </div>
             </li>
