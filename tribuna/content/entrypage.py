@@ -97,7 +97,6 @@ class IEntryPage(form.Schema):
     )
 
 
-
 class IChangePagePictureForm(form.Schema):
 
     title = schema.TextLine(

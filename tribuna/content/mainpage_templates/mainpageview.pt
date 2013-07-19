@@ -83,22 +83,40 @@
                             <span class="selected">${tag}</span><br />
                         </div>
                       </div>
+                      <input id="activate-${article/UID}" type="checkbox" checked="checked" >articles</input>
+                      <input id="activate-comments-${article/UID}" type="checkbox" >comments</input>
                     </div>
-                    <div id="center-column" class="span10">
-                    <h3 tal:content="article/title" />
-                    <img tal:attributes="src string:${article/absolute_url}/@@images/image" />
-                    <p tal:content="structure article/text" />
+                    <div id="center-column-${article/UID}" class="span10">
+                      <h3 tal:content="article/title" />
+                      <img tal:attributes="src string:${article/absolute_url}/@@images/image" />
+                      <p tal:content="structure article/text" />
                     </div>
-                    <div id="${article/UID}" class="span4" url="${article/absolute_url}/@@comments-view"> PLACEHOLDER </div>
+
+                    <div id="comments-${article/UID}" class="span4 hidden" url="${article/absolute_url}/@@comments-view" />
                     <script>
                       $(document).ready(function() {
-                        $('#${article/UID}').bind('inview', function (event, visible) {
-                            if (visible == true) {
-                              $('#${article/UID}').load('${article/absolute_url}/@@comments-view');
+                        $('#activate-${article/UID}').click(function () {
 
+                            if (! $(this).attr("checked")) {
+                              $(this).attr("checked", "checked");
+                              $('#center-column-${article/UID}').attr("class", "span10");
 
                             } else {
-                              $('#${article/UID}').html('');
+                              $(this).removeAttr("checked");
+                              $('#center-column-${article/UID}').attr("class", "span10 hidden");
+                            }
+                          });
+                        $('#activate-comments-${article/UID}').click(function () {
+
+                            if (! $(this).attr("checked")) {
+                              $(this).attr("checked", "checked");
+                              if ($('#comments-${article/UID}').contents().length == 0) {
+                                $('#comments-${article/UID}').load('${article/absolute_url}/@@comments-view');
+                              }
+                              $('#comments-${article/UID}').attr("class", "span4");
+                            } else {
+                              $(this).removeAttr("checked");
+                              $('#comments-${article/UID}').attr("class", "span2 hidden");
                             }
                           });
                        });
@@ -107,8 +125,8 @@
                 <tal:block tal:condition="python: article.portal_type == 'Discussion Item'">
                   <div id="left-column" class="span2" >
                       <div id="selected-tags">
-                        <div tal:repeat="tag article/subject" class="unstyled" id="selected-tags-list">
-                            <span class="selected">${tag}</span><br />
+                        <div  class="unstyled" id="selected-tags-list">
+                            <span tal:repeat="tag article/subject" class="selected">${tag}</span>
                         </div>
                       </div>
                     </div>

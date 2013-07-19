@@ -73,9 +73,15 @@ class DefaultSessionViewlet(BrowserView):
         get_article = self.request.get('article')
         if(get_article is not None):
             session.set('view_type', 'gallery')
-            session.set('index', [
-                i.id for i in session['content_list']['intersection'] +
-                session['content_list']['union']].index(get_article))
+            all_articles =  \
+                [i.id for i in session['content_list']['intersection'] +
+                    session['content_list']['union']]
+            if get_article in all_articles:
+                session.set('index', [
+                    i.id for i in session['content_list']['intersection'] +
+                    session['content_list']['union']].index(get_article))
+            else:
+                session.set('index', 0)
         else:
             session.set('index', 0)
 

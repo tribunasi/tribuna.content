@@ -40,7 +40,8 @@
     <div class="discussion"
          tal:attributes="class python: showCommenterImage and 'discussion showCommenterImage' or 'discussion';"
          tal:condition="has_replies"
-         tal:define="reversed_replies python:reversed(list(replies))">
+         tal:define="reversed_replies python:reversed(list(replies));
+                     all_replies python:list(replies);">
 
         <tal:getreplies repeat="reply_dict reversed_replies">
 
@@ -55,50 +56,24 @@
                  tal:attributes="class python:'comment replyTreeLevel'+str(depth)+' state-'+str(review_state);
                                  id string:${reply/getId}"
                  tal:condition="python:canReview or review_state == 'published'">
-
-                <div class="commentImage" tal:condition="showCommenterImage">
-                    <a href="" tal:condition="has_author_link"
-                               tal:attributes="href author_home_url">
-                         <img src="defaultUser.gif"
-                              alt=""
-                              class="defaultuserimg"
-                              height="32"
-                              tal:attributes="src portrait_url;
-                                              alt reply/author_name" />
-                    </a>
-                    <img src="defaultUser.gif"
-                         alt=""
-                         class="defaultuserimg"
-                         height="32"
-                         tal:condition="not: has_author_link"
-                         tal:attributes="src portrait_url;
-                                         alt reply/author_name" />
-                </div>
-
-                <div class="documentByLine" i18n:domain="plone.app.discussion">
+              <div class="documentByLine" i18n:domain="plone.app.discussion">
                     <tal:name>
-                        <a href=""
-                           tal:condition="has_author_link"
-                           tal:content="reply/author_name"
-                           tal:attributes="href author_home_url">
-                            Poster Name
-                        </a>
-                        <span tal:condition="not: has_author_link"
-                              tal:replace="reply/author_name" />
+                        <span tal:replace="reply/author_name" />
                         <span tal:condition="not: reply/author_name"
                               i18n:translate="label_anonymous">Anonymous</span>
+
                     </tal:name>
-                    <tal:posted i18n:translate="label_says">says:</tal:posted>
 
+                <br />
                 </div>
-
-                <div class="commentBody">
-
-                    <p tal:content="structure reply/getText" />
-                    <div class="commentDate"
+                <div class="commentDate"
                          tal:content="python:view.format_time(reply.modification_date)">
                          8/23/2001 12:40:44 PM
                     </div>
+                <div class="commentBody">
+
+                    <p tal:content="structure reply/getText" />
+
                     <div class="commentActions">
                         <form name="delete"
                               action=""
@@ -134,17 +109,18 @@
                     </div>
 
                 </div>
-                <ul tal:condition="reply/subject"
-                        tal:repeat="tag reply/subject">
-                      <li tal:content="tag" />
-                    </ul>
-                <button class="context reply-to-comment-button hide allowMultiSubmit"
+                <ul tal:condition="reply/subject">
+                    <tal:tags tal:repeat="tag reply/subject">
+                      <li  class="commentTag" tal:content="tag" />
+                    </tal:tags>
+                </ul>
+                <button class="context reply-to-comment-button allowMultiSubmit"
                         tal:condition="python:isDiscussionAllowed and (isAnon and isAnonymousDiscussionAllowed or userHasReplyPermission)"
                         i18n:translate="label_reply">
                     Reply
                 </button>
             </div>
-
+            <br /><br />
         </tal:getreplies>
 
         <div tal:condition="python: has_replies and not isDiscussionAllowed"
