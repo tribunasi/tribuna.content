@@ -111,9 +111,9 @@
                 <tal:block tal:define="isArticle python: article.portal_type == 'tribuna.content.article';
                                        isComment python: article.portal_type == 'Discussion Item';
                                        addedClass python: isArticle and 'article' or 'comment';
-                                       addedUID   python: isArticle and 'article' or 'comment'"
+                                       varUID   python: isComment and article.getId() or article.UID()"
                 >
-                  <div id="${article/UID}-${addedUID}" class="ui-widget-content drag-view-${addedClass}">
+                  <div id="${varUID}" class="ui-widget-content drag-view-${addedClass}">
                     <img tal:condition="isArticle" tal:attributes="src string:${article/absolute_url}/@@images/image/preview" />
                     <div id="text">
                       <div id="gallery-link">
@@ -130,14 +130,14 @@
 
                   <script>
                       $(function() {
-                          var articleUID = "#${article/UID}-${addedUID}";
+                          var articleUID = "#${varUID}";
                           $(articleUID).css({'position' : 'absolute'});
                           // $(articleUID).draggable({containment: "parent", stack: "div", cancel: "h3" });
                           $(articleUID).draggable({stack: "div", cancel: "a" });
                           $(articleUID).draggable("option", "distance", 0 );
 
                           // Add the current height and width (defined by img) to the style, so the div doesn't shrink on hover. Need to add this on img.load, so it can always find the information
-                          if("${addedUID}" === "article"){
+                          if("${isArticle}"){
                             var image = $(articleUID).find('img');
                             image.load(function(){
                                 var imageHeight = $(this).height();
