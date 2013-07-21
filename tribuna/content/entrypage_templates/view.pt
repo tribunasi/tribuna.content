@@ -33,7 +33,7 @@
                                  height picture/_height | nothing;
                                  width picture/_width | nothing;"
                 />
-            <p tal:condition="python: context.image_type == 'tile'" id="background-placeholder" style="background: url('${context/absolute_url}/@@images/picture') repeat scroll 0 0 transparent" />
+            <p tal:condition="python: context.image_type == 'tile'" id="background-placeholder" style="background: url('${context/absolute_url}/@@images/picture/tile') repeat scroll 0 0 transparent" />
             <p tal:condition="python: context.image_type == 'original'" id="background-placeholder" style="background: url('${context/absolute_url}/@@images/picture') no-repeat transparent; background-position: 50% 0%;" />
             <p tal:condition="python: context.image_type == 'cover'" id="background-placeholder" style="background: url('${context/absolute_url}/@@images/picture') no-repeat transparent; background-size: cover;" />
 

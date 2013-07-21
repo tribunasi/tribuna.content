@@ -34,6 +34,8 @@ def old_entry_pages():
     current_id = folder.getDefaultPage()
     old_pages = tuple((i.id, i.Title) for i in catalog(
         portal_type='tribuna.content.entrypage',
+        sort_on="Date",
+        sort_order="descending",
     ) if i.id != current_id)
     return old_pages
 
@@ -153,7 +155,7 @@ class ChangePagePictureForm(form.SchemaForm):
         folder = api.content.get(path=ENTRY_PAGES_PATH)
         new_title = data["title"]
         new_title = str(data["title"]) + " - " + str(unicode(datetime.now()))
-        with api.env.adopt_user(username="admin1"):
+        with api.env.adopt_roles(['Site Administrator']):
             new_page = api.content.create(
                 type='tribuna.content.entrypage',
                 title=new_title,
@@ -225,7 +227,7 @@ class ChangePageTextForm(form.SchemaForm):
         folder = api.content.get(path=ENTRY_PAGES_PATH)
         new_title = data["title"]
         new_title = str(data["title"]) + " - " + str(unicode(datetime.now()))
-        with api.env.adopt_user(username="admin1"):
+        with api.env.adopt_roles(['Site Administrator']):
             new_page = api.content.create(
                 type='tribuna.content.entrypage',
                 title=new_title,
