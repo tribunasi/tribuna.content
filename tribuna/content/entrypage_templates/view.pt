@@ -80,6 +80,14 @@
         </div>
         </div>
 
+        <div id="entrypage-author-title">
+          <span id ="entrypage-title"> ${context/title}, </span>
+          <span id ="entrypage-author"> ${context/author} </span>
+        </div>
+        <div id="entrypage-home-link">
+        <a href="${context/portal_url}/@@home-page">
+          Go to Home Page </a>
+        </div>
         <div tal:replace="structure provider:plone.belowcontentbody" />
 
         <script>

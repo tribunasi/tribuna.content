@@ -25,6 +25,7 @@ class MainPageView(grok.View):
         sdm = self.context.session_data_manager
         session = sdm.getSessionData(create=True)
         if('content_list' in session.keys()):
+            import pdb; pdb.set_trace()
             return(session['content_list']['intersection'] +
                    session['content_list']['union'])
         return []

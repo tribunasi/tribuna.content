@@ -20,6 +20,7 @@ from zope.schema.vocabulary import SimpleVocabulary
 from zope.interface import Invalid
 from zope.schema.vocabulary import SimpleVocabulary
 from zope.schema.vocabulary import SimpleTerm
+from plone.app.textfield import RichText
 
 
 class SelectOne(Invalid):
@@ -32,7 +33,7 @@ def old_entry_pages():
     if not folder:
         return []
     current_id = folder.getDefaultPage()
-    old_pages = tuple((i.id, i.Title) for i in catalog(
+    old_pages = tuple((i.id, str(i.Title)+i.Date) for i in catalog(
         portal_type='tribuna.content.entrypage',
         sort_on="Date",
         sort_order="descending",
@@ -154,7 +155,7 @@ class ChangePagePictureForm(form.SchemaForm):
             return
         folder = api.content.get(path=ENTRY_PAGES_PATH)
         new_title = data["title"]
-        new_title = str(data["title"]) + " - " + str(unicode(datetime.now()))
+        #new_title = str(data["title"]) + " - " + str(unicode(datetime.now()))
         with api.env.adopt_roles(['Site Administrator']):
             new_page = api.content.create(
                 type='tribuna.content.entrypage',
@@ -182,7 +183,7 @@ class IChangePageTextForm(form.Schema):
         required=False
     )
 
-    text = schema.TextLine(
+    text =  schema.TextLine(
         title=_(u"Text"),
         required=False
     )
@@ -226,7 +227,7 @@ class ChangePageTextForm(form.SchemaForm):
             return
         folder = api.content.get(path=ENTRY_PAGES_PATH)
         new_title = data["title"]
-        new_title = str(data["title"]) + " - " + str(unicode(datetime.now()))
+        #new_title = str(data["title"]) + " - " + str(unicode(datetime.now()))
         with api.env.adopt_roles(['Site Administrator']):
             new_page = api.content.create(
                 type='tribuna.content.entrypage',
