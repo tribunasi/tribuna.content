@@ -79,7 +79,7 @@
                   <tal:block tal:condition="python: article.portal_type == 'tribuna.content.article'">
                     <div id="left-column" class="span2" >
                       <div id="selected-tags">
-                        <div tal:repeat="tag article/subject" class="unstyled" id="selected-tags-list">
+                        <div tal:repeat="tag article/Subject" class="unstyled" id="selected-tags-list">
                             <span class="selected">${tag}</span><br />
                         </div>
                       </div>
@@ -126,7 +126,7 @@
                   <div id="left-column" class="span2" >
                       <div id="selected-tags">
                         <div  class="unstyled" id="selected-tags-list">
-                            <span tal:repeat="tag article/subject" class="selected">${tag}</span>
+                            <span tal:repeat="tag article/Subject" class="selected">${tag}</span>
                         </div>
                       </div>
                     </div>
