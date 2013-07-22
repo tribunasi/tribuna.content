@@ -17,6 +17,7 @@ from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 
 from tribuna.content import _
 from tribuna.content.utils import TagsListHighlighted
+from tribuna.content.utils import our_unicode
 
 
 # Interface to define the fields we want to add to the comment form.

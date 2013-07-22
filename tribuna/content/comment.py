@@ -8,8 +8,10 @@ from plone.indexer import indexer
 from zope.interface import implements
 from plone import api
 from rwproperty import getproperty, setproperty
-from zope.lifecycleevent.interfaces import IObjectAddedEvent
+from zope.lifecycleevent.interfaces import IObjectCreatedEvent
 from five import grok
+
+from tribuna.content.utils import our_unicode
 
 
 class TribunaComment(Comment):
@@ -30,7 +32,7 @@ def subject(object):
     return object.subject
 
 
-@grok.subscribe(IComment, IObjectAddedEvent)
+@grok.subscribe(IComment, IObjectCreatedEvent)
 def add_tags(comment, event):
     value = comment.subject
     if value is None:
@@ -45,37 +47,32 @@ def add_tags(comment, event):
         items = catalog({
             'portal_type': 'tribuna.content.tag',
         })
-        titles = set(i.Title for i in items)
-        titles = [j.lower().replace(' ', '') for j in titles]
 
         # Compare tags with the one already in our system, if they're the
         # "same" (lower and ignore spaces), use those tags
-        new_titles = [(it.Title, it.Title.lower().replace(' ', ''))
-                      for it in items]
-        for val in value[:]:
-            for tup in new_titles:
-                if val.lower().replace(' ', '') == tup[-1]:
-                    #if val in value:
-                    value.remove(val)
-                    value.append(tup[0])
+        titles = dict((our_unicode(it.Title).lower().replace(' ', ''), it.Title)
+                      for it in items)
 
-        # Change all "same" (as above) tags to the first appearance
-        counter = []
-        for val in value[:]:
-            if val.lower().replace(' ', '') in counter:
-                value.remove(val)
+        dict_value = {}
+        for it in value:
+            foo = our_unicode(it).lower().replace(' ', '')
+            if foo not in dict_value.keys():
+                dict_value[foo] = it
+
+        new_value = []
+        added_values = []
+
+
+        for key, val in dict_value.items():
+            if key in titles.keys():
+                new_value.append(our_unicode(titles[key]))
             else:
-                counter.append(val.lower().replace(' ', ''))
-
-        new_value = [k for k in value
-                     if k.lower().replace(' ', '') not in titles]
-
-        # Set Subject as an union of tags in tags_old and tags_new but use the
-        # titles that are already there, don't make new ones (above)
+                new_value.append(our_unicode(val))
+                added_values.append(our_unicode(val))
 
         site = api.portal.get()
-        comment.setSubject(tuple(value))
-        for title in new_value:
+        comment.subject = new_value
+        for title in added_values:
             obj = api.content.create(
                 type='tribuna.content.tag',
                 title=title,

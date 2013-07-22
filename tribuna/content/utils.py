@@ -58,3 +58,9 @@ class TagsList(object):
         items = tags_published()
         terms = [SimpleVocabulary.createTerm(i[1], i[0], i[1]) for i in items]
         return SimpleVocabulary(terms)
+
+
+def our_unicode(s):
+    if not isinstance(s, unicode):
+        return unicode(s, 'utf8')
+    return s

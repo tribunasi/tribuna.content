@@ -23,6 +23,7 @@ from tribuna.content.utils import tags_published_highlighted
 from tribuna.content.utils import TagsList
 from tribuna.content.utils import TagsListHighlighted
 
+
 # Number of items to display
 LIMIT = 15
 

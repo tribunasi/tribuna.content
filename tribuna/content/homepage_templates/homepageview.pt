@@ -133,9 +133,10 @@
                       </div>
                       <div id="drag-view-tags">
                         <span id="drag-view-tags-list">
-                          <tal:block tal:condition="isArticle"
-                                     tal:define="varTagList python: ', '.join(article.Subject())">
-                            ${varTagList}
+                          <tal:block tal:condition="isArticle">
+                            <tal:block tal:define="varTagList python: ', '.join(article.Subject())">
+                              ${varTagList}
+                            </tal:block>
                           </tal:block>
                         </span>
                       </div>
