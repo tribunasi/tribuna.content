@@ -33,11 +33,13 @@ def old_entry_pages():
     if not folder:
         return []
     current_id = folder.getDefaultPage()
-    old_pages = tuple((i.id, str(i.Title)+i.Date) for i in catalog(
-        portal_type='tribuna.content.entrypage',
-        sort_on="Date",
-        sort_order="descending",
-    ) if i.id != current_id)
+    old_pages = tuple((i.id, str(i.Title) + ", " + str(datetime.strptime(
+        i.Date.split("+")[0], "%Y-%m-%dT%H:%M:%S").date().strftime(
+            "%H:%M:%S, %d.%m.%Y"))) for i in catalog(
+                portal_type='tribuna.content.entrypage',
+                sort_on="Date",
+                sort_order="descending",
+                    ) if i.id != current_id)
     return old_pages
 
 
