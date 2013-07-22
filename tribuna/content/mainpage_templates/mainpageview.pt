@@ -79,10 +79,11 @@
                   <tal:block tal:condition="python: article.portal_type == 'tribuna.content.article'">
                     <div id="left-column" class="span2" >
                       <div id="selected-tags">
-                        <div tal:repeat="tag article/Subject" class="unstyled" id="selected-tags-list">
-                            <span class="selected">${tag}</span><br />
+                        <div  class="unstyled" id="selected-tags-list">
+                            <span tal:repeat="tag article/Subject" class="selected">${tag}</span>
                         </div>
                       </div>
+                    
                       <input id="activate-${article/UID}" type="checkbox" checked="checked" >articles</input>
                       <input id="activate-comments-${article/UID}" type="checkbox" >comments</input>
                     </div>
@@ -142,6 +143,11 @@
 
           </tal:block>
           </ul>
+        </div>
+        <div id="home-page-link" style="position: absolute;top: 170px; right: 5%" >
+          <a href="${context/portal_url}/home-page">
+            <img src="++theme++tribuna.diazotheme/img/x-sign.png" style="width: 15px; height:15px" />
+          </a>
         </div>
 
         <div tal:replace="structure provider:plone.belowcontentbody" />
