@@ -164,6 +164,7 @@ class ISidebarForm(form.Schema):
         title=_(u"Tags"),
         value_type=schema.Choice(source=TagsListHighlighted()),
         required=False,
+        default=[],
     )
 
     form.widget(all_tags=CheckBoxFieldWidget)
@@ -171,6 +172,7 @@ class ISidebarForm(form.Schema):
         title=_(u"All tags"),
         value_type=schema.Choice(source=TagsList()),
         required=False,
+        default=[],
     )
 
     sort_on = schema.Choice(
