@@ -13,7 +13,7 @@ from zope.schema.vocabulary import SimpleVocabulary
 def tags_published_highlighted():
     with api.env.adopt_user('tags_user'):
         catalog = api.portal.get_tool(name='portal_catalog')
-        tags = tuple((i.id, i.Title) for i in catalog(
+        tags = tuple((i.id, unicode(i.Title, 'utf8')) for i in catalog(
             portal_type='tribuna.content.tag',
             review_state=['published', 'pending'],
             highlight_in_navigation=True,
@@ -25,7 +25,7 @@ def tags_published_highlighted():
 def tags_published():
     with api.env.adopt_user('tags_user'):
         catalog = api.portal.get_tool(name='portal_catalog')
-        tags = tuple((i.id, i.Title) for i in catalog(
+        tags = tuple((i.id, unicode(i.Title, 'utf8')) for i in catalog(
             portal_type='tribuna.content.tag',
             review_state=['published', 'pending'],
         ))
@@ -44,7 +44,7 @@ class TagsListHighlighted(object):
 
     def __call__(self, context):
         items = tags_published_highlighted()
-        terms = [SimpleVocabulary.createTerm(i[0], i[0], i[1]) for i in items]
+        terms = [SimpleVocabulary.createTerm(i[1], i[0], i[1]) for i in items]
         return SimpleVocabulary(terms)
 
 
@@ -56,5 +56,5 @@ class TagsList(object):
 
     def __call__(self, context):
         items = tags_published()
-        terms = [SimpleVocabulary.createTerm(i[0], i[0], i[1]) for i in items]
+        terms = [SimpleVocabulary.createTerm(i[1], i[0], i[1]) for i in items]
         return SimpleVocabulary(terms)

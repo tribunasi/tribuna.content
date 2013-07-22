@@ -37,7 +37,7 @@ def articles(session):
           - portal_type: osnova so vsi tipi
     """
     def returnDefaults():
-        query = tags_published_highlighted()
+        query = [i[1] for i in tags_published_highlighted()]
         all_content = catalog(
             portal_type=portal_type,
             locked_on_home=True,
@@ -149,6 +149,7 @@ def articles(session):
             break
 
     all_content = [content.getObject() for content in all_content]
+
 
     session['content_list']['intersection'] = all_content[:intersection_count]
     session['content_list']['union'] = all_content[intersection_count:]
