@@ -91,8 +91,6 @@ def articles(session):
 
     session.set('content_list', {'union': [], 'intersection': []})
 
-    # import pdb; pdb.set_trace()
-
     if('portlet_data' not in session.keys()):
         return returnDefaults()
 
