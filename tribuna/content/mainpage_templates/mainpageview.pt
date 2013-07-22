@@ -83,7 +83,7 @@
                             <span tal:repeat="tag article/Subject" class="selected">${tag}</span>
                         </div>
                       </div>
-                    
+
                       <input id="activate-${article/UID}" type="checkbox" checked="checked" >articles</input>
                       <input id="activate-comments-${article/UID}" type="checkbox" >comments</input>
                     </div>
@@ -127,7 +127,7 @@
                   <div id="left-column" class="span2" >
                       <div id="selected-tags">
                         <div  class="unstyled" id="selected-tags-list">
-                            <span tal:repeat="tag article/Subject" class="selected">${tag}</span>
+                            <span tal:repeat="tag article/subject" class="selected">${tag}</span>
                         </div>
                       </div>
                     </div>

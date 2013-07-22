@@ -150,6 +150,8 @@ class Tags(object):
             obj = api.content.create(
                 type='tribuna.content.tag',
                 title=title,
+                description="",
+                highlight_in_navigation=False,
                 container=site['tags'])
             api.content.transition(obj=obj, transition='submit')
 

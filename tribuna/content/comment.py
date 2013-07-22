@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from plone.app.discussion.interfaces import IComment
 from plone.app.discussion.comment import Comment
 from zope.component.factory import Factory
@@ -68,12 +71,16 @@ def add_tags(comment, event):
     # titles that are already there, don't make new ones (above)
 
 
-    site = api.portal.get()
-    with api.env.adopt_roles(['Site Administrator']):
+    # XXX
+    # FIX
+    with api.env.adopt_user('tags_user'):
+        site = api.portal.get()
         comment.setSubject(tuple(value))
         for title in new_value:
             obj = api.content.create(
                 type='tribuna.content.tag',
                 title=title,
+                description="",
+                highlight_in_navigation=False,
                 container=site['tags'])
             api.content.transition(obj=obj, transition='submit')

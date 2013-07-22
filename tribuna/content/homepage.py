@@ -69,13 +69,15 @@ class HomePageView(grok.View):
     def tag_description(self):
         sdm = self.context.session_data_manager
         session = sdm.getSessionData(create=True)
+
         title = session['portlet_data']['tags'][0]
-        catalog = api.portal.get_tool(name='portal_catalog')
-        tag = catalog(
-            Title=title,
-            portal_type='tribuna.content.tag',
-        )[0].getObject()
-        if tag.description == "":
+        with api.env.adopt_user('tags_user'):
+            catalog = api.portal.get_tool(name='portal_catalog')
+            tag = catalog(
+                Title=title,
+                portal_type='tribuna.content.tag',
+            )[0].getObject()
+        if not tag.description:
             return u"Description not added yet!"
         return tag.description
 

@@ -8,23 +8,27 @@ from plone import api
 from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.vocabulary import SimpleVocabulary
 
-
+# XXX
+# FIX
 def tags_published_highlighted():
-    catalog = api.portal.get_tool(name='portal_catalog')
-    tags = tuple(i.Title for i in catalog(
-        portal_type='tribuna.content.tag',
-        review_state=['published', 'pending'],
-        highlight_in_navigation=True,
-    ))
+    with api.env.adopt_user('tags_user'):
+        catalog = api.portal.get_tool(name='portal_catalog')
+        tags = tuple(i.Title for i in catalog(
+            portal_type='tribuna.content.tag',
+            review_state=['published', 'pending'],
+            highlight_in_navigation=True,
+        ))
     return tags
 
-
+# XXX
+# FIX
 def tags_published():
-    catalog = api.portal.get_tool(name='portal_catalog')
-    tags = tuple(i.Title for i in catalog(
-        portal_type='tribuna.content.tag',
-        review_state=['published', 'pending'],
-    ))
+    with api.env.adopt_user('tags_user'):
+        catalog = api.portal.get_tool(name='portal_catalog')
+        tags = tuple(i.Title for i in catalog(
+            portal_type='tribuna.content.tag',
+            review_state=['published', 'pending'],
+        ))
     return tags
 
 
