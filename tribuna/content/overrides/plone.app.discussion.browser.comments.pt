@@ -26,11 +26,11 @@
 
         <fieldset>
 
-            <legend i18n:translate="label_add_comment">Add comment</legend>
+            <!-- <legend i18n:translate="label_add_comment">Add comment</legend>
             <p tal:content="view/comment_transform_message">
                 You can add a comment by filling out the form below. Plain text
                 formatting.
-            </p>
+            </p> -->
 
             <div tal:replace="structure view/form/render" />
 
@@ -68,7 +68,7 @@
                 </button>
                 <br />
                 </div>
-                
+
                 <div class="commentDate"
                          tal:content="python:view.format_time(reply.modification_date)">
                          8/23/2001 12:40:44 PM
@@ -117,7 +117,7 @@
                       <li  class="commentTag" tal:content="tag" />
                     </tal:tags>
                 </ul>
-                
+
             </div>
             <br /><br />
         </tal:getreplies>
