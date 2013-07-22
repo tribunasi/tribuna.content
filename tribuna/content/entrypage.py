@@ -106,17 +106,17 @@ class IChangePagePictureForm(form.Schema):
 
     title = schema.TextLine(
         title=_(u"Title"),
-        required=False
+        required=True
     )
 
     author = schema.TextLine(
         title=_(u"Author"),
-        required=False
+        required=True
     )
 
     picture = NamedBlobImage(
         title=_(u"Please upload an image"),
-        required=False,
+        required=True,
     )
 
     image_type = schema.Choice(
@@ -177,17 +177,17 @@ class IChangePageTextForm(form.Schema):
 
     title = schema.TextLine(
         title=_(u"Name"),
-        required=False
+        required=True
     )
 
     author = schema.TextLine(
         title=_(u"Author"),
-        required=False
+        required=True
     )
 
-    text =  schema.TextLine(
+    text = schema.TextLine(
         title=_(u"Text"),
-        required=False
+        required=True
     )
 
     font_type = schema.Choice(
