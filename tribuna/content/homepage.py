@@ -94,3 +94,8 @@ class HomePageView(grok.View):
         if self.articles_union() == []:
             return False
         return True
+
+    def shorten_text(self, text):
+        if len(text) > 140:
+            return text[:140] + ' ...'
+        return text

@@ -87,7 +87,7 @@
                       <input id="activate-${article/UID}" type="checkbox" checked="checked" >articles</input>
                       <input id="activate-comments-${article/UID}" type="checkbox" >comments</input>
                     </div>
-                    <div id="center-column-${article/UID}" class="span10">
+                    <div id="center-column-${article/UID}" class="main-page-article-body span12">
                       <h3 tal:content="article/title" />
                       <img tal:attributes="src string:${article/absolute_url}/@@images/image" />
                       <p tal:content="structure article/text" />
@@ -100,24 +100,33 @@
 
                             if (! $(this).attr("checked")) {
                               $(this).attr("checked", "checked");
-                              $('#center-column-${article/UID}').attr("class", "span10");
+                              // $('#center-column-${article/UID}').attr("class", "span10");
+                              $('#center-column-${article/UID}').removeClass('hidden');
+                              $('#comments-${article/UID}').removeClass('span12').addClass('span4');
 
                             } else {
                               $(this).removeAttr("checked");
-                              $('#center-column-${article/UID}').attr("class", "span10 hidden");
+                              // $('#center-column-${article/UID}').attr("class", "span10 hidden");
+                              $('#center-column-${article/UID}').addClass('hidden');
+                              $('#comments-${article/UID}').removeClass('span4').addClass('span12');
                             }
                           });
                         $('#activate-comments-${article/UID}').click(function () {
 
                             if (! $(this).attr("checked")) {
                               $(this).attr("checked", "checked");
+                              $('#comments-${article/UID}').removeClass('hidden');
+                              $('#center-column-${article/UID}').removeClass('span12').addClass('span10');
+
                               if ($('#comments-${article/UID}').contents().length == 0) {
                                 $('#comments-${article/UID}').load('${article/absolute_url}/@@comments-view');
+                                $('#comments-${article/UID}').css('overflow-y', 'auto').height($('#center-column-${article/UID}').height());
                               }
-                              $('#comments-${article/UID}').attr("class", "span4");
+
                             } else {
                               $(this).removeAttr("checked");
-                              $('#comments-${article/UID}').attr("class", "span2 hidden");
+                              $('#comments-${article/UID}').addClass('hidden');
+                              $('#center-column-${article/UID}').removeClass('span10').addClass('span12');
                             }
                           });
                        });
@@ -131,7 +140,7 @@
                         </div>
                       </div>
                     </div>
-                    <div id="center-column" class="span10">
+                    <div id="center-column" class="span12">
                       <h3 tal:content="article/author_name" />
                       <img tal:attributes="src string:++theme++tribuna.diazotheme/img/blank.gif" />
                       <p tal:content="structure article/getText" />
@@ -152,32 +161,6 @@
 
         <div tal:replace="structure provider:plone.belowcontentbody" />
 
-        <script>
-          // var gal;
-          // $(document).ready(function(){
-          //   setGallery($(window).width()*0.95);
-          // });
-          // var gal;
-          // function setGallery(width){
-          //   gal = $('#gallery').galleryView({
-          //       panel_width: width,
-          //       panel_height: 600,
-          //       frame_width: width/8,
-          //       frame_height: 90,
-          //       pause_on_hover: true,
-          //       autoplay: false,
-          //       filmstrip_position: "top",
-          //       enable_overlay: true,
-          //       show_captions: true,
-          //       transition_interval: 0,
-          //       start_frame: 0
-          //   });
-          // }
-
-          // $(window).resize(function() {
-          //   setGallery($(window).width()*0.95);
-          // });
-        </script>
     </tal:main-macro>
 </metal:main>
 

@@ -106,12 +106,12 @@ class DefaultSessionViewlet(BrowserView):
 
 js_template = """
 <script id="gallery-start">
-    //$(document).ready(function(){
+    //$(window).load(function(){
         $('#gallery').galleryView({
             panel_width: $(window).width(),
-            panel_height: $(document).height(),
-            frame_width: $(window).width()*0.95/8,
-            frame_height: 90,
+            panel_height: $(window).height() - 30 - $('.navbar-fixed-top').height() - 16,
+            frame_width: $(window).width()/8,
+            frame_height:  54, //seems like it automatically adds 26px ...
             pause_on_hover: true,
             autoplay: false,
             filmstrip_position: "top",
