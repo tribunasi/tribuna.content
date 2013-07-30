@@ -110,7 +110,8 @@ js_template = """
         $('#gallery').galleryView({
             panel_width: $(window).width(),
             panel_height: $(window).height() - 30 - $('.navbar-fixed-top').height() - 16,
-            frame_width: $(window).width()/8,
+            //frame_width: $(window).width()/parseInt($(window).width()/220 + 1),
+            frame_width: 220,
             frame_height:  54, //seems like it automatically adds 26px ...
             pause_on_hover: true,
             autoplay: false,

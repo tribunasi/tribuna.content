@@ -21,7 +21,7 @@
             />
         <script type="text/javascript"
             tal:define="navroot context/@@plone_portal_state/navigation_root_url"
-            tal:attributes="src string:${navroot}/++resource++tribuna.diazotheme/js/jquery.galleryview-3.0.min.js"
+            tal:attributes="src string:${navroot}/++resource++tribuna.diazotheme/js/jquery.galleryview-3.0.js"
             ></script>
         <script type="text/javascript"
             tal:define="navroot context/@@plone_portal_state/navigation_root_url"
@@ -60,7 +60,7 @@
           <ul id="gallery">
 
           <tal:block tal:repeat="article view/articles_all">
-            <li>
+            <li id="${article/getId}">
               <tal:block tal:condition="python: article.portal_type == 'tribuna.content.article'">
                 <div tal:content="article/title" />
                 <div class="red">
@@ -91,10 +91,10 @@
                       <h3 tal:content="article/title" />
                       <img tal:attributes="src string:${article/absolute_url}/@@images/image" />
                       <p tal:content="structure article/text" />
-                      <div tal:content="structure article/view/get_addthis_viewlet" />
+                      <!-- <div tal:content="structure article/view/get_addthis_viewlet" /> -->
                     </div>
 
-                    <div id="comments-${article/UID}" class="span4 hidden" url="${article/absolute_url}/@@comments-view" />
+                    <div id="comments-${article/UID}" class="span4 hidden main-page-comments" url="${article/absolute_url}/@@comments-view" />
                     <script>
                       $(document).ready(function() {
                         $('#activate-${article/UID}').click(function () {
@@ -121,7 +121,7 @@
 
                               if ($('#comments-${article/UID}').contents().length == 0) {
                                 $('#comments-${article/UID}').load('${article/absolute_url}/@@comments-view');
-                                $('#comments-${article/UID}').css('overflow-y', 'auto').height($('#center-column-${article/UID}').height());
+                                $('#comments-${article/UID}').css('overflow-y', 'auto');
                               }
 
                             } else {
