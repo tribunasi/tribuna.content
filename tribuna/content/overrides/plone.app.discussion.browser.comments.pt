@@ -55,8 +55,7 @@
                                  id string:${reply/getId}"
                  tal:condition="python:canReview or review_state == 'published'">
 
-              <div tal:content="python: dir(reply_dict)" />
-              <div tal:content="python: dir(comment)" />
+              <!-- <div tal:content="structure reply/view/get_addthis_viewlet" /> -->
               <div class="documentByLine" i18n:domain="plone.app.discussion">
                     <tal:name>
                         <span tal:replace="reply/author_name" />
