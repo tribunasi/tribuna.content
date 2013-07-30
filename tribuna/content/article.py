@@ -26,6 +26,31 @@ class IArticle(form.Schema):
         title=_(u"Article description"),
     )
 
+class View(grok.View):
+    grok.context(IArticle)
+    grok.require('zope2.View')
+
+    def get_addthis_viewlet(self):
+                request = self.request
+                context = self.context
+                #import pdb; pdb.set_trace()
+                # viewlet managers also require a view object for adaptation
+                view = View(context, request)
+                if not IViewView.providedBy(view):
+                    alsoProvides(view, IViewView)
+                # finally, you need the name of the manager you want to find
+                manager_name = 'plone.belowcontentbody'
+
+                # viewlet managers are found by Multi-Adapter lookup
+                manager = getMultiAdapter((context, request, view), IViewletManager, manager_name)
+
+                # calling update() on a manager causes it to set up its viewlets
+                manager.update()
+
+                return manager.viewlets[-1].render()
+
+    
+
 class CommentsView(grok.View):
     grok.context(IArticle)
     grok.require('zope2.View')
@@ -50,20 +75,22 @@ class CommentsView(grok.View):
             return manager.viewlets[3].render()
 
     def get_addthis_viewlet(self):
-            request = self.request
-            context = self.context
-            import pdb; pdb.set_trace()
-            # viewlet managers also require a view object for adaptation
-            view = View(context, request)
-            if not IViewView.providedBy(view):
-                alsoProvides(view, IViewView)
-            # finally, you need the name of the manager you want to find
-            manager_name = 'plone.belowcontentbody'
+                request = self.request
+                context = self.context
+                #import pdb; pdb.set_trace()
+                # viewlet managers also require a view object for adaptation
+                view = View(context, request)
+                if not IViewView.providedBy(view):
+                    alsoProvides(view, IViewView)
+                # finally, you need the name of the manager you want to find
+                manager_name = 'plone.belowcontentbody'
 
-            # viewlet managers are found by Multi-Adapter lookup
-            manager = getMultiAdapter((context, request, view), IViewletManager, manager_name)
+                # viewlet managers are found by Multi-Adapter lookup
+                manager = getMultiAdapter((context, request, view), IViewletManager, manager_name)
 
-            # calling update() on a manager causes it to set up its viewlets
-            manager.update()
+                # calling update() on a manager causes it to set up its viewlets
+                manager.update()
 
-            return manager.viewlets[3].render()
+                return manager.viewlets[-1].render()
+
+   

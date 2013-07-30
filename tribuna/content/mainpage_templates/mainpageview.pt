@@ -91,6 +91,7 @@
                       <h3 tal:content="article/title" />
                       <img tal:attributes="src string:${article/absolute_url}/@@images/image" />
                       <p tal:content="structure article/text" />
+                      <div tal:content="structure article/view/get_addthis_viewlet" />
                     </div>
 
                     <div id="comments-${article/UID}" class="span4 hidden" url="${article/absolute_url}/@@comments-view" />

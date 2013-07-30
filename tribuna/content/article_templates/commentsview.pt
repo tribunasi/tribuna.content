@@ -1,4 +1,5 @@
 <div id="plone-comments-${context/UID}" tal:content="structure view/get_comment_viewlet" ></div>
+
 <script>
 
 
