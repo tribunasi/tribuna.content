@@ -68,8 +68,8 @@
                 </div>
               </tal:block>
               <tal:block tal:condition="python: article.portal_type == 'Discussion Item'">
-                <div tal:content="article/title" />
-                <div class="red">
+                <div tal:content="python: article.getText().replace('<p>', '').replace('</p>','')[:25]" />
+		<div class="red">
                   komentar
                 </div>
               </tal:block>
@@ -116,6 +116,7 @@
 
                             if (! $(this).attr("checked")) {
                               $(this).attr("checked", "checked");
+
                               $('#comments-${article/UID}').removeClass('hidden');
                               $('#center-column-${article/UID}').removeClass('span12').addClass('span10');
 
@@ -145,6 +146,7 @@
                       <h3 tal:content="article/author_name" />
                       <img tal:attributes="src string:++theme++tribuna.diazotheme/img/blank.gif" />
                       <p tal:content="structure article/getText" />
+
                     </div>
 
                 </tal:block>

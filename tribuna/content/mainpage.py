@@ -5,6 +5,7 @@
 
 from five import grok
 from zope.interface import Interface
+from plone import api
 from plone.app.layout.globals.interfaces import IViewView
 from zope.interface import alsoProvides
 from zope.component import getMultiAdapter
@@ -24,10 +25,15 @@ class MainPageView(grok.View):
 
         sdm = self.context.session_data_manager
         session = sdm.getSessionData(create=True)
+        get_article = self.request.get('article')
         if('content_list' in session.keys()):
-            #import pdb; pdb.set_trace()
-            return(session['content_list']['intersection'] +
-                   session['content_list']['union'])
+            full_session = session['content_list']['intersection'] + \
+                session['content_list']['union']
+            if get_article in [i.id for i in full_session]:
+                return full_session
+            else:
+                catalog = api.portal.get_tool(name='portal_catalog')
+                return [catalog(id=get_article)[0].getObject(), ]
         return []
 
     def update(self):

@@ -121,7 +121,10 @@ js_template = """
             show_captions: true,
             transition_interval: 0,
             pointer_size: 0,
-            start_frame: %d
+            start_frame: %d,
+            slide_method: 'pointer',
+            animate_pointer: false,
+            transition_speed: 0
         });
     //});
 </script>
