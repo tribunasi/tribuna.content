@@ -33,6 +33,18 @@
             tal:define="navroot context/@@plone_portal_state/navigation_root_url"
             tal:attributes="src string:${navroot}/++resource++tribuna.diazotheme/js/jquery.timers-1.2.js"
             ></script>
+            <script type="text/javascript">
+                $(document).ready(function() {
+                  vpw = window.innerWidth;
+                  vph = window.innerHeight;
+                  $("#tag-picture img").css({"height": vph-100});
+                  $('#scroll').click(function() {
+                        $('html, body').animate({
+                             scrollTop: $("#container").offset().top
+                         }, 500);
+                    })
+                });
+            </script>
 </metal:block>
 <metal:main fill-slot="main">
     <tal:main-macro metal:define-macro="main">
@@ -53,11 +65,20 @@
             tal:define="has_one_tag view/only_one_tag;
                         homepageClass python: has_one_tag and 'span3' or 'span10';
                         hasOneTagClassAddition python: has_one_tag and '-one' or ''">
+          <div id="tag-picture" tal:condition="has_one_tag">
+            <img tal:condition="view/tag_picture"  src="${view/tag_picture}" style="margin-left: auto; margin-right: auto; display: block;"/>
+            <input type="button" value="Scroll" id="scroll" style="margin-left: auto; margin-right: auto; display: block;"/>
+                      </div>
           <div id="tag-description-div" tal:condition="has_one_tag">
             <h2 i18n:translate="">Description</h2>
             ${view/tag_description}
           </div>
           <div id="homepage-div" class="${homepageClass}">
+            <!-- <tal:block define="form view/search_form">
+                      <tal:block define="view nocall:form">
+                          <metal:block use-macro="form/@@ploneform-macros/titlelessform" />
+                      </tal:block>
+                  </tal:block> -->
             <h2 i18n:translate="" tal:condition="view/is_text_view">Articles</h2>
 
            <tal:block tal:condition="view/is_text_view">

@@ -5,7 +5,42 @@
 
 from five import grok
 from plone import api
+from plone.directives import form
+from zope import schema
+from tribuna.content import _
+from z3c.form import button
 from zope.interface import Interface
+
+
+class ISearchForm(form.Schema):
+
+    search = schema.TextLine(
+        title=_(u"Search"),
+        required=True
+    )
+
+
+class SearchForm(form.SchemaForm):
+    """ Defining form handler for change page form."""
+
+    grok.name('change-bar-form')
+    grok.require('zope2.View')
+    grok.permissions('zope.Public')
+    grok.context(ISearchForm)
+
+    schema = ISearchForm
+    ignoreContext = True
+    label = _(u"Search")
+    #description = _(u"New entry page form")
+
+    @button.buttonAndHandler(_(u'Search'))
+    def handleApply(self, action):
+        data, errors = self.extractData()
+        #if errors:
+        #    self.status = self.formErrorsMessage
+        #    return
+
+        self.request.response.redirect(self.context.absolute_url())
 
 
 class HomePageView(grok.View):
@@ -81,6 +116,21 @@ class HomePageView(grok.View):
             return u"Description not added yet!"
         return tag.description
 
+    def tag_picture(self):
+        sdm = self.context.session_data_manager
+        session = sdm.getSessionData(create=True)
+
+        title = session['portlet_data']['tags'][0]
+        with api.env.adopt_user('tags_user'):
+            catalog = api.portal.get_tool(name='portal_catalog')
+            tag = catalog(
+                Title=title,
+                portal_type='tribuna.content.tag',
+            )[0].getObject()
+        if not hasattr(tag, 'image') or not tag.image:
+            return None
+        return str(tag.absolute_url()) + "/@@images/image"
+
     def show_intersection(self):
         if self.only_one_tag() is True:
             return False
@@ -99,3 +149,9 @@ class HomePageView(grok.View):
         if len(text) > 140:
             return text[:140] + ' ...'
         return text
+
+    def search_form(self):
+        """Return a form which can change the entry page."""
+        form1 = SearchForm(self.context, self.request)
+        form1.update()
+        return form1

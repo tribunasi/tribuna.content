@@ -26,13 +26,7 @@
 
         <fieldset>
 
-            <!-- <legend i18n:translate="label_add_comment">Add comment</legend>
-            <p tal:content="view/comment_transform_message">
-                You can add a comment by filling out the form below. Plain text
-                formatting.
-            </p> -->
-
-            <div tal:replace="structure view/form/render" />
+           <div tal:replace="structure view/form/render" />
 
         </fieldset>
     </div>
@@ -55,7 +49,6 @@
                                  id string:${reply/getId}"
                  tal:condition="python:canReview or review_state == 'published'">
 
-              <!-- <div tal:content="structure reply/view/get_addthis_viewlet" /> -->
               <div class="documentByLine" i18n:domain="plone.app.discussion">
                     <tal:name>
                         <span tal:replace="reply/author_name" />
@@ -63,21 +56,41 @@
                               i18n:translate="label_anonymous">Anonymous</span>
 
                     </tal:name>
+                    <a class="twitter-share" href="#"
+                      onclick="
+                        window.open(
+                          'http://twitter.com/share?url=${context/absolute_url}/main-page/?article=${reply/getId}',
+                          'twitter-share-dialog',
+                          'width=626,height=436');
+                        return false;">
+                      <img src="${context/@@plone_portal_state/navigation_root_url}/++resource++tribuna.diazotheme/img/twitter_button.png" style="height: 23px; width:23px"/>
+                    </a>
+
+
+                    <a class="facebook-share" href="#"
+                      onclick="
+                        window.open(
+                          'https://www.facebook.com/sharer/sharer.php?u=${context/absolute_url}/main-page/?article=${reply/getId}',
+                          'facebook-share-dialog',
+                          'width=626,height=436');
+                        return false;">
+                      <img src="${context/@@plone_portal_state/navigation_root_url}/++resource++tribuna.diazotheme/img/facebook_icon.jpg" style="height: 23px; width:23px"/>
+                    </a>
                     <button class="context reply-to-comment-button allowMultiSubmit"
                         tal:condition="python:isDiscussionAllowed and (isAnon and isAnonymousDiscussionAllowed or userHasReplyPermission)"
                         i18n:translate="label_reply">
                     Reply
-                </button>
-                <br />
+                  </button>
+
                 </div>
 
                 <div class="commentDate"
                          tal:content="python:view.format_time(reply.modification_date)">
                          8/23/2001 12:40:44 PM
-                    </div>
+                </div>
                 <div class="commentBody">
 
-                    <p tal:content="structure reply/getText" />
+                    <p tal:replace="structure reply/getText" />
 
                     <div class="commentActions">
                         <form name="delete"

@@ -23,6 +23,7 @@
  <!-- enabled behaviors -->
  <property name="behaviors">
      <element value="plone.app.content.interfaces.INameFromTitle" />
+     <element value="tribuna.content.behaviors.behaviors.ITermitnjakLeadImage" />
  </property>
 
  <!-- View information -->

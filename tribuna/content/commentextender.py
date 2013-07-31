@@ -58,4 +58,4 @@ class CommentExtender(extensible.FormExtender):
         # Add the fields defined in ICommentExtenderFields to the form.
         self.add(ICommentExtenderFields, prefix="")
         # Move the website field to the top of the comment form.
-        self.move('subject', before='text', prefix="")
+        # self.move('subject', after='text', prefix="")
