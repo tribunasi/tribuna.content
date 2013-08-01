@@ -77,7 +77,8 @@ def articles(session):
 
         all_content = [content.getObject() for content in all_content]
 
-        session['content_list']['intersection'] = all_content[:intersection_count]
+        session['content_list']['intersection'] = all_content[
+            :intersection_count]
         session['content_list']['union'] = all_content[intersection_count:]
 
         return True
@@ -150,7 +151,6 @@ def articles(session):
             break
 
     all_content = [content.getObject() for content in all_content]
-
 
     session['content_list']['intersection'] = all_content[:intersection_count]
     session['content_list']['union'] = all_content[intersection_count:]

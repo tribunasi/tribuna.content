@@ -142,7 +142,8 @@ class Tags(object):
         # new_value = [k for k in value
         #              if k.lower().replace(' ', '') not in titles]
 
-        # # Set Subject as an union of tags in tags_old and tags_new but use the
+        # # Set Subject as an union of tags in tags_old and tags_new but use
+        # the
         # # titles that are already there, don't make new ones (above)
         # self.context.setSubject(tuple(old_tags.union(value)))
 
@@ -162,8 +163,10 @@ class Tags(object):
 
             # Compare tags with the one already in our system, if they're the
             # "same" (lower and ignore spaces), use those tags
-            titles = dict((our_unicode(it.Title).lower().replace(' ', ''), it.Title)
-                          for it in items)
+            titles = dict(
+                (our_unicode(it.Title).lower().replace(' ', ''), it.Title)
+                for it in items
+            )
 
             dict_value = {}
             for it in value:

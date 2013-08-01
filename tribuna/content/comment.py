@@ -7,7 +7,7 @@ from zope.component.factory import Factory
 from plone.indexer import indexer
 from zope.interface import implements
 from plone import api
-from rwproperty import getproperty, setproperty
+#from rwproperty import getproperty, setproperty
 from zope.lifecycleevent.interfaces import IObjectCreatedEvent
 from five import grok
 
@@ -50,8 +50,10 @@ def add_tags(comment, event):
 
         # Compare tags with the one already in our system, if they're the
         # "same" (lower and ignore spaces), use those tags
-        titles = dict((our_unicode(it.Title).lower().replace(' ', ''), it.Title)
-                      for it in items)
+        titles = dict(
+            (our_unicode(it.Title).lower().replace(' ', ''), it.Title)
+            for it in items
+        )
 
         dict_value = {}
         for it in value:
@@ -61,7 +63,6 @@ def add_tags(comment, event):
 
         new_value = []
         added_values = []
-
 
         for key, val in dict_value.items():
             if key in titles.keys():

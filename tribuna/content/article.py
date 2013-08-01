@@ -26,30 +26,6 @@ class IArticle(form.Schema):
         title=_(u"Article description"),
     )
 
-# class View(grok.View):
-#     grok.context(IArticle)
-#     grok.require('zope2.View')
-
-#     def get_addthis_viewlet(self):
-#                 request = self.request
-#                 context = self.context
-#                 #import pdb; pdb.set_trace()
-#                 # viewlet managers also require a view object for adaptation
-#                 view = View(context, request)
-#                 if not IViewView.providedBy(view):
-#                     alsoProvides(view, IViewView)
-#                 # finally, you need the name of the manager you want to find
-#                 manager_name = 'plone.belowcontentbody'
-
-#                 # viewlet managers are found by Multi-Adapter lookup
-#                 manager = getMultiAdapter((context, request, view), IViewletManager, manager_name)
-
-#                 # calling update() on a manager causes it to set up its viewlets
-#                 manager.update()
-
-#                 return manager.viewlets[-1].render()
-
-
 
 class CommentsView(grok.View):
     grok.context(IArticle)
@@ -57,40 +33,40 @@ class CommentsView(grok.View):
     grok.name('comments-view')
 
     def get_comment_viewlet(self):
-            request = self.request
-            context = self.context
+        request = self.request
+        context = self.context
 
-            # viewlet managers also require a view object for adaptation
-            view = View(context, request)
-            if not IViewView.providedBy(view):
-                alsoProvides(view, IViewView)
+        # viewlet managers also require a view object for adaptation
+        view = View(context, request)
+        if not IViewView.providedBy(view):
+            alsoProvides(view, IViewView)
+        # finally, you need the name of the manager you want to find
+        manager_name = 'plone.belowcontent'
+
+        # viewlet managers are found by Multi-Adapter lookup
+        manager = getMultiAdapter(
+            (context, request, view), IViewletManager, manager_name)
+
+        # calling update() on a manager causes it to set up its viewlets
+        manager.update()
+        return manager.viewlets[3].render()
+
+    def get_addthis_viewlet(self):
+        request = self.request
+        context = self.context
+
+        # viewlet managers also require a view object for adaptation
+        view = View(context, request)
+        if not IViewView.providedBy(view):
+            alsoProvides(view, IViewView)
             # finally, you need the name of the manager you want to find
-            manager_name = 'plone.belowcontent'
+            manager_name = 'plone.belowcontentbody'
 
             # viewlet managers are found by Multi-Adapter lookup
-            manager = getMultiAdapter((context, request, view), IViewletManager, manager_name)
+            manager = getMultiAdapter(
+                (context, request, view), IViewletManager, manager_name)
 
             # calling update() on a manager causes it to set up its viewlets
             manager.update()
-            return manager.viewlets[3].render()
 
-    def get_addthis_viewlet(self):
-                request = self.request
-                context = self.context
-                #import pdb; pdb.set_trace()
-                # viewlet managers also require a view object for adaptation
-                view = View(context, request)
-                if not IViewView.providedBy(view):
-                    alsoProvides(view, IViewView)
-                # finally, you need the name of the manager you want to find
-                manager_name = 'plone.belowcontentbody'
-
-                # viewlet managers are found by Multi-Adapter lookup
-                manager = getMultiAdapter((context, request, view), IViewletManager, manager_name)
-
-                # calling update() on a manager causes it to set up its viewlets
-                manager.update()
-
-                return manager.viewlets[-1].render()
-
-
+            return manager.viewlets[-1].render()

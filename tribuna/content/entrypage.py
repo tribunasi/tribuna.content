@@ -8,7 +8,7 @@ from tribuna.content import _
 from tribuna.content.config import ENTRY_PAGES_PATH
 from zope import schema
 from z3c.form import button
-from plone.dexterity.utils import createContentInContainer
+#from plone.dexterity.utils import createContentInContainer
 from plone import api
 from datetime import datetime
 #from plone.formwidget.contenttree import ContentTreeFieldWidget
@@ -18,9 +18,8 @@ from zope.schema.vocabulary import SimpleVocabulary
 #from z3c.form import field
 #from zope.interface import invariant
 from zope.interface import Invalid
-from zope.schema.vocabulary import SimpleVocabulary
 from zope.schema.vocabulary import SimpleTerm
-from plone.app.textfield import RichText
+#from plone.app.textfield import RichText
 
 
 class SelectOne(Invalid):

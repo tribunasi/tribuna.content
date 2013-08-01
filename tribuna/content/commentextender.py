@@ -15,14 +15,9 @@ from zope.component import adapts
 from zope.interface import Interface
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 
-from tribuna.content import _
-from tribuna.content.utils import TagsListHighlighted
-from tribuna.content.utils import our_unicode
 
-
-# Interface to define the fields we want to add to the comment form.
 class ICommentExtenderFields(Interface):
-
+    """Interface to define the fields we want to add to the comment form."""
     form.widget(subject=TokenInputFieldWidget)
     subject = schema.List(
         title=(u"Tags"),
@@ -32,19 +27,22 @@ class ICommentExtenderFields(Interface):
     )
 
 
-# Persistent class that implements the ICommentExtenderFields interface
 class CommentExtenderFields(Persistent):
+    """Persistent class that implements the ICommentExtenderFields interface.
+    """
     interface.implements(ICommentExtenderFields)
     adapts(Comment)
     subject = u""
+
 
 # CommentExtenderFields factory
 CommentExtenderFactory = factory(CommentExtenderFields)
 
 
-# Extending the comment form with the fields defined in the
-# ICommentExtenderFields interface.
 class CommentExtender(extensible.FormExtender):
+    """Extending the comment form with the fields defined in the
+    ICommentExtenderFields interface.
+    """
     adapts(Interface, IDefaultBrowserLayer, CommentForm)
 
     fields = Fields(ICommentExtenderFields)

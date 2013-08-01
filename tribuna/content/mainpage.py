@@ -53,7 +53,8 @@ class MainPageView(grok.View):
         manager_name = 'plone.belowcontent'
 
         # viewlet managers are found by Multi-Adapter lookup
-        manager = getMultiAdapter((context, request, view), IViewletManager, manager_name)
+        manager = getMultiAdapter(
+            (context, request, view), IViewletManager, manager_name)
 
         # calling update() on a manager causes it to set up its viewlets
         manager.update()
