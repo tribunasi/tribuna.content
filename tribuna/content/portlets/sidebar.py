@@ -154,6 +154,7 @@ def articles(session):
 
     session['content_list']['intersection'] = all_content[:intersection_count]
     session['content_list']['union'] = all_content[intersection_count:]
+    session["search-view"] = False
 
 
 class ISidebarForm(form.Schema):

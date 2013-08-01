@@ -103,16 +103,6 @@ class IEntryPage(form.Schema):
 
 class IChangePagePictureForm(form.Schema):
 
-    title = schema.TextLine(
-        title=_(u"Title"),
-        required=False
-    )
-
-    author = schema.TextLine(
-        title=_(u"Author"),
-        required=False
-    )
-
     picture = NamedBlobImage(
         title=_(u"Please upload an image"),
         required=True,
@@ -122,10 +112,20 @@ class IChangePagePictureForm(form.Schema):
         title=_(u"image type"),
         vocabulary=SimpleVocabulary([
             SimpleTerm('tile', 'tile', _(u'Tiles over page')),
-            SimpleTerm('original', 'original', _(u'Original size')),
+            # SimpleTerm('original', 'original', _(u'Original size')),
             SimpleTerm('cover', 'cover', _(u'Cover everything')),
         ]),
         required=True,
+    )
+
+    title = schema.TextLine(
+        title=_(u"Title"),
+        required=False
+    )
+
+    author = schema.TextLine(
+        title=_(u"Author"),
+        required=False
     )
     # @invariant
     # def validateOneSelected(data):
@@ -173,16 +173,6 @@ class ChangePagePictureForm(form.SchemaForm):
 
 class IChangePageTextForm(form.Schema):
 
-    title = schema.TextLine(
-        title=_(u"Name"),
-        required=False
-    )
-
-    author = schema.TextLine(
-        title=_(u"Author"),
-        required=False
-    )
-
     text = schema.TextLine(
         title=_(u"Text"),
         required=True
@@ -196,6 +186,16 @@ class IChangePageTextForm(form.Schema):
             SimpleTerm('helvetica', 'helvetica', _(u'Helvetica')),
         ]),
         required=True,
+    )
+
+    title = schema.TextLine(
+        title=_(u"Name"),
+        required=False
+    )
+
+    author = schema.TextLine(
+        title=_(u"Author"),
+        required=False
     )
 
     # @invariant

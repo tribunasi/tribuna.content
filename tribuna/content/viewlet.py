@@ -67,7 +67,7 @@ class DefaultSessionViewlet(BrowserView):
         articles(session)
 
     def default_view_type(self, session):
-        session.set('view_type', 'text')
+        session.set('view_type', 'drag')
 
     def checkGET(self, session):
         get_article = self.request.get('article')
@@ -91,9 +91,13 @@ class DefaultSessionViewlet(BrowserView):
         """
         sdm = self.context.session_data_manager
         session = sdm.getSessionData(create=True)
-        if('content_list' not in session.keys()):
+        #import pdb; pdb.set_trace()
+        get_default = self.request.get('default')
+        if get_default and "portlet_data" in session.keys():
+            del session["portlet_data"]
+        if(get_default or 'content_list' not in session.keys()):
             self.default_content_list(session)
-        if('view_type' not in session.keys()):
+        if(get_default or 'view_type' not in session.keys()):
             self.default_view_type(session)
 
         self.checkGET(session)
@@ -124,7 +128,8 @@ js_template = """
             start_frame: %d,
             slide_method: 'pointer',
             animate_pointer: false,
-            transition_speed: 0
+            transition_speed: 0,
+            frame_gap: 20,
         });
     //});
 </script>

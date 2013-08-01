@@ -8,8 +8,23 @@ from plone import api
 from plone.directives import form
 from zope import schema
 from tribuna.content import _
+#from tribuna.content.viewlet import DefaultSessionViewlet
 from z3c.form import button
 from zope.interface import Interface
+
+
+def search_articles(query, session):
+    catalog = api.portal.get_tool(name="portal_catalog")
+    results = catalog(SearchableText=query, portal_type={
+                    "query":["tribuna.content.article", "Discussion Item"],
+                    "operator" : "or"
+                })
+    all_content = [content.getObject() for content in results]
+    session['content_list']['intersection'] = all_content
+    session['content_list']['union'] = []
+    session['search-view'] = True
+    if "portlet_data" in session.keys():
+        session["portlet_data"]["tags"] = []
 
 
 class ISearchForm(form.Schema):
@@ -23,7 +38,7 @@ class ISearchForm(form.Schema):
 class SearchForm(form.SchemaForm):
     """ Defining form handler for change page form."""
 
-    grok.name('change-bar-form')
+    grok.name('search-form')
     grok.require('zope2.View')
     grok.permissions('zope.Public')
     grok.context(ISearchForm)
@@ -39,14 +54,26 @@ class SearchForm(form.SchemaForm):
         #if errors:
         #    self.status = self.formErrorsMessage
         #    return
-
-        self.request.response.redirect(self.context.absolute_url())
+        query = "search" in data and data["search"] or ""
+        sdm = self.context.session_data_manager
+        session = sdm.getSessionData(create=True)
+        search_articles(query, session)
+        url = api.portal.get().absolute_url()
+        self.request.response.redirect("{0}/@@home-page".format(url))
 
 
 class HomePageView(grok.View):
     grok.context(Interface)
     grok.require('zope2.View')
     grok.name('home-page')
+
+    def check_if_default(self):
+        get_default = self.request.get('default')
+        if get_default:
+            sdm = self.context.session_data_manager
+            session = sdm.getSessionData(create=True)
+            for i in session.keys():
+                del session[i]
 
     def is_text_view(self):
         """Check if text view (this is the basic view) is selected.
@@ -136,6 +163,10 @@ class HomePageView(grok.View):
             return False
         if self.articles_intersection() == []:
             return False
+        sdm = self.context.session_data_manager
+        session = sdm.getSessionData(create=True)
+        if "search-view" in session.keys() and session["search-view"]:
+            return False
         return True
 
     def show_union(self):
@@ -155,3 +186,10 @@ class HomePageView(grok.View):
         form1 = SearchForm(self.context, self.request)
         form1.update()
         return form1
+
+    def is_search_view(self):
+        sdm = self.context.session_data_manager
+        session = sdm.getSessionData(create=True)
+        if "search-view" in session.keys() and session["search-view"]:
+            return True
+        return False

@@ -36,12 +36,6 @@ class ITermitnjakLeadImage(form.Schema):
         required=True,
     )
 
-    imageCaption = schema.TextLine(
-        title=_(u"Lead Image Caption"),
-        description=u"",
-        required=True,
-    )
-
 alsoProvides(ITermitnjakLeadImage, form.IFormFieldProvider)
 
 

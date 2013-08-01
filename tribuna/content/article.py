@@ -47,26 +47,12 @@ class CommentsView(grok.View):
         manager = getMultiAdapter(
             (context, request, view), IViewletManager, manager_name)
 
-        # calling update() on a manager causes it to set up its viewlets
-        manager.update()
-        return manager.viewlets[3].render()
-
-    def get_addthis_viewlet(self):
-        request = self.request
-        context = self.context
-
-        # viewlet managers also require a view object for adaptation
-        view = View(context, request)
-        if not IViewView.providedBy(view):
-            alsoProvides(view, IViewView)
-            # finally, you need the name of the manager you want to find
-            manager_name = 'plone.belowcontentbody'
-
-            # viewlet managers are found by Multi-Adapter lookup
-            manager = getMultiAdapter(
-                (context, request, view), IViewletManager, manager_name)
-
             # calling update() on a manager causes it to set up its viewlets
             manager.update()
+            all_viewlets = manager.viewlets
+            for viewlet in all_viewlets:
+                if viewlet.__name__ == u"plone.comments":
+                    return viewlet.render()
 
-            return manager.viewlets[-1].render()
+
+

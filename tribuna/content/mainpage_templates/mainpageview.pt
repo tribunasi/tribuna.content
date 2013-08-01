@@ -89,7 +89,7 @@
                     </div>
                     <div id="center-column-${article/UID}" class="main-page-article-body span12">
                       <h3 tal:content="article/title" />
-                      <img tal:attributes="src string:${article/absolute_url}/@@images/image" />
+                      <img tal:attributes="src string:++theme++tribuna.diazotheme/img/blank.gif" />
                       <p tal:content="structure article/text" />
                       <!-- <div tal:content="structure article/view/get_addthis_viewlet" /> -->
                     </div>
