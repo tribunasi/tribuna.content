@@ -64,10 +64,10 @@ class DefaultSessionViewlet(BrowserView):
     def update(self):
         pass
 
-    def default_content_list(self, session):
+    def set_default_content_list(self, session):
         articles(session)
 
-    def default_view_type(self, session):
+    def set_default_view_type(self, session):
         session.set('view_type', 'drag')
 
     def checkGET(self, session):
@@ -96,9 +96,9 @@ class DefaultSessionViewlet(BrowserView):
         if get_default and "portlet_data" in session.keys():
             del session["portlet_data"]
         if get_default or 'content_list' not in session.keys():
-            self.default_content_list(session)
+            self.set_default_content_list(session)
         if get_default or 'view_type' not in session.keys():
-            self.default_view_type(session)
+            self.set_default_view_type(session)
 
         self.checkGET(session)
 

@@ -32,7 +32,7 @@ class MainPageView(grok.View):
             return full_session
         else:
             catalog = api.portal.get_tool(name='portal_catalog')
-            return [catalog(id=get_article)[0].getObject(), ]
+            return [catalog(id=get_article)[0].getObject()]
         return []
 
     def update(self):
