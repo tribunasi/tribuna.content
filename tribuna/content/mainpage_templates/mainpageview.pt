@@ -40,7 +40,7 @@
 
 <metal:main fill-slot="main">
 <tal:main-macro metal:define-macro="main"
-        >
+                tal:define="ploneview nocall:context/@@plone">
 
 <div id="gallery-container" class="slider-header">
 <ul id="gallery">
@@ -52,8 +52,9 @@
         <div class="red">članek</div>
       </tal:block>
       <tal:block tal:condition="python: article.portal_type == 'Discussion Item'">
-        <div tal:content="python: article.getText().replace('<p>', '').replace('</p>
-        ','')[:25]" />
+        <div tal:define="text python: ploneview.cropText(article.getText(), length=25, ellipsis='...')"
+             tal:content="structure text"/>
+
         <div class="red">komentar</div>
       </tal:block>
 
