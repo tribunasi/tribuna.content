@@ -76,12 +76,10 @@ def articles(session):
                 break
 
         all_content = [content.getObject() for content in all_content]
+        session["search-view"] = {}
+        session["search-view"]['active'] = False
 
-        session['content_list']['intersection'] = all_content[
-            :intersection_count]
-        session['content_list']['union'] = all_content[intersection_count:]
-
-        return True
+        return (all_content[:intersection_count], all_content[intersection_count:])
 
     catalog = api.portal.get_tool(name='portal_catalog')
     portal_type = ["tribuna.content.article", "Discussion Item"]
@@ -91,20 +89,27 @@ def articles(session):
     operator = "or"
     sort_order = "descending"
 
-    session.set('content_list', {'union': [], 'intersection': []})
+    #session.set('content_list', {'union': [], 'intersection': []})
 
-    if('portlet_data' not in session.keys()):
+    if 'search-view' in session.keys() and session['search-view']['active']:
+
+        results = catalog(SearchableText=session['search-view']['query'], portal_type={
+            "query": ["tribuna.content.article", "Discussion Item"],
+            "operator": "or"
+        })
+        return ([content.getObject() for content in results], [])
+    if 'portlet_data' not in session.keys():
         return returnDefaults()
 
     # portal_type
     if session['portlet_data']['content_filters']:
         portal_type = []
         for i in session['portlet_data']['content_filters']:
-            if(i == 'articles'):
+            if i == 'articles':
                 portal_type.append("tribuna.content.article")
-            elif(i == 'comments'):
+            elif i == 'comments':
                 portal_type.append("Discussion Item")
-            elif(i == 'images'):
+            elif i == 'images':
                 pass
 
     # sort_on
@@ -151,10 +156,10 @@ def articles(session):
             break
 
     all_content = [content.getObject() for content in all_content]
+    session["search-view"]['active'] = False
 
-    session['content_list']['intersection'] = all_content[:intersection_count]
-    session['content_list']['union'] = all_content[intersection_count:]
-    session["search-view"] = False
+    return (all_content[:intersection_count], all_content[intersection_count:])
+
 
 
 class ISidebarForm(form.Schema):
@@ -185,15 +190,6 @@ class ISidebarForm(form.Schema):
         ]),
     )
 
-    # sort_order = schema.Choice(
-    #     title=_(u"Order of sorting"),
-    #     vocabulary=SimpleVocabulary([
-    #         SimpleTerm('ascending', 'ascending', _(u'Ascending')),
-    #         SimpleTerm('descending', 'descending', _(u'Descending')),
-    #     ]),
-    #     required=False,
-    # )
-
     form.widget(content_filters=CheckBoxFieldWidget)
     content_filters = schema.List(
         title=_(u"Content filters"),
@@ -204,14 +200,6 @@ class ISidebarForm(form.Schema):
         ])),
         required=False,
     )
-
-    # operator = schema.Choice(
-    #     title=_(u"How to apply tags"),
-    #     vocabulary=SimpleVocabulary([
-    #         SimpleTerm('union', 'union', _(u'Union')),
-    #         SimpleTerm('intersection', 'intersection', _(u'Intersection')),
-    #     ]),
-    # )
 
 
 @form.default_value(field=ISidebarForm['tags'])
@@ -244,16 +232,6 @@ def default_sort_on(data):
         return "latest"
 
 
-# @form.default_value(field=ISidebarForm['sort_order'])
-# def default_sort_order(data):
-#     sdm = data.context.session_data_manager
-#     session = sdm.getSessionData(create=True)
-#     if "portlet_data" in session.keys():
-#         return session["portlet_data"]["sort_order"]
-#     else:
-#         return "descending"
-
-
 @form.default_value(field=ISidebarForm['content_filters'])
 def default_content_filters(data):
     sdm = data.context.session_data_manager
@@ -262,16 +240,6 @@ def default_content_filters(data):
         return session["portlet_data"]["content_filters"]
     else:
         return []
-
-
-# @form.default_value(field=ISidebarForm['operator'])
-# def default_operator(data):
-#     sdm = data.context.session_data_manager
-#     session = sdm.getSessionData(create=True)
-#     if("portlet_data" in session.keys()):
-#             return session["portlet_data"]["operator"]
-#     else:
-#         return "union"
 
 
 class SidebarForm(form.SchemaForm):
@@ -315,26 +283,6 @@ class SidebarForm(form.SchemaForm):
         session = sdm.getSessionData(create=True)
         session.set('view_type', 'drag')
         self.request.response.redirect(self.request.getURL())
-
-    # @button.buttonAndHandler(_(u'Gallery'))
-    # def handleApply(self, action):
-    #     sdm = self.context.session_data_manager
-    #     session = sdm.getSessionData(create=True)
-    #     session.set('view_type', 'gallery')
-    #     self.request.response.redirect(self.request.getURL())
-
-    # @button.buttonAndHandler('Send-Union')
-    # def handleApply(self, action):
-    #     self._handleApply(action, True)
-
-    # @button.buttonAndHandler('Send-Intersection')
-    # def handleApply(self, action):
-    #     self._handleApply(action, False)
-
-    # @button.buttonAndHandler("Cancel")
-    # def handleCancel(self, action):
-    #     """User cancelled. Redirect back to the front page.
-    #     """
 
 
 class ISidebarPortlet(IPortletDataProvider):

@@ -7,90 +7,84 @@
       i18n:domain="tribuna.content">
 <body>
 
-  <metal:block fill-slot="style_slot">
-
-    </metal:block>
+  <metal:block fill-slot="style_slot"></metal:block>
 
 <metal:main fill-slot="main">
-    <tal:main-macro metal:define-macro="main"
+<tal:main-macro metal:define-macro="main"
         >
 
-        <div tal:replace="structure provider:plone.abovecontenttitle" />
+  <div tal:replace="structure provider:plone.abovecontenttitle" />
 
-        <h1 class="documentFirstHeading"> Main page </h1>
+  <h1 class="documentFirstHeading">Main page</h1>
 
+  <div tal:replace="structure provider:plone.belowcontenttitle" />
 
-        <div tal:replace="structure provider:plone.belowcontenttitle" />
+  <div tal:replace="structure provider:plone.abovecontentbody" />
 
-
-        <div tal:replace="structure provider:plone.abovecontentbody" />
-
-        <h2 i18n:translate="heading_sessions">Entry page</h2>
-        <div>
-        <div tal:define="picture nocall:context/picture"
+  <h2 i18n:translate="heading_sessions">Entry page</h2>
+  <div>
+    <div tal:define="picture nocall:context/picture"
              tal:condition="nocall:picture">
-            <img tal:attributes="src string:${context/absolute_url}/@@images/picture;
+      <img tal:attributes="src string:${context/absolute_url}/@@images/picture;
                                  height picture/_height | nothing;
                                  width picture/_width | nothing;"
                 />
-            <p tal:condition="python: context.image_type == 'tile'" id="background-placeholder" style="background: url('${context/absolute_url}/@@images/picture') repeat scroll 0 0 transparent" />
-            <p tal:condition="python: context.image_type == 'original'" id="background-placeholder" style="background: url('${context/absolute_url}/@@images/picture') no-repeat transparent; background-position: 50% 0%;" />
-            <p tal:condition="python: context.image_type == 'cover'" id="background-placeholder" style="background: url('${context/absolute_url}/@@images/picture') no-repeat transparent; background-size: contain; background-position:center;" />
+      <p tal:condition="python: context.image_type == 'tile'" id="background-placeholder" style="background: url('${context/absolute_url}/@@images/picture') repeat scroll 0 0 transparent" />
+      <p tal:condition="python: context.image_type == 'original'" id="background-placeholder" style="background: url('${context/absolute_url}/@@images/picture') no-repeat transparent; background-position: 50% 0%;" />
+      <p tal:condition="python: context.image_type == 'cover'" id="background-placeholder" style="background: url('${context/absolute_url}/@@images/picture') no-repeat transparent; background-size: contain; background-position:center;" />
 
-        </div>
-        <div tal:condition="context/text">
-          <div id="text-container" class="entrypage-text-container">
-            <p tal:condition="python: context.font_type == 'times'" id="entrypage-text" >${context/text}</p>
-            <p tal:condition="python: context.font_type == 'arial'" id="entrypage-text" class="arial">${context/text}</p>
-            <p tal:condition="python: context.font_type == 'helvetica'" id="entrypage-text" class="helvetica">${context/text}</p>
+    </div>
+    <div tal:condition="context/text">
+      <div id="text-container" class="entrypage-text-container">
+        <p tal:condition="python: context.font_type == 'times'" id="entrypage-text" >${context/text}</p>
+        <p tal:condition="python: context.font_type == 'arial'" id="entrypage-text" class="arial">${context/text}</p>
+        <p tal:condition="python: context.font_type == 'helvetica'" id="entrypage-text" class="helvetica">${context/text}</p>
 
-
+      </div>
+    </div>
+    <div tal:condition="not:context/locked_page" id="change-form">
+      <h3 i18n:translate="">Change entry page</h3>
+      <div>
+        <div id="change-form-multiple">
+          <h3 i18n:translate="">Text</h3>
+          <div id="text-change">
+            <tal:block define="form view/change_page_text">
+              <tal:block define="view nocall:form">
+                <metal:block use-macro="form/@@ploneform-macros/titlelessform" />
+              </tal:block>
+            </tal:block>
+          </div>
+          <h3 i18n:translate="">Picture</h3>
+          <div id= "picture-change">
+            <tal:block define="form view/change_page_picture">
+              <tal:block define="view nocall:form">
+                <metal:block use-macro="form/@@ploneform-macros/titlelessform" />
+              </tal:block>
+            </tal:block>
+          </div>
+          <h3 i18n:translate="">Old pages</h3>
+          <div id="old-pages">
+            <tal:block define="form view/change_page_old">
+              <tal:block define="view nocall:form">
+                <metal:block use-macro="form/@@ploneform-macros/titlelessform" />
+              </tal:block>
+            </tal:block>
           </div>
         </div>
-        <div tal:condition="not:context/locked_page" id="change-form">
-        <h3 i18n:translate="">Change entry page</h3>
-          <div>
-          <div id="change-form-multiple">
-            <h3 i18n:translate="">Text</h3>
-              <div id="text-change">
-              <tal:block define="form view/change_page_text">
-                      <tal:block define="view nocall:form">
-                          <metal:block use-macro="form/@@ploneform-macros/titlelessform" />
-                      </tal:block>
-                  </tal:block>
-              </div>
-              <h3 i18n:translate="">Picture</h3>
-              <div id= "picture-change">
-              <tal:block define="form view/change_page_picture">
-                      <tal:block define="view nocall:form">
-                          <metal:block use-macro="form/@@ploneform-macros/titlelessform" />
-                      </tal:block>
-                  </tal:block>
-              </div>
-              <h3 i18n:translate="">Old pages</h3>
-              <div id="old-pages">
-              <tal:block define="form view/change_page_old">
-                      <tal:block define="view nocall:form">
-                          <metal:block use-macro="form/@@ploneform-macros/titlelessform" />
-                      </tal:block>
-                  </tal:block>
-              </div>
-          </div>
-        </div>
-        </div>
-        </div>
+      </div>
+    </div>
+  </div>
 
-        <div id="entrypage-author-title">
-          <span id ="entrypage-title"> ${context/title}, </span>
-          <span id ="entrypage-author"> ${context/author} </span>
-        </div>
-        <div id="entrypage-home-link">
-        <a href="${context/portal_url}/@@home-page">
-          Go to Home Page </a>
-        </div>
-        <div tal:replace="structure provider:plone.belowcontentbody" />
+  <div id="entrypage-author-title">
+    <span id ="entrypage-title">${context/title},</span>
+    <span id ="entrypage-author">${context/author}</span>
+  </div>
+  <div id="entrypage-home-link">
+    <a href="${context/portal_url}/@@home-page">Go to Home Page</a>
+  </div>
+  <div tal:replace="structure provider:plone.belowcontentbody" />
 
-        <script>
+  <script>
           $(function() {
             $( "#change-form, #change-form-multiple" ).accordion({
               collapsible: true,
@@ -98,10 +92,8 @@
             });
           });
           </script>
-          <style type="text/css">
-            #change-form-multiple .ui-widget-content {height:200px}
-          </style>
-    </tal:main-macro>
+  <style type="text/css">#change-form-multiple .ui-widget-content {height:200px}</style>
+</tal:main-macro>
 </metal:main>
 
 </body>

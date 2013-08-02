@@ -3,23 +3,21 @@
 
 """Viewlets."""
 
+
+from Products.CMFPlone.utils import safe_unicode
+from Products.Five.browser import BrowserView
 from zope.interface import implements
 from zope.viewlet.interfaces import IViewlet
-
-from Products.Five.browser import BrowserView
-from Products.CMFPlone.utils import safe_unicode
 
 from tribuna.content.homepage import HomePageView
 from tribuna.content.mainpage import MainPageView
 from tribuna.content.portlets.sidebar import articles
-# from zope.component import getUtility
-# from plone.registry.interfaces import IRegistry
 
-# from collective.cookiecuttr.interfaces import ICookieCuttrSettings
-# from plone.app.layout.analytics.view import AnalyticsViewlet
 
 
 class GalleryViewlet(BrowserView):
+    """Viewlet that prepares and calls gallery on main page view"""
+
     implements(IViewlet)
 
     def __init__(self, context, request, view, manager):
@@ -46,12 +44,15 @@ class GalleryViewlet(BrowserView):
         sdm = self.context.session_data_manager
         session = sdm.getSessionData(create=True)
 
-        if(self.available(session)):
+        if self.available(session):
             return safe_unicode(js_template % (session['index'] + 1))
         return ""
 
 
 class DefaultSessionViewlet(BrowserView):
+    """Method that checks our session to get
+    the article we want to show first"""
+
     implements(IViewlet)
 
     def __init__(self, context, request, view, manager):
@@ -70,16 +71,16 @@ class DefaultSessionViewlet(BrowserView):
         session.set('view_type', 'drag')
 
     def checkGET(self, session):
+        """Setting correct index of article that gets shown first, we get
+            the article from GET request"""
         get_article = self.request.get('article')
-        if(get_article is not None):
+        if get_article is not None:
             session.set('view_type', 'gallery')
+            all_articles = articles(session)
             all_articles =  \
-                [i.id for i in session['content_list']['intersection'] +
-                    session['content_list']['union']]
+                [i.id for i in all_articles[0] + all_articles[1]]
             if get_article in all_articles:
-                session.set('index', [
-                    i.id for i in session['content_list']['intersection'] +
-                    session['content_list']['union']].index(get_article))
+                session.set('index', all_articles.index(get_article))
             else:
                 session.set('index', 0)
         else:
@@ -91,19 +92,18 @@ class DefaultSessionViewlet(BrowserView):
         """
         sdm = self.context.session_data_manager
         session = sdm.getSessionData(create=True)
-        #import pdb; pdb.set_trace()
         get_default = self.request.get('default')
         if get_default and "portlet_data" in session.keys():
             del session["portlet_data"]
-        if(get_default or 'content_list' not in session.keys()):
+        if get_default or 'content_list' not in session.keys():
             self.default_content_list(session)
-        if(get_default or 'view_type' not in session.keys()):
+        if get_default or 'view_type' not in session.keys():
             self.default_view_type(session)
 
         self.checkGET(session)
 
     def render(self):
-        if(isinstance(self.__parent__, HomePageView)
+        if (isinstance(self.__parent__, HomePageView)
                 or isinstance(self.__parent__, MainPageView)):
             self.check_session()
         return ""

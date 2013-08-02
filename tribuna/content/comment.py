@@ -1,29 +1,28 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from plone.app.discussion.interfaces import IComment
-from plone.app.discussion.comment import Comment
-from zope.component.factory import Factory
-from plone.indexer import indexer
-from zope.interface import implements
-from plone import api
-#from rwproperty import getproperty, setproperty
-from zope.lifecycleevent.interfaces import IObjectCreatedEvent
 from five import grok
+from plone import api
+from plone.app.discussion.comment import Comment
+from plone.app.discussion.interfaces import IComment
+from plone.indexer import indexer
+from zope.component.factory import Factory
+from zope.interface import implements
+from zope.lifecycleevent.interfaces import IObjectCreatedEvent
 
 from tribuna.content.utils import our_unicode
 
 
 class TribunaComment(Comment):
+    """ Extending comment clas from plone.app.discussion.comment
+        so we can add subject field to our comments"""
+
     implements(IComment)
     subject = None
 
     def setSubject(self, subject):
         self.subject = subject
 
-    # @setproperty
-    # def subject(self, value):
-    #
 TribunaCommentFactory = Factory(Comment)
 
 
@@ -34,10 +33,18 @@ def subject(object):
 
 @grok.subscribe(IComment, IObjectCreatedEvent)
 def add_tags(comment, event):
+    """ Method that is called when new comment is added, constructs new
+        tags if they are needed and assign them to comment
+
+    :param comment: newly created comment
+    :type comment: TribunaComment
+    :param event: event that happens on comment creation
+    :type event: ObjectCreatedEvent
+    """
+
     value = comment.subject
     if value is None:
         value = []
-    #old_tags = set(self.context.Subject())
 
     # Get all 'new' tags
     # XXX

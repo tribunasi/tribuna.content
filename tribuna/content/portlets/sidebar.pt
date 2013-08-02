@@ -5,45 +5,40 @@
       i18n:domain="plone.app.widgets"
       lang="en"
       >
-<dl class="portlet portletSidebar"
+  <dl class="portlet portletSidebar"
     i18n:domain="tribuna.content">
 
     <dt class="portletHeader">
-        <span class="portletTopLeft"></span>
-        Sidebar tag navigation
-        <span class="portletTopRight"></span>
+      <span class="portletTopLeft"></span>
+      Sidebar tag navigation
+      <span class="portletTopRight"></span>
     </dt>
     <tal:main-macro metal:define-macro="main">
 
-          <h1 class="documentFirstHeading">Select filter</h1>
+      <h1 class="documentFirstHeading">Select filter</h1>
 
-          <div id="skel-contents">
-                <!-- plone.app.z3cform package provides view ploneform-macros
-                     which come with a helpers to render forms. This one
-                     will render the form body only. It also makes an assumption
-                     that form is presented in "view" TAL variable.
+      <div id="skel-contents">
 
-                  -->
-            <tal:block define="form view/portlet_data">
-                <tal:block define="view nocall:form">
-                    <metal:block use-macro="form/@@ploneform-macros/titlelessform" />
-                </tal:block>
+        <tal:block define="form view/portlet_data">
+          <tal:block define="view nocall:form">
+            <metal:block use-macro="form/@@ploneform-macros/titlelessform" />
+          </tal:block>
 
-            </tal:block>
-          </div>
+        </tal:block>
+      </div>
 
-        </tal:main-macro>
-          <div id="all-tags" class="ui-widget-content ui-corner-all overlay">
-            <h3 class="ui-widget-header ui-corner-all">Toggle</h3>
-            <p>
-              Etiam libero neque, luctus a, eleifend nec, semper at, lorem. Sed pede. Nulla lorem metus, adipiscing ut, luctus sed, hendrerit vitae, mi.
-            </p>
-          </div>
-        <a href="#" id="show-all-tags">All tags</a>
+    </tal:main-macro>
+    <div id="all-tags" class="ui-widget-content ui-corner-all overlay">
+      <h3 class="ui-widget-header ui-corner-all">Toggle</h3>
+      <p>
+        Etiam libero neque, luctus a, eleifend nec, semper at, lorem. Sed pede. Nulla lorem metus, adipiscing ut, luctus sed, hendrerit vitae, mi.
+      </p>
+    </div>
+    <a href="#" id="show-all-tags">All tags</a>
     <dd class="portletFooter">
-        <span class="portletBottomLeft"></span>
-        <span class="portletBottomRight"></span>
+      <span class="portletBottomLeft"></span>
+      <span class="portletBottomRight"></span>
     </dd>
 
-</dl>
+  </dl>
 </html>

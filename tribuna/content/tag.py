@@ -9,7 +9,6 @@ from plone.directives import form
 from plone.indexer.decorator import indexer
 from zope import schema
 from zope.container.interfaces import IObjectAddedEvent
-#from zope.container.interfaces import IObjectRemovedEvent
 from zope.lifecycleevent.interfaces import IObjectModifiedEvent
 
 from tribuna.content import _

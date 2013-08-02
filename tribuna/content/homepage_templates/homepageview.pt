@@ -49,8 +49,6 @@
 <metal:main fill-slot="main">
 <tal:main-macro metal:define-macro="main">
 
-  <!--         <tal:block tal:replace="view/checkGET" />
-  -->
   <div tal:replace="structure provider:plone.abovecontenttitle" />
 
   <h1 class="documentFirstHeading">Home page</h1>
@@ -59,8 +57,7 @@
 
   <div tal:replace="structure provider:plone.abovecontentbody" />
 
-  <a id="return-to-home" href="${context/@@plone_portal_state/navigation_root_url}/home-page?default=true">
-    Go home </a>
+  <a id="return-to-home" href="${context/@@plone_portal_state/navigation_root_url}/home-page?default=true">Go home</a>
   <div id="search-form" tal:define="form view/search_form">
     <tal:block define="view nocall:form">
       <metal:block use-macro="form/@@ploneform-macros/titlelessform" />
@@ -88,7 +85,7 @@
         <div class="articles_intersection" >
           <h5 i18n:translate="" tal:condition="view/show_intersection">Intersection</h5>
 
-          <tal:block repeat="article view/articles_intersection">
+          <tal:block repeat="article python: view.articles('intersection')">
             <tal:block tal:define="isArticle python: article.portal_type == 'tribuna.content.article';
                                          isComment python: article.portal_type == 'Discussion Item';
                                          typeClassAddition python: isArticle and 'article' or 'comment';
@@ -113,7 +110,7 @@
 
         <div class="articles_union">
           <h5 i18n:translate="" tal:condition="view/show_union">Union</h5>
-          <tal:block repeat="article view/articles_union">
+          <tal:block repeat="article python: view.articles('union')">
             <tal:block tal:define="isArticle python: article.portal_type == 'tribuna.content.article';
                                          isComment python: article.portal_type == 'Discussion Item';
                                          typeClassAddition python: isArticle and 'article' or 'comment';
@@ -137,7 +134,7 @@
         </div>
       </tal:block>
       <tal:block tal:condition="not: view/is_text_view">
-        <tal:block repeat="article view/articles_all">
+        <tal:block repeat="article python: view.articles('all')">
           <tal:block tal:define="isArticle python: article.portal_type == 'tribuna.content.article';
                                        isComment python: article.portal_type == 'Discussion Item';
                                        typeClassAddition python: isArticle and 'article' or 'comment';

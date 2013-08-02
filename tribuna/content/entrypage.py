@@ -1,25 +1,19 @@
 # -*- coding: utf-8 -*-
 """Entry Page content type."""
 
+from datetime import datetime
 from five import grok
+from plone import api
 from plone.directives import form
 from plone.namedfile.field import NamedBlobImage
 from tribuna.content import _
 from tribuna.content.config import ENTRY_PAGES_PATH
-from zope import schema
 from z3c.form import button
-#from plone.dexterity.utils import createContentInContainer
-from plone import api
-from datetime import datetime
-#from plone.formwidget.contenttree import ContentTreeFieldWidget
-from zope.schema.interfaces import IContextSourceBinder
-from zope.schema.vocabulary import SimpleVocabulary
-#from zope.schema.vocabulary import SimpleTerm
-#from z3c.form import field
-#from zope.interface import invariant
+from zope import schema
 from zope.interface import Invalid
+from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.vocabulary import SimpleTerm
-#from plone.app.textfield import RichText
+from zope.schema.vocabulary import SimpleVocabulary
 
 
 class SelectOne(Invalid):
@@ -27,6 +21,8 @@ class SelectOne(Invalid):
 
 
 def old_entry_pages():
+    """Method for getting all old entry pages for entry page form"""
+
     catalog = api.portal.get_tool(name='portal_catalog')
     folder = api.content.get(path=ENTRY_PAGES_PATH)
     if not folder:
@@ -38,11 +34,13 @@ def old_entry_pages():
                 portal_type='tribuna.content.entrypage',
                 sort_on="Date",
                 sort_order="descending",
-                    ) if i.id != current_id)
+            ) if i.id != current_id)
     return old_pages
 
 
 class OldEntryPages(object):
+    """Class used for getting vocabulary of entry pages"""
+
     grok.implements(IContextSourceBinder)
 
     def __init__(self):
@@ -102,6 +100,7 @@ class IEntryPage(form.Schema):
 
 
 class IChangePagePictureForm(form.Schema):
+    """Form for adding new picture to entry page"""
 
     picture = NamedBlobImage(
         title=_(u"Please upload an image"),
@@ -127,16 +126,10 @@ class IChangePagePictureForm(form.Schema):
         title=_(u"Author"),
         required=False
     )
-    # @invariant
-    # def validateOneSelected(data):
-    #     if data.text is None and data.picture is None:
-    #         raise SelectOne(_(u"Only select text or image"))
-    #     if data.text is not None and data.picture is not None:
-    #         raise SelectOne(_(u"Only select text or image"))
 
 
 class ChangePagePictureForm(form.SchemaForm):
-    """Defining form handler for change page form."""
+    """Form handler for change picture form."""
 
     grok.name('change-bar-form')
     grok.require('zope2.View')
@@ -150,6 +143,8 @@ class ChangePagePictureForm(form.SchemaForm):
 
     @button.buttonAndHandler(_(u'Change Picture'))
     def handleApply(self, action):
+        """Method that created new entry page and selects it as new front"""
+
         data, errors = self.extractData()
         if errors:
             self.status = self.formErrorsMessage
@@ -172,6 +167,7 @@ class ChangePagePictureForm(form.SchemaForm):
 
 
 class IChangePageTextForm(form.Schema):
+    """Form for adding text to entry page"""
 
     text = schema.TextLine(
         title=_(u"Text"),
@@ -207,7 +203,7 @@ class IChangePageTextForm(form.Schema):
 
 
 class ChangePageTextForm(form.SchemaForm):
-    """ Defining form handler for change page form"""
+    """Form handler for change text on entry page form"""
 
     grok.name('change-bar-form')
     grok.require('zope2.View')
@@ -217,10 +213,10 @@ class ChangePageTextForm(form.SchemaForm):
     schema = IChangePageTextForm
     ignoreContext = True
     label = _(u"Select new page")
-    #description = _(u"New entry page form")
 
     @button.buttonAndHandler(_(u'Change Text'))
     def handleApply(self, action):
+        """Method that creates new entry page and selects it as new front"""
         data, errors = self.extractData()
         if errors:
             self.status = self.formErrorsMessage
@@ -247,12 +243,6 @@ class IChangePageOldForm(form.Schema):
     old_pages = schema.Choice(title=u"Select one of the old pages",
                               source=OldEntryPages(),
                               )
-    # @invariant
-    # def validateOneSelected(data):
-    #     if data.text is None and data.picture is None:
-    #         raise SelectOne(_(u"Only select text or image"))
-    #     if data.text is not None and data.picture is not None:
-    #         raise SelectOne(_(u"Only select text or image"))
 
 
 class ChangePageOldForm(form.SchemaForm):

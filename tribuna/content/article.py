@@ -3,13 +3,13 @@
 
 """The Article content type."""
 
-from plone.directives import form
-from zope import schema
 from five import grok
 from plone.app.layout.globals.interfaces import IViewView
-from zope.interface import alsoProvides
-from zope.component import getMultiAdapter
+from plone.directives import form
 from Products.Five.browser import BrowserView as View
+from zope import schema
+from zope.component import getMultiAdapter
+from zope.interface import alsoProvides
 from zope.viewlet.interfaces import IViewletManager
 
 from tribuna.content import _
@@ -28,11 +28,17 @@ class IArticle(form.Schema):
 
 
 class CommentsView(grok.View):
+    """View for showing all the comments on the article and adding new comments
+    """
+
     grok.context(IArticle)
     grok.require('zope2.View')
     grok.name('comments-view')
 
     def get_comment_viewlet(self):
+        """Method for getting comments viewlet so we can use it in
+        other views"""
+
         request = self.request
         context = self.context
 
@@ -47,12 +53,9 @@ class CommentsView(grok.View):
         manager = getMultiAdapter(
             (context, request, view), IViewletManager, manager_name)
 
-            # calling update() on a manager causes it to set up its viewlets
-            manager.update()
-            all_viewlets = manager.viewlets
-            for viewlet in all_viewlets:
-                if viewlet.__name__ == u"plone.comments":
-                    return viewlet.render()
-
-
-
+        # calling update() on a manager causes it to set up its viewlets
+        manager.update()
+        all_viewlets = manager.viewlets
+        for viewlet in all_viewlets:
+            if viewlet.__name__ == u"plone.comments":
+                return viewlet.render()

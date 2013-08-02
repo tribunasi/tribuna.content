@@ -7,6 +7,7 @@ Includes a form field and a behaviour adapter that stores the data in the
 standard Subject field.
 """
 
+
 from collective.miscbehaviors.behavior.utils import context_property
 from collective.z3cform.widgets.token_input_widget import TokenInputFieldWidget
 from plone import api
@@ -16,15 +17,14 @@ from plone.indexer.decorator import indexer
 from plone.namedfile import field as namedfile
 from Products.CMFCore.interfaces import IDublinCore
 from rwproperty import getproperty, setproperty
+from tribuna.content import _
+from tribuna.content.utils import our_unicode
+from tribuna.content.utils import TagsListHighlighted
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from zope import schema
 from zope.component import adapts
 from zope.interface import alsoProvides
 from zope.interface import implements
-
-from tribuna.content import _
-from tribuna.content.utils import TagsListHighlighted
-from tribuna.content.utils import our_unicode
 
 
 class ITermitnjakLeadImage(form.Schema):
@@ -102,44 +102,6 @@ class Tags(object):
 
     @setproperty
     def tags_new(self, value):
-        # if value is None:
-        #     value = []
-        # old_tags = set(self.context.Subject())
-
-        # # Get all 'new' tags
-        # catalog = api.portal.get_tool(name='portal_catalog')
-        # items = catalog({
-        #     'portal_type': 'tribuna.content.tag',
-        # })
-        # titles = set(i.Title for i in items)
-        # titles = [j.lower().replace(' ', '') for j in titles]
-
-        # # Compare tags with the one already in our system, if they're the
-        # # "same" (lower and ignore spaces), use those tags
-        # new_titles = [(it.Title, it.Title.lower().replace(' ', ''))
-        #               for it in items]
-        # for val in value[:]:
-        #     for tup in new_titles:
-        #         if val.lower().replace(' ', '') == tup[-1]:
-        #             #if val in value:
-        #             value.remove(val)
-        #             value.append(tup[0])
-
-        # # Change all "same" (as above) tags to the first appearance
-        # counter = []
-        # for val in value[:]:
-        #     if val.lower().replace(' ', '') in counter:
-        #         value.remove(val)
-        #     else:
-        #         counter.append(val.lower().replace(' ', ''))
-
-        # new_value = [k for k in value
-        #              if k.lower().replace(' ', '') not in titles]
-
-        # # Set Subject as an union of tags in tags_old and tags_new but use
-        # the
-        # # titles that are already there, don't make new ones (above)
-        # self.context.setSubject(tuple(old_tags.union(value)))
 
         if value is None:
             value = []
@@ -149,7 +111,7 @@ class Tags(object):
         # Get all 'new' tags
         # XXX
         # FIX
-        with api.env.adopt_user('tags_user'):
+        with api.env.adopt_roles('Site Administrator'):
             catalog = api.portal.get_tool(name='portal_catalog')
             items = catalog({
                 'portal_type': 'tribuna.content.tag',
