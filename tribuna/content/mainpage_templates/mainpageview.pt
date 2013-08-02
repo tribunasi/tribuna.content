@@ -70,7 +70,7 @@
             <input id="activate-${article/UID}" type="checkbox" checked="checked" >articles</input>
           <input id="activate-comments-${article/UID}" type="checkbox" >comments</input>
       </div>
-      <div id="center-column-${article/UID}" class="main-page-article-body span12">
+      <div id="center-column-${article/UID}" class="main-page-article-body span10">
         <h3 tal:content="article/title" />
         <img tal:attributes="src string:++theme++tribuna.diazotheme/img/blank.gif" />
         <p tal:content="structure article/text" />
@@ -84,12 +84,12 @@
                             if (! $(this).attr("checked")) {
                               $(this).attr("checked", "checked");
                               $('#center-column-${article/UID}').removeClass('hidden');
-                              $('#comments-${article/UID}').removeClass('span12').addClass('span4');
+                              $('#comments-${article/UID}').removeClass('span10').addClass('span4');
 
                             } else {
                               $(this).removeAttr("checked");
                               $('#center-column-${article/UID}').addClass('hidden');
-                              $('#comments-${article/UID}').removeClass('span4').addClass('span12');
+                              $('#comments-${article/UID}').removeClass('span4').addClass('span10');
                             }
                           });
                         $('#activate-comments-${article/UID}').click(function () {
@@ -98,7 +98,7 @@
                               $(this).attr("checked", "checked");
 
                               $('#comments-${article/UID}').removeClass('hidden');
-                              $('#center-column-${article/UID}').removeClass('span12').addClass('span10');
+                              $('#center-column-${article/UID}').removeClass('span10').addClass('span10');
 
                               if ($('#comments-${article/UID}').contents().length == 0) {
                                 $('#comments-${article/UID}').load('${article/absolute_url}/@@comments-view');
@@ -108,7 +108,7 @@
                             } else {
                               $(this).removeAttr("checked");
                               $('#comments-${article/UID}').addClass('hidden');
-                              $('#center-column-${article/UID}').removeClass('span10').addClass('span12');
+                              $('#center-column-${article/UID}').removeClass('span10').addClass('span10');
                             }
                           });
                        });
@@ -122,7 +122,7 @@
           </div>
         </div>
       </div>
-      <div id="center-column" class="span12">
+      <div id="center-column" class="span10">
         <h3 tal:content="article/author_name" />
         <img tal:attributes="src string:++theme++tribuna.diazotheme/img/blank.gif" />
         <p tal:content="structure article/getText" />
