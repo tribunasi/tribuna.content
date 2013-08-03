@@ -35,6 +35,9 @@
       </p>
     </div>
     <a href="#" id="show-all-tags">All tags</a>
+    <a id="return-to-home"
+       href="${context/@@plone_portal_state/navigation_root_url}/home-page?default=true">Go home</a>
+
     <dd class="portletFooter">
       <span class="portletBottomLeft"></span>
       <span class="portletBottomRight"></span>

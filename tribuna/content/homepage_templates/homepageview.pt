@@ -57,17 +57,17 @@
 
   <div tal:replace="structure provider:plone.abovecontentbody" />
 
-  <a id="return-to-home" href="${context/@@plone_portal_state/navigation_root_url}/home-page?default=true">Go home</a>
   <div id="search-form" tal:define="form view/search_form">
     <tal:block define="view nocall:form">
       <metal:block use-macro="form/@@ploneform-macros/titlelessform" />
     </tal:block>
   </div>
+
   <div id="search-view" tal:condition="view/is_search_view" style="display:none" />
-  <tal:block
-            tal:define="has_one_tag view/only_one_tag;
-                        homepageClass python: has_one_tag and 'span3' or 'span10';
-                        hasOneTagClassAddition python: has_one_tag and '-one' or ''">
+
+  <tal:block tal:define="has_one_tag view/only_one_tag;
+                         homepageClass python: has_one_tag and 'span3' or 'span10';
+                         hasOneTagClassAddition python: has_one_tag and '-one' or ''">
     <div id="tag-picture" tal:condition="has_one_tag">
       <img tal:condition="view/tag_picture"  src="${view/tag_picture}" style="margin-left: auto; margin-right: auto; display: block;"/>
       <div id="scroll"/>
