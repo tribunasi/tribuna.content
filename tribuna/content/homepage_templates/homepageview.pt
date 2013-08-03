@@ -76,8 +76,10 @@
     <div id="homepage-div" class="${homepageClass}">
 
       <tal:block tal:condition="view/is_text_view">
+
         <h2 i18n:translate="">Articles</h2>
-        <div class="articles_intersection" >
+
+        <div class="articles-intersection" >
           <h5 i18n:translate="" tal:condition="view/show_intersection">Intersection</h5>
           <tal:block repeat="article python: view.articles('intersection')">
             <tal:block tal:define="isArticle python: article.portal_type == 'tribuna.content.article';
@@ -108,7 +110,7 @@
           </tal:block>
         </div>
 
-        <div class="articles_union">
+        <div class="articles-union">
           <h5 i18n:translate="" tal:condition="view/show_union">Union</h5>
           <tal:block repeat="article python: view.articles('union')">
             <tal:block tal:define="isArticle python: article.portal_type == 'tribuna.content.article';
