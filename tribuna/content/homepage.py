@@ -131,11 +131,16 @@ class HomePageView(grok.View):
             return None
         return str(tag.absolute_url()) + "/@@images/image"
 
-    def show_intersection(self):
-        if self.only_one_tag() or self.articles["intersection"] == []:
-            return False
+    def is_search_view(self):
         if ("search-view" in self.session.keys() and
             self.session["search-view"]):
+            return True
+        return False
+
+    def show_intersection(self):
+        if (self.only_one_tag() or
+            self.articles["intersection"] == [] or
+            self.is_search_view()):
             return False
         return True
 
@@ -154,9 +159,3 @@ class HomePageView(grok.View):
         form1 = SearchForm(self.context, self.request)
         form1.update()
         return form1
-
-    def is_search_view(self):
-        if ("search-view" in self.session.keys() and
-            self.session["search-view"]):
-            return True
-        return False
