@@ -72,34 +72,30 @@ class HomePageView(grok.View):
     def __init__(self, context, request):
         self.context = context
         self.request = request
+        self.session = self.context.session_data_manager.getSessionData(
+            create=True)
         self.articles = self._get_articles()
         super(HomePageView, self).__init__(context, request)
 
     def check_if_default(self):
         get_default = self.request.get('default')
         if get_default:
-            sdm = self.context.session_data_manager
-            session = sdm.getSessionData(create=True)
-            for i in session.keys():
-                del session[i]
+            for i in self.session.keys():
+                del self.session[i]
 
     def is_text_view(self):
         """Check if text view (this is the basic view) is selected.
 
         Read data from the session, if it isn't there, return True.
         """
-        sdm = self.context.session_data_manager
-        session = sdm.getSessionData(create=True)
-        if 'view_type' in session.keys():
-            if session['view_type'] == 'drag':
+        if 'view_type' in self.session.keys():
+            if self.session['view_type'] == 'drag':
                 return False
         return True
 
     def _get_articles(self):
         """Return all articles for the given query."""
-        sdm = self.context.session_data_manager
-        session = sdm.getSessionData(create=True)
-        articles_all = articles(session)
+        articles_all = articles(self.session)
         return {
             'intersection': articles_all[0],
             'union': articles_all[1],
@@ -107,17 +103,12 @@ class HomePageView(grok.View):
         }
 
     def only_one_tag(self):
-        sdm = self.context.session_data_manager
-        session = sdm.getSessionData(create=True)
-        if 'portlet_data' in session.keys():
-            return len(session['portlet_data']['tags']) == 1
+        if 'portlet_data' in self.session.keys():
+            return len(self.session['portlet_data']['tags']) == 1
         return False
 
     def tag_description(self):
-        sdm = self.context.session_data_manager
-        session = sdm.getSessionData(create=True)
-
-        title = session['portlet_data']['tags'][0]
+        title = self.session['portlet_data']['tags'][0]
         with api.env.adopt_user('tags_user'):
             catalog = api.portal.get_tool(name='portal_catalog')
             tag = catalog(
@@ -129,10 +120,7 @@ class HomePageView(grok.View):
         return tag.description
 
     def tag_picture(self):
-        sdm = self.context.session_data_manager
-        session = sdm.getSessionData(create=True)
-
-        title = session['portlet_data']['tags'][0]
+        title = self.session['portlet_data']['tags'][0]
         with api.env.adopt_user('tags_user'):
             catalog = api.portal.get_tool(name='portal_catalog')
             tag = catalog(
@@ -146,9 +134,8 @@ class HomePageView(grok.View):
     def show_intersection(self):
         if self.only_one_tag() or self.articles["intersection"] == []:
             return False
-        sdm = self.context.session_data_manager
-        session = sdm.getSessionData(create=True)
-        if "search-view" in session.keys() and session["search-view"]:
+        if ("search-view" in self.session.keys() and
+            self.session["search-view"]):
             return False
         return True
 
@@ -169,8 +156,7 @@ class HomePageView(grok.View):
         return form1
 
     def is_search_view(self):
-        sdm = self.context.session_data_manager
-        session = sdm.getSessionData(create=True)
-        if "search-view" in session.keys() and session["search-view"]:
+        if ("search-view" in self.session.keys() and
+            self.session["search-view"]):
             return True
         return False
