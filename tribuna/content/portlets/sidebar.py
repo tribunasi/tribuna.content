@@ -79,7 +79,10 @@ def articles(session):
         session["search-view"] = {}
         session["search-view"]['active'] = False
 
-        return (all_content[:intersection_count], all_content[intersection_count:])
+        return (
+            all_content[:intersection_count],
+            all_content[intersection_count:]
+        )
 
     catalog = api.portal.get_tool(name='portal_catalog')
     portal_type = ["tribuna.content.article", "Discussion Item"]
@@ -93,9 +96,10 @@ def articles(session):
 
     if 'search-view' in session.keys() and session['search-view']['active']:
 
-        results = catalog(SearchableText=session['search-view']['query'], portal_type={
-            "query": ["tribuna.content.article", "Discussion Item"],
-            "operator": "or"
+        results = catalog(
+            SearchableText=session['search-view']['query'], portal_type={
+                "query": ["tribuna.content.article", "Discussion Item"],
+                "operator": "or"
         })
         return ([content.getObject() for content in results], [])
     if 'portlet_data' not in session.keys():
@@ -159,7 +163,6 @@ def articles(session):
     session["search-view"]['active'] = False
 
     return (all_content[:intersection_count], all_content[intersection_count:])
-
 
 
 class ISidebarForm(form.Schema):
