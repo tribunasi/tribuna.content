@@ -62,8 +62,9 @@
 
   <tal:block tal:define="has_one_tag view/only_one_tag;
                          homepageClass python: has_one_tag and 'span3' or 'span10';
-                         hasOneTagClassAddition python: has_one_tag and '-one' or ''">
-    
+                         hasOneTagClassAddition python: has_one_tag and '-one' or '';
+                         articles view/articles">
+
     <div id="tag-picture" tal:condition="has_one_tag">
       <img tal:condition="view/tag_picture"  src="${view/tag_picture}"/>
       <div id="scroll"/>
@@ -79,9 +80,15 @@
 
         <h2 i18n:translate="">Articles</h2>
 
-        <div class="articles-intersection" >
-          <h5 i18n:translate="" tal:condition="view/show_intersection">Intersection</h5>
-          <tal:block repeat="article python: view.articles('intersection')">
+        <div>
+          <span tal:content="python: len(articles['all'])">num</span>
+          <span i18n:translate="">articles</span>
+        </div>
+
+        <div class="articles-intersection">
+          <h5 i18n:translate=""
+              tal:condition="view/show_intersection">Intersection</h5>
+          <tal:block repeat="article python: articles['intersection']">
             <tal:block tal:define="isArticle python: article.portal_type == 'tribuna.content.article';
                                    isComment python: article.portal_type == 'Discussion Item';
                                    typeClassAddition python: isArticle and 'article' or 'comment';
@@ -112,7 +119,7 @@
 
         <div class="articles-union">
           <h5 i18n:translate="" tal:condition="view/show_union">Union</h5>
-          <tal:block repeat="article python: view.articles('union')">
+          <tal:block repeat="article python: articles['union']">
             <tal:block tal:define="isArticle python: article.portal_type == 'tribuna.content.article';
                                    isComment python: article.portal_type == 'Discussion Item';
                                    typeClassAddition python: isArticle and 'article' or 'comment';
@@ -143,7 +150,7 @@
       </tal:block>
 
       <tal:block tal:condition="not: view/is_text_view">
-        <tal:block repeat="article python: view.articles('all')">
+        <tal:block repeat="article python: articles['all']">
           <tal:block tal:define="isArticle python: article.portal_type == 'tribuna.content.article';
                                  isComment python: article.portal_type == 'Discussion Item';
                                  typeClassAddition python: isArticle and 'article' or 'comment';
@@ -180,7 +187,7 @@
                 <p tal:condition="isArticle" class="article-body" tal:content="article/description" />
               </div>
             </div>
-            
+
             <script>
               $(function() {
                   var articleUID = "#${varUID}";

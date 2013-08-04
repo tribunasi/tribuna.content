@@ -11,7 +11,7 @@ from zope import schema
 from zope.interface import Interface
 
 from tribuna.content import _
-from tribuna.content.portlets.sidebar import articles as sidebar_articles
+from tribuna.content.portlets.sidebar import articles
 
 
 def search_articles(query, session):
@@ -69,6 +69,12 @@ class HomePageView(grok.View):
     grok.require('zope2.View')
     grok.name('home-page')
 
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+        self.articles = self._get_articles()
+        super(HomePageView, self).__init__(context, request)
+
     def check_if_default(self):
         get_default = self.request.get('default')
         if get_default:
@@ -89,29 +95,21 @@ class HomePageView(grok.View):
                 return False
         return True
 
-    def articles(self, operator):
-        """Return a catalog search result of articles that have the selected
-        tag.
-
-        :param operator: Operator used for articles filtering, has to be from:
-                        ("union", "intersection", "all")
-        :type operator: string
-        """
-
+    def _get_articles(self):
+        """Return all articles for the given query."""
         sdm = self.context.session_data_manager
         session = sdm.getSessionData(create=True)
-        articles_all = sidebar_articles(session)
-        if operator == "intersection":
-            return articles_all[0]
-        if operator == "union":
-            return articles_all[1]
-        else:
-            return articles_all[0] + articles_all[1]
+        articles_all = articles(session)
+        return {
+            'intersection': articles_all[0],
+            'union': articles_all[1],
+            'all': articles_all[0] + articles_all[1]
+        }
 
     def only_one_tag(self):
         sdm = self.context.session_data_manager
         session = sdm.getSessionData(create=True)
-        if 'portlet_data' in session.keys() :
+        if 'portlet_data' in session.keys():
             return len(session['portlet_data']['tags']) == 1
         return False
 
@@ -146,9 +144,7 @@ class HomePageView(grok.View):
         return str(tag.absolute_url()) + "/@@images/image"
 
     def show_intersection(self):
-        if self.only_one_tag() is True:
-            return False
-        if self.articles("intersection") == []:
+        if self.only_one_tag() or self.articles["intersection"] == []:
             return False
         sdm = self.context.session_data_manager
         session = sdm.getSessionData(create=True)
@@ -157,9 +153,7 @@ class HomePageView(grok.View):
         return True
 
     def show_union(self):
-        if self.only_one_tag() is True:
-            return False
-        if self.articles("union") == []:
+        if self.only_one_tag() or self.articles["union"] == []:
             return False
         return True
 
