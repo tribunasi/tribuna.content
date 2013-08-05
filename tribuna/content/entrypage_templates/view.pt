@@ -10,8 +10,7 @@
   <metal:block fill-slot="style_slot"></metal:block>
 
 <metal:main fill-slot="main">
-<tal:main-macro metal:define-macro="main"
-        >
+<tal:main-macro metal:define-macro="main">
 
   <div tal:replace="structure provider:plone.abovecontenttitle" />
 
@@ -26,9 +25,8 @@
     <div tal:define="picture nocall:context/picture"
              tal:condition="nocall:picture">
       <img tal:attributes="src string:${context/absolute_url}/@@images/picture;
-                                 height picture/_height | nothing;
-                                 width picture/_width | nothing;"
-                />
+                           height picture/_height | nothing;
+                           width picture/_width | nothing;"/>
       <p tal:condition="python: context.image_type == 'tile'" id="background-placeholder" style="background: url('${context/absolute_url}/@@images/picture') repeat scroll 0 0 transparent" />
       <p tal:condition="python: context.image_type == 'original'" id="background-placeholder" style="background: url('${context/absolute_url}/@@images/picture') no-repeat transparent; background-position: 50% 0%;" />
       <p tal:condition="python: context.image_type == 'cover'" id="background-placeholder" style="background: url('${context/absolute_url}/@@images/picture') no-repeat transparent; background-size: contain; background-position:center;" />
@@ -87,14 +85,13 @@
   <div tal:replace="structure provider:plone.belowcontentbody" />
 
   <script>
-          $(function() {
-            $( "#change-form, #change-form-multiple" ).accordion({
-              collapsible: true,
-              active: false
-            });
-          });
-          </script>
-  <style type="text/css">#change-form-multiple .ui-widget-content {height:200px}</style>
+    $(function() {
+        $( "#change-form, #change-form-multiple" ).accordion({
+            collapsible: true,
+            active: false
+        });
+     });
+  </script>
 </tal:main-macro>
 </metal:main>
 
