@@ -141,7 +141,7 @@ class HomePageView(grok.View):
 
     def is_search_view(self):
         if ("search-view" in self.session.keys() and
-            self.session["search-view"]):
+            self.session["search-view"]["active"]):
             return True
         return False
 
