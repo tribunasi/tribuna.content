@@ -59,7 +59,7 @@
       <metal:block use-macro="form/@@ploneform-macros/titlelessform" />
     </tal:block>
   </div>
-  <div id="search-view" tal:condition="python: view.is_search_view" style="display:none" />
+  <div id="search-view" tal:condition="view/is_search_view" style="display:none"></div>
 
   <tal:block tal:define="has_one_tag view/only_one_tag;
                          homepageClass python: has_one_tag and 'span3' or 'span10';
