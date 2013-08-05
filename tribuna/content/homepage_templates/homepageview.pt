@@ -41,6 +41,7 @@
                      scrollTop: $("#container").offset().top
                  }, 500);
             })
+
         });
   </script>
 </metal:block>
@@ -58,7 +59,7 @@
       <metal:block use-macro="form/@@ploneform-macros/titlelessform" />
     </tal:block>
   </div>
-  <div id="search-view" tal:condition="view/is_search_view" style="display:none" />
+  <div id="search-view" tal:condition="python: view.is_search_view" style="display:none" />
 
   <tal:block tal:define="has_one_tag view/only_one_tag;
                          homepageClass python: has_one_tag and 'span3' or 'span10';
@@ -76,7 +77,7 @@
 
     <div id="homepage-div" class="${homepageClass}">
 
-      <tal:block tal:condition="view/is_text_view">
+      <tal:block tal:condition="python: view.is_text_view(1)">
 
         <h2 i18n:translate="">Articles</h2>
 
@@ -149,7 +150,7 @@
         </div>
       </tal:block>
 
-      <tal:block tal:condition="not: view/is_text_view">
+      <tal:block tal:condition="not: python: view.is_text_view(2)">
         <tal:block repeat="article python: articles['all']">
           <tal:block tal:define="isArticle python: article.portal_type == 'tribuna.content.article';
                                  isComment python: article.portal_type == 'Discussion Item';

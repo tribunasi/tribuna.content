@@ -83,12 +83,20 @@ class HomePageView(grok.View):
             for i in self.session.keys():
                 del self.session[i]
 
-    def is_text_view(self):
+    def is_text_view(self, mobile):
         """Check if text view (this is the basic view) is selected.
 
         Read data from the session, if it isn't there, return True.
         """
-        if 'view_type' in self.session.keys():
+        from mobile.sniffer.detect import  detect_mobile_browser
+        from mobile.sniffer.utilities import get_user_agent
+
+        # Get HTTP_USER_AGENT from HTTP request object
+        ua = get_user_agent(self.request)
+        if ua and detect_mobile_browser(ua):
+            # Redirect the visitor from a web site to a mobile site
+            True
+        elif 'view_type' in self.session.keys():
             if self.session['view_type'] == 'drag':
                 return False
         return True
