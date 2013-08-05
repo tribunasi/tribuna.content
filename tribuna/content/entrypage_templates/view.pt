@@ -75,9 +75,11 @@
     </div>
   </div>
 
-  <div id="entrypage-author-title">
-    <span id ="entrypage-title">${context/title},</span>
-    <span id ="entrypage-author">${context/author}</span>
+  <div id="entrypage-author-title"
+       tal:define="title python: context.title or u'No title';
+                   author python: context.author or u'Anonymous'">
+    <span id ="entrypage-title" tal:content="title">Suspense</span>,
+    <span id ="entrypage-author" tal:content="author">Slavoj Žižek</span>
   </div>
   <div id="entrypage-home-link">
     <a href="${context/portal_url}/@@home-page">Go to Home Page</a>

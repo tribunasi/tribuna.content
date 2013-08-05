@@ -28,13 +28,21 @@ def old_entry_pages():
     if not folder:
         return []
     current_id = folder.getDefaultPage()
-    old_pages = tuple((i.id, str(i.Title) + ", " + str(datetime.strptime(
-        i.Date.split("+")[0], "%Y-%m-%dT%H:%M:%S").strftime(
-            "%H:%M:%S, %d.%m.%Y"))) for i in catalog(
-                portal_type='tribuna.content.entrypage',
-                sort_on="Date",
-                sort_order="descending",
-            ) if i.id != current_id)
+    brains = catalog(
+        portal_type='tribuna.content.entrypage',
+        sort_on="Date",
+        sort_order="descending"
+    )
+    old_pages = []
+
+    for item in brains:
+        if item.id != current_id:
+            title = item.Title or _('No title')
+            date = datetime.strptime(
+                item.Date.split("+")[0], "%Y-%m-%dT%H:%M:%S").strftime(
+                    "%H:%M:%S, %d.%m.%Y")
+            old_pages.append(
+                (item.id, '{0}, {1}'.format(str(title), str(date))))
     return old_pages
 
 
@@ -150,7 +158,7 @@ class ChangePagePictureForm(form.SchemaForm):
             self.status = self.formErrorsMessage
             return
         folder = api.content.get(path=ENTRY_PAGES_PATH)
-        new_title = "title" in data and data["title"] or ""
+        new_title = data.get('title', u'')
         with api.env.adopt_roles(['Site Administrator']):
             new_page = api.content.create(
                 type='tribuna.content.entrypage',
@@ -160,7 +168,7 @@ class ChangePagePictureForm(form.SchemaForm):
             api.content.transition(obj=new_page, transition='publish')
             new_page.title = new_title
             new_page.picture = data["picture"]
-            new_page.author = "author" in data and data["author"] or ""
+            new_page.author = data.get('author', u'')
             new_page.image_type = data["image_type"]
             folder.setDefaultPage(new_page.id)
             self.request.response.redirect(api.portal.get().absolute_url())
@@ -222,7 +230,7 @@ class ChangePageTextForm(form.SchemaForm):
             self.status = self.formErrorsMessage
             return
         folder = api.content.get(path=ENTRY_PAGES_PATH)
-        new_title = "title" in data and data["title"] or ""
+        new_title = data.get('title', u'')
         with api.env.adopt_roles(['Site Administrator']):
             new_page = api.content.create(
                 type='tribuna.content.entrypage',
@@ -232,7 +240,7 @@ class ChangePageTextForm(form.SchemaForm):
             api.content.transition(obj=new_page, transition='publish')
             new_page.title = new_title
             new_page.text = data["text"]
-            new_page.author = "author" in data and data["author"] or ""
+            new_page.author = data.get('author', u'')
             new_page.font_type = data["font_type"]
             folder.setDefaultPage(new_page.id)
             self.request.response.redirect(api.portal.get().absolute_url())
