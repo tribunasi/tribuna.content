@@ -4,11 +4,14 @@
 """Views for the home page."""
 
 from five import grok
+from mobile.sniffer.detect import  detect_mobile_browser
+from mobile.sniffer.utilities import get_user_agent
 from plone import api
 from plone.directives import form
 from z3c.form import button
 from zope import schema
 from zope.interface import Interface
+
 
 from tribuna.content import _
 from tribuna.content.portlets.sidebar import articles
@@ -22,7 +25,6 @@ def search_articles(query, session):
     :param session: Current session
     :type session: Session getObject
     """
-    #session['content_list']['union'] = []
     session['search-view']["active"] = True
     session['search-view']['query'] = query
     if "portlet_data" in session.keys():
@@ -88,9 +90,7 @@ class HomePageView(grok.View):
 
         Read data from the session, if it isn't there, return True.
         """
-        from mobile.sniffer.detect import  detect_mobile_browser
-        from mobile.sniffer.utilities import get_user_agent
-
+        
         # Get HTTP_USER_AGENT from HTTP request object
         ua = get_user_agent(self.request)
         if ua and detect_mobile_browser(ua):

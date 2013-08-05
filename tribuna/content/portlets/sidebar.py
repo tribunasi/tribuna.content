@@ -269,6 +269,8 @@ class SidebarForm(form.SchemaForm):
         sdm = self.context.session_data_manager
         session = sdm.getSessionData(create=True)
         session.set("portlet_data", data)
+        session["search-view"] = {}
+        session["search-view"]['active'] = False
         articles(session)
         url = api.portal.get().absolute_url()
         self.request.response.redirect("{0}/@@home-page".format(url))
