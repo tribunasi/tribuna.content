@@ -88,3 +88,10 @@ def add_tags(comment, event):
                 highlight_in_navigation=False,
                 container=site['tags'])
             api.content.transition(obj=obj, transition='submit')
+
+
+class CommentView(grok.View):
+    """View for displaying a comment (loaded with AJAX from mainpage)."""
+    grok.context(IComment)
+    grok.require('zope2.View')
+    grok.name('comment-view')

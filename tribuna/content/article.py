@@ -6,7 +6,7 @@
 from five import grok
 from plone.app.layout.globals.interfaces import IViewView
 from plone.directives import form
-from Products.Five.browser import BrowserView as View
+from Products.Five.browser import BrowserView
 from zope import schema
 from zope.component import getMultiAdapter
 from zope.interface import alsoProvides
@@ -28,7 +28,8 @@ class IArticle(form.Schema):
 
 
 class CommentsView(grok.View):
-    """View for showing all the comments on the article and adding new comments
+    """View for showing all the comments on the article and adding new
+    comments.
     """
 
     grok.context(IArticle)
@@ -43,7 +44,7 @@ class CommentsView(grok.View):
         context = self.context
 
         # viewlet managers also require a view object for adaptation
-        view = View(context, request)
+        view = BrowserView(context, request)
         if not IViewView.providedBy(view):
             alsoProvides(view, IViewView)
         # finally, you need the name of the manager you want to find
@@ -59,3 +60,9 @@ class CommentsView(grok.View):
         for viewlet in all_viewlets:
             if viewlet.__name__ == u"plone.comments":
                 return viewlet.render()
+
+
+class View(grok.View):
+    """Article view."""
+    grok.context(IArticle)
+    grok.require('zope2.View')

@@ -3,21 +3,25 @@
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       lang="en"
+      metal:use-macro="context/main_template/macros/master"
       i18n:domain="tribuna.content">
 <body>
+<metal:block fill-slot="style_slot">
+
+</metal:block>
+
+<metal:main fill-slot="main">
+<tal:main-macro metal:define-macro="main"
+                tal:define="ploneview nocall:context/@@plone">
 
   <div id="article" class="row-fluid">
     <div id="left-column" class="span2">
       <div id="selected-tags">
         <div class="unstyled" id="selected-tags-list">
-          <span tal:repeat="tag context/Subject"
+          <span tal:repeat="tag context/subject"
                 class="selected">${tag}</span>
         </div>
       </div>
-      <form class="article-display-options">
-        <input id="activate-${context/UID}" type="checkbox" checked="checked" >articles</input>
-        <input id="activate-comments-${context/UID}" type="checkbox" >comments</input>
-      </form>
     </div>
 
     <div id="center-column-${context/UID}"
@@ -26,10 +30,10 @@
       <img tal:attributes="src string:++theme++tribuna.diazotheme/img/blank.gif" />
       <p tal:content="structure context/text" />
     </div>
-    <div id="comments-${context/UID}"
-         class="span4 hidden main-page-comments"
-         url="${context/absolute_url}/@@comments-view"></div>
   </div>
+
+</tal:main-macro>
+</metal:main>
 
 </body>
 </html>
