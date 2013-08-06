@@ -35,7 +35,7 @@ class ISearchForm(form.Schema):
 
     search = schema.TextLine(
         title=_(u"Search"),
-        required=True
+        required=True,
     )
 
 
@@ -55,9 +55,6 @@ class SearchForm(form.SchemaForm):
     @button.buttonAndHandler(_(u'Search'))
     def handleApply(self, action):
         data, errors = self.extractData()
-        #if errors:
-        #    self.status = self.formErrorsMessage
-        #    return
         query = "search" in data and data["search"] or ""
         sdm = self.context.session_data_manager
         session = sdm.getSessionData(create=True)
@@ -85,7 +82,7 @@ class HomePageView(grok.View):
             for i in self.session.keys():
                 del self.session[i]
 
-    def is_text_view(self, mobile):
+    def is_text_view(self):
         """Check if text view (this is the basic view) is selected.
 
         Read data from the session, if it isn't there, return True.
@@ -103,6 +100,7 @@ class HomePageView(grok.View):
 
     def _get_articles(self):
         """Return all articles for the given query."""
+        self.check_if_default()
         articles_all = articles(self.session)
         return {
             'intersection': articles_all[0],
@@ -148,7 +146,8 @@ class HomePageView(grok.View):
     def show_intersection(self):
         if (self.only_one_tag() or
             self.articles["intersection"] == [] or
-            self.is_search_view()):
+            self.is_search_view() or
+            self.session["default"]):
             return False
         return True
 

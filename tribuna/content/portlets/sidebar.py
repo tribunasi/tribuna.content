@@ -78,7 +78,7 @@ def articles(session):
         all_content = [content.getObject() for content in all_content]
         session["search-view"] = {}
         session["search-view"]['active'] = False
-
+        session["default"] = True
         return (
             all_content[:intersection_count],
             all_content[intersection_count:]
@@ -105,6 +105,7 @@ def articles(session):
     if 'portlet_data' not in session.keys():
         return returnDefaults()
 
+    session["default"] = False
     # portal_type
     if session['portlet_data']['content_filters']:
         portal_type = []

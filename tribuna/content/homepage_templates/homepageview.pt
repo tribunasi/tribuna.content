@@ -68,7 +68,7 @@
 
     <div id="tag-picture" tal:condition="has_one_tag">
       <img tal:condition="view/tag_picture"  src="${view/tag_picture}"/>
-      <div id="scroll"/>
+      <div tal:condition="view/tag_picture" id="scroll"/>
     </div>
     <div id="tag-description-div" tal:condition="has_one_tag">
       <h2 i18n:translate="">Description</h2>
@@ -76,8 +76,10 @@
     </div>
 
     <div id="homepage-div" class="${homepageClass}">
-
-      <tal:block tal:condition="python: view.is_text_view(1)">
+      <h2 id="empty-results" tal:condition="python: not articles['all'] or len(articles['all'])<1">
+        No results!
+      </h2>
+      <tal:block tal:condition="python: view.is_text_view and articles['all'] or len(articles['all'])<1">
 
         <h2 i18n:translate="">Articles</h2>
 
@@ -150,7 +152,7 @@
         </div>
       </tal:block>
 
-      <tal:block tal:condition="not: python: view.is_text_view(2)">
+      <tal:block tal:condition="not: view/is_text_view">
         <tal:block repeat="article python: articles['all']">
           <tal:block tal:define="isArticle python: article.portal_type == 'tribuna.content.article';
                                  isComment python: article.portal_type == 'Discussion Item';
