@@ -15,30 +15,32 @@
                 tal:define="ploneview nocall:context/@@plone">
 
   <div id="header" class="slider-header">
-    <div class="content-slider responsive">
-      <ul id="article-slider" class="unstyled">
-        <tal:block tal:repeat="article view/articles_all">
-          <li id="${article/getId}"
-              tal:define="is_article python: article.portal_type == 'tribuna.content.article';
-                          title python: is_article and article.title or ploneview.cropText(article.getText(), length=25, ellipsis='...');
-                          type python: is_article and 'article' or 'comment'">
-            <div class="item-inner">
-              <div tal:content="structure title">Title</div>
-              <div class="red" tal:content="type">Article</div>
-            </div>
-          </li>
-        </tal:block>
-      </ul>
-      <a href="#" id="prev" class="prev">
-        <img class="navigate" src="++theme++tribuna.diazotheme/img/arrowBlackLeft.png" alt="Left"/></a>
+    <div class="content-slider-wrapper">
+      <div class="content-slider responsive">
+        <ul id="article-slider" class="unstyled">
+          <tal:block tal:repeat="article view/articles_all">
+            <li id="${article/getId}"
+                tal:define="is_article python: article.portal_type == 'tribuna.content.article';
+                            title python: is_article and article.title or ploneview.cropText(article.getText(), length=25, ellipsis='...');
+                            type python: is_article and 'article' or 'comment'">
+              <div class="item-inner">
+                <div tal:content="structure title">Title</div>
+                <div class="red" tal:content="type">Article</div>
+              </div>
+            </li>
+          </tal:block>
+        </ul>
+      </div>
+    </div>
+    <a href="#" id="prev" class="prev">
+      <img class="navigate" src="++theme++tribuna.diazotheme/img/arrowBlackLeft.png" alt="Left"/></a>
       <a href="#" id="next" class="next">
         <img class="navigate" src="++theme++tribuna.diazotheme/img/arrowBlackRight.png" alt="Right"/></a>
-    </div>
   </div>
 
   <div id="main"></div>
 
-  <div id="home-page-link" style="position: absolute;top: 170px; right: 5%">
+  <div id="home-page-link">
     <a href="${context/portal_url}/home-page">
       <img src="++theme++tribuna.diazotheme/img/x-sign.png" style="width: 15px; height:15px" />
     </a>
