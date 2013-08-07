@@ -20,6 +20,7 @@
         <ul id="article-slider" class="unstyled">
           <tal:block tal:repeat="article view/articles_all">
             <li id="${article/getId}"
+                data-uid="${article/UID}"
                 tal:define="is_article python: article.portal_type == 'tribuna.content.article';
                             title python: is_article and article.title or ploneview.cropText(article.getText(), length=25, ellipsis='...');
                             type python: is_article and 'article' or 'comment'">
