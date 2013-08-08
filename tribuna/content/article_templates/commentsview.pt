@@ -12,6 +12,15 @@
             }
         };
         comments_form.ajaxForm(options);
+
+        $("#latest").bind("click", function (e) {
+            if (jQuery17(".discussion.latest").size() > 0) {
+                comments_container.load(comments_container.attr("data-url"));
+            }
+            else {
+                comments_container.load(comments_container.attr("data-url") + "?latest=True");
+            }
+        });
 </script>
 <script type="text/javascript"
         tal:define="navroot context/@@plone_portal_state/navigation_root_url"
