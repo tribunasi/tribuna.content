@@ -7,13 +7,9 @@ from five import grok
 from mobile.sniffer.detect import  detect_mobile_browser
 from mobile.sniffer.utilities import get_user_agent
 from plone import api
-from plone.directives import form
-from z3c.form import button
-from zope import schema
+from Products.Five.browser import BrowserView
 from zope.interface import Interface
 
-
-from tribuna.content import _
 from tribuna.content.portlets.sidebar import articles
 
 
@@ -25,37 +21,23 @@ def search_articles(query, session):
     :param session: Current session
     :type session: Session getObject
     """
+    if 'search-view' not in session.keys():
+        return
     session['search-view']["active"] = True
     session['search-view']['query'] = query
     if "portlet_data" in session.keys():
         session["portlet_data"]["tags"] = []
 
 
-class ISearchForm(form.Schema):
+class SearchView(BrowserView):
+    """View that handles the searching and then redirects to the home page
+    to display the results.
 
-    search = schema.TextLine(
-        title=_(u"Search"),
-        required=True,
-    )
+    This overrides the default Plone @@search view.
+    """
 
-
-class SearchForm(form.SchemaForm):
-    """form handler for search form."""
-
-    grok.name('search-form')
-    grok.require('zope2.View')
-    grok.permissions('zope.Public')
-    grok.context(ISearchForm)
-
-    schema = ISearchForm
-    ignoreContext = True
-    label = _(u"Search")
-    #description = _(u"New entry page form")
-
-    @button.buttonAndHandler(_(u'Search'))
-    def handleApply(self, action):
-        data, errors = self.extractData()
-        query = "search" in data and data["search"] or ""
+    def __call__(self):
+        query = self.request.form.get('SearchableText', '')
         sdm = self.context.session_data_manager
         session = sdm.getSessionData(create=True)
         search_articles(query, session)
@@ -87,7 +69,7 @@ class HomePageView(grok.View):
 
         Read data from the session, if it isn't there, return True.
         """
-        
+
         # Get HTTP_USER_AGENT from HTTP request object
         ua = get_user_agent(self.request)
         if ua and detect_mobile_browser(ua):
@@ -161,13 +143,8 @@ class HomePageView(grok.View):
             return text[:140] + ' ...'
         return text
 
-    def search_form(self):
-        """Return a form which can change the entry page."""
-        form1 = SearchForm(self.context, self.request)
-        form1.update()
-        return form1
-
     def entry_page_edit(self):
         portal = api.portal.get()
         entry_pages = portal["entry-pages"]
-        return str(entry_pages[entry_pages.getDefaultPage()].absolute_url()) + "/edit"
+        default_page = entry_pages[entry_pages.getDefaultPage()]
+        return str(default_page.absolute_url()) + "/edit"

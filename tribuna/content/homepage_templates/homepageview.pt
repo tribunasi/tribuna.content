@@ -54,10 +54,15 @@
   <div tal:replace="structure provider:plone.belowcontenttitle" />
   <div tal:replace="structure provider:plone.abovecontentbody" />
 
-  <div id="search-form" tal:define="form view/search_form">
-    <tal:block define="view nocall:form">
-      <metal:block use-macro="form/@@ploneform-macros/titlelessform" />
-    </tal:block>
+  <div id="search-form">
+      <form id="searchForm" name="searchForm" method="post" action="@@search">
+        <div class="LSBox">
+          <input type="text" id="searchGadget" class="searchField" placeholder="Search.." title="Search" name="SearchableText" autocomplete="off">
+          <div class="LSResult bordered" id="LSResult" style="display:none;">
+            <div class="LSShadow" id="LSShadow"></div>
+          </div>
+        </div>
+      </form>
   </div>
   <div id="search-view" tal:condition="view/is_search_view" style="display:none"></div>
 

@@ -74,4 +74,14 @@
       name="subjectExtender"
       factory=".commentextender.CommentExtender"
       provides="plone.z3cform.fieldsets.interfaces.IFormExtender" />
+
+    <!-- Override the search view -->
+    <browser:page
+        name="search"
+        class=".homepage.SearchView"
+        permission="zope2.View"
+        for="*"
+        layer="tribuna.content.interfaces.ITribunaContentLayer"
+        />
+
 </configure>
