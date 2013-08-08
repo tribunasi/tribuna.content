@@ -166,3 +166,8 @@ class HomePageView(grok.View):
         form1 = SearchForm(self.context, self.request)
         form1.update()
         return form1
+
+    def entry_page_edit(self):
+        portal = api.portal.get()
+        entry_pages = portal["entry-pages"]
+        return str(entry_pages[entry_pages.getDefaultPage()].absolute_url()) + "/edit"

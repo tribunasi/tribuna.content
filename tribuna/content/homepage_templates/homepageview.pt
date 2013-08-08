@@ -48,7 +48,7 @@
 
 <metal:main fill-slot="main">
 <tal:main-macro metal:define-macro="main">
-
+  <li id="entry-page-edit"><a href="${view/entry_page_edit}">Edit entry page</a></li>
   <div tal:replace="structure provider:plone.abovecontenttitle" />
   <h1 class="documentFirstHeading">Home page</h1>
   <div tal:replace="structure provider:plone.belowcontenttitle" />

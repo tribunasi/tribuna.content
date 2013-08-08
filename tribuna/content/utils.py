@@ -16,7 +16,7 @@ def tags_published_highlighted():
         tags = tuple((i.id, unicode(i.Title, 'utf8')) for i in catalog(
             portal_type='tribuna.content.tag',
             review_state=['published', 'pending'],
-            sort_on="sortable_title",
+            sort_on="getObjPositionInParent",
             highlight_in_navigation=True,
         ))
     return tags

@@ -23,6 +23,7 @@ class ITag(form.Schema):
 
     description = schema.Text(
         title=_(u"A short summary"),
+        required=False
     )
 
     highlight_in_navigation = schema.Bool(

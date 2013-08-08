@@ -7,6 +7,7 @@ from five import grok
 from plone.app.layout.globals.interfaces import IViewView
 from plone.directives import form
 from Products.Five.browser import BrowserView
+from plone.namedfile.field import NamedBlobImage
 from zope import schema
 from zope.component import getMultiAdapter
 from zope.interface import alsoProvides
@@ -24,6 +25,11 @@ class IArticle(form.Schema):
 
     description = schema.Text(
         title=_(u"Article description"),
+    )
+
+    picture = NamedBlobImage(
+        title=_(u"Image for main view"),
+        required=False,
     )
 
 
