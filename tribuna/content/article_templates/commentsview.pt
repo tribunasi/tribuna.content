@@ -1,14 +1,14 @@
 <div id="plone-comments-${context/UID}"
      tal:content="structure view/get_comment_viewlet"></div>
 <script>
-        var comments_form = jQuery("#plone-comments-${context/UID} #commenting form");
-        var comments = jQuery17("#comments-" + "${context/UID}");
-        var comments_url = comments.attr('data-url');
+        var comments = jQuery("#plone-comments-${context/UID}"),
+            comments_form = comments.find("#commenting form"),
+            comments_container = comments.parent();
 
         var options = {
             data: comments_form.serialize(),
             success:function() {
-                comments_form.parent().load(comments_url);
+                comments_container.load(comments_container.attr("data-url"));
             }
         };
         comments_form.ajaxForm(options);
@@ -17,4 +17,3 @@
         tal:define="navroot context/@@plone_portal_state/navigation_root_url"
         tal:attributes="src string:${navroot}/++resource++tribuna.diazotheme/js/tribuna-comments.js">
 </script>
-
