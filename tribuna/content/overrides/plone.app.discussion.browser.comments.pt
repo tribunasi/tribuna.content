@@ -58,7 +58,7 @@
           <a class="twitter-share" href="#"
                       onclick="
                         window.open(
-                          'http://twitter.com/share?url=${context/@@plone_portal_state/navigation_root_url}/main-page/${reply/getId}',
+                          'http://twitter.com/share?url=${context/@@plone_portal_state/navigation_root_url}/@@articles/${reply/getId}',
                           'twitter-share-dialog',
                           'width=626,height=436');
                         return false;">
@@ -68,7 +68,7 @@
           <a class="facebook-share" href="#"
                       onclick="
                         window.open(
-                          'https://www.facebook.com/sharer/sharer.php?u=${context/@@plone_portal_state/navigation_root_url}/main-page/${reply/getId}',
+                          'https://www.facebook.com/sharer/sharer.php?u=${context/@@plone_portal_state/navigation_root_url}/@@articles/${reply/getId}',
                           'facebook-share-dialog',
                           'width=626,height=436');
                         return false;">

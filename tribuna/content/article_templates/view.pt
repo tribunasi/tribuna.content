@@ -28,7 +28,7 @@
     </div>
 
     <div id="center-column-${context/UID}"
-         class="main-page-article-body span6">
+         class="articles-article-body span6">
       <h3 tal:content="context/title" />
       <img tal:attributes="src string:++theme++tribuna.diazotheme/img/blank.gif" />
       <p tal:content="structure context/text" />
@@ -36,7 +36,7 @@
     <div id="comments-${context/UID}"
          data-uid="${context/UID}"
          data-url="${context/absolute_url}/@@comments-view"
-         class="span4 main-page-comments"></div>
+         class="span4 articles-comments"></div>
   </div>
 
 </tal:main-macro>

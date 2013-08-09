@@ -25,7 +25,7 @@
     </div>
 
     <div id="center-column-${context/UID}"
-         class="main-page-article-body span6">
+         class="articles-article-body span6">
       <h3 tal:content="context/title" />
       <img tal:attributes="src string:++theme++tribuna.diazotheme/img/blank.gif" />
       <p tal:content="structure context/text" />

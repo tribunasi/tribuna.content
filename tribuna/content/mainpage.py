@@ -16,14 +16,14 @@ class MainPageView(grok.View):
     grok.implements(IPublishTraverse)
     grok.context(Interface)
     grok.require('zope2.View')
-    grok.name('main-page')
+    grok.name('articles')
 
     article_id = None
 
     def publishTraverse(self, request, name):
         """Custom traverse method which enables us to have urls in format
-        ../@@main-page/some-article instead of
-        ../@@main-page?article=some-article.
+        ../@@articles/some-article instead of
+        ../@@articles?article=some-article.
         """
         # Need this hack so resolving url for an uuid works (e.g. article
         # images use this view to get the real url)
