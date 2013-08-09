@@ -1,10 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from collective.z3cform.widgets.token_input_widget import TokenInputFieldWidget
 from persistent import Persistent
 from plone.app.discussion.browser.comments import CommentForm
-from plone.directives import form
 from plone.z3cform.fieldsets import extensible
 from tribuna.content.comment import Comment
 from z3c.form.field import Fields
@@ -18,7 +16,6 @@ from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 
 class ICommentExtenderFields(Interface):
     """Interface to define the fields we want to add to the comment form."""
-    form.widget(subject=TokenInputFieldWidget)
     subject = schema.List(
         title=(u"Tags"),
         value_type=schema.TextLine(),

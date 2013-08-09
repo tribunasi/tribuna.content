@@ -85,7 +85,7 @@ def articles(session):
         )
 
     catalog = api.portal.get_tool(name='portal_catalog')
-    portal_type = ["tribuna.content.article", "Discussion Item"]
+    portal_type = ["tribuna.content.article", "Discussion Item", "Image"]
     review_state = "published"
     sort_on = "Date"
     query = None
@@ -115,7 +115,7 @@ def articles(session):
             elif i == 'comments':
                 portal_type.append("Discussion Item")
             elif i == 'images':
-                pass
+                portal_type.append("Image")
 
     # sort_on
     tmp = session['portlet_data']['sort_on']

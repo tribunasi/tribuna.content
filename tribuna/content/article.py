@@ -3,11 +3,12 @@
 
 """The Article content type."""
 
+from collective.z3cform.widgets.token_input_widget import TokenInputFieldWidget
 from five import grok
 from plone.app.layout.globals.interfaces import IViewView
 from plone.directives import form
-from Products.Five.browser import BrowserView
 from plone.namedfile.field import NamedBlobImage
+from Products.Five.browser import BrowserView
 from zope import schema
 from zope.component import getMultiAdapter
 from zope.interface import alsoProvides
@@ -65,6 +66,11 @@ class CommentsView(grok.View):
         all_viewlets = manager.viewlets
         for viewlet in all_viewlets:
             if viewlet.__name__ == u"plone.comments":
+                # Set the widget factory for our field
+                viewlet.form.fields['subject'].widgetFactory['input'] =\
+                    TokenInputFieldWidget
+                # Update widgets so it takes effect
+                viewlet.form.updateWidgets()
                 return viewlet.render()
 
 

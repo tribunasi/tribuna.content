@@ -36,10 +36,18 @@
         provides="Products.GenericSetup.interfaces.EXTENSION"
         />
 
-    <browser:viewlet
+    <!-- <browser:viewlet
         name="tribuna.content.gallery"
         manager="plone.app.layout.viewlets.interfaces.IBelowContentBody"
         class="tribuna.content.viewlet.GalleryViewlet"
+        permission="zope2.View"
+        layer=".interfaces.ITribunaContentLayer"
+        /> -->
+
+    <browser:viewlet
+        name="plone.global_sections"
+        manager="plone.app.layout.viewlets.interfaces.IPortalHeader"
+        class="tribuna.content.viewlet.NavbarViewlet"
         permission="zope2.View"
         layer=".interfaces.ITribunaContentLayer"
         />
