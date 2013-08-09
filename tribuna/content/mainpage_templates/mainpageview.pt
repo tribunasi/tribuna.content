@@ -42,6 +42,13 @@
 
   <div id="main" data-id="${view/article_id}"></div>
 
+  <div id="article-navigation">
+    <a href="#" class="prev">
+      <img class="navigate" src="++theme++tribuna.diazotheme/img/arrowBlackLeft.png" alt="Left"/></a>
+    <a href="#" class="next">
+      <img class="navigate" src="++theme++tribuna.diazotheme/img/arrowBlackRight.png" alt="Right"/></a>
+  </div>
+
   <div id="close-articles">
     <a href="${context/portal_url}/home">
       <img src="++theme++tribuna.diazotheme/img/x-sign.png" style="width: 15px; height:15px" />
