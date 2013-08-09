@@ -6,29 +6,52 @@
 from five import grok
 from plone import api
 from zope.interface import Interface
+from zope.publisher.interfaces import IPublishTraverse
+from zExceptions import NotFound
 
 from tribuna.content.portlets.sidebar import articles as get_articles
 
 
 class MainPageView(grok.View):
+    grok.implements(IPublishTraverse)
     grok.context(Interface)
     grok.require('zope2.View')
     grok.name('main-page')
 
+    article_id = None
+
+    def publishTraverse(self, request, name):
+        """Custom traverse method which enables us to have urls in format
+        ../@@main-page/some-article instead of
+        ../@@main-page?article=some-article.
+        """
+        # Need this hack so resolving url for an uuid works (e.g. article
+        # images use this view to get the real url)
+        if name == 'resolveuid':
+            return api.content.get_view(
+                context=self.context,
+                request=request,
+                name=name
+            )
+        if self.article_id is None:
+            self.article_id = name
+            return self
+        else:
+            raise NotFound()
+
     def articles_all(self):
         """Return all articles that match the criteria."""
-        article_id = self.request.get('article')
-        if not article_id:
+        if not self.article_id:
             return []
         sdm = self.context.session_data_manager
         session = sdm.getSessionData(create=True)
         articles = get_articles(session)
         all_articles = articles[0] + articles[1]
-        if article_id in [i.id for i in all_articles]:
+        if self.article_id in [i.id for i in all_articles]:
             return all_articles
         else:
             catalog = api.portal.get_tool(name='portal_catalog')
-            article = catalog(id=article_id)
+            article = catalog(id=self.article_id)
             return article and [article[0].getObject()] or []
 
     def update(self):

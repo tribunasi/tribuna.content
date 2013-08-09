@@ -21,6 +21,7 @@
           <tal:block tal:repeat="article view/articles_all">
             <li id="${article/getId}"
                 data-uid="${article/UID}"
+                data-url="${context/portal_url}/get-article?id=${article/getId}"
                 tal:define="is_article python: article.portal_type == 'tribuna.content.article';
                             title python: is_article and article.title or ploneview.cropText(article.getText(), length=25, ellipsis='...');
                             type python: is_article and 'article' or 'comment'">
@@ -39,7 +40,7 @@
         <img class="navigate" src="++theme++tribuna.diazotheme/img/arrowBlackRight.png" alt="Right"/></a>
   </div>
 
-  <div id="main"></div>
+  <div id="main" data-id="${view/article_id}"></div>
 
   <div id="home-page-link">
     <a href="${context/portal_url}/home-page">
