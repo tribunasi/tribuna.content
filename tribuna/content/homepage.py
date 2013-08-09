@@ -69,7 +69,6 @@ class HomePageView(grok.View):
 
         Read data from the session, if it isn't there, return True.
         """
-
         # Get HTTP_USER_AGENT from HTTP request object
         ua = get_user_agent(self.request)
         if ua and detect_mobile_browser(ua):
@@ -148,3 +147,10 @@ class HomePageView(grok.View):
         entry_pages = portal["entry-pages"]
         default_page = entry_pages[entry_pages.getDefaultPage()]
         return str(default_page.absolute_url()) + "/edit"
+
+    def tags_selected(self):
+        if 'portlet_data' in self.session.keys() and \
+            'tags' in self.session['portlet_data'] and \
+             self.session['portlet_data']['tags'] > 0:
+             return True
+        return False

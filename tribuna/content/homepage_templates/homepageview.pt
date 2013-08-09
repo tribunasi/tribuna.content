@@ -84,7 +84,7 @@
       <h2 id="empty-results" tal:condition="python: not articles['all'] or len(articles['all'])<1">
         No results!
       </h2>
-      <tal:block tal:condition="python: view.is_text_view and articles['all'] or len(articles['all'])<1">
+      <tal:block tal:condition="python: view.is_text_view() and articles['all'] or len(articles['all'])<1">
 
         <h2 i18n:translate="">Articles</h2>
 
@@ -95,7 +95,7 @@
 
         <div class="articles-intersection">
           <h5 i18n:translate=""
-              tal:condition="view/show_intersection">Intersection</h5>
+              tal:condition="python: view.show_intersection() and view.tags_selected()">Intersection</h5>
           <tal:block repeat="article python: articles['intersection']">
             <tal:block tal:define="isArticle python: article.portal_type == 'tribuna.content.article';
                                    isComment python: article.portal_type == 'Discussion Item';
@@ -126,7 +126,7 @@
         </div>
 
         <div class="articles-union">
-          <h5 i18n:translate="" tal:condition="view/show_union">Union</h5>
+          <h5 i18n:translate="" tal:condition="python: view.show_intersection() and view.tags_selected()">Union</h5>
           <tal:block repeat="article python: articles['union']">
             <tal:block tal:define="isArticle python: article.portal_type == 'tribuna.content.article';
                                    isComment python: article.portal_type == 'Discussion Item';
@@ -157,7 +157,7 @@
         </div>
       </tal:block>
 
-      <tal:block tal:condition="not: view/is_text_view">
+      <tal:block tal:condition="python: not view.is_text_view()">
         <tal:block repeat="article python: articles['all']">
           <tal:block tal:define="isArticle python: article.portal_type == 'tribuna.content.article';
                                  isComment python: article.portal_type == 'Discussion Item';

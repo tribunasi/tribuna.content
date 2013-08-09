@@ -177,10 +177,7 @@ class ChangePagePictureForm(form.SchemaForm):
 class IChangePageTextForm(form.Schema):
     """Form for adding text to entry page"""
 
-    text = schema.TextLine(
-        title=_(u"Text"),
-        required=True
-    )
+    text = schema.Text(title=u"Entry page text")
 
     font_type = schema.Choice(
         title=_(u"font type"),
