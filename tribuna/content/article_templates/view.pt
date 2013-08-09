@@ -34,7 +34,8 @@
         <form class="article-display-options span4">
           <label i18n:translate="">
             text
-            <input id="activate-${context/UID}" type="checkbox"
+            <input class="activate-text"
+                   id="activate-${context/UID}" type="checkbox"
                    checked="checked" /></label>
           <label i18n:translate="">
             comments
@@ -44,7 +45,7 @@
         </form>
       </div>
       <div class="row-fluid">
-        <div class="content-core span8">
+        <div class="content-core span9">
           <p class="description" tal:content="context/Description">
             Etiam vehicula mauris ac tortor convallis id mollis urna
           </p>
@@ -55,7 +56,7 @@
         <div id="comments-${context/UID}"
              data-uid="${context/UID}"
              data-url="${context/absolute_url}/@@comments-view"
-             class="span4 articles-comments"></div>
+             class="span5 articles-comments"></div>
       </div>
     </div>
   </div>
