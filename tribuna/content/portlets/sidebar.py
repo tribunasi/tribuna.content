@@ -274,7 +274,7 @@ class SidebarForm(form.SchemaForm):
         session["search-view"]['active'] = False
         articles(session)
         url = api.portal.get().absolute_url()
-        self.request.response.redirect("{0}/@@home-page".format(url))
+        self.request.response.redirect("{0}/home".format(url))
 
     @button.buttonAndHandler(_(u'Text'))
     def handleApply(self, action):

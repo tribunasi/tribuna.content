@@ -42,8 +42,8 @@
 
   <div id="main" data-id="${view/article_id}"></div>
 
-  <div id="home-page-link">
-    <a href="${context/portal_url}/home-page">
+  <div id="close-articles">
+    <a href="${context/portal_url}/home">
       <img src="++theme++tribuna.diazotheme/img/x-sign.png" style="width: 15px; height:15px" />
     </a>
   </div>

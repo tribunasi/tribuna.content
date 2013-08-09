@@ -42,13 +42,13 @@ class SearchView(BrowserView):
         session = sdm.getSessionData(create=True)
         search_articles(query, session)
         url = api.portal.get().absolute_url()
-        self.request.response.redirect("{0}/@@home-page".format(url))
+        self.request.response.redirect("{0}/home".format(url))
 
 
 class HomePageView(grok.View):
     grok.context(Interface)
     grok.require('zope2.View')
-    grok.name('home-page')
+    grok.name('home')
 
     def __init__(self, context, request):
         self.context = context
