@@ -67,7 +67,6 @@
   <div id="search-view" tal:condition="view/is_search_view" style="display:none"></div>
 
   <tal:block tal:define="has_one_tag view/only_one_tag;
-                         homepageClass python: has_one_tag and 'span3' or 'span10';
                          hasOneTagClassAddition python: has_one_tag and '-one' or '';
                          articles view/articles">
 
@@ -80,7 +79,7 @@
       ${view/tag_description}
     </div>
 
-    <div id="homepage-div" class="${homepageClass}">
+    <div id="homepage-div">
       <h2 id="empty-results" tal:condition="python: not articles['all'] or len(articles['all'])<1">
         No results!
       </h2>
