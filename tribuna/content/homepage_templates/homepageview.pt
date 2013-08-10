@@ -86,6 +86,7 @@
           i18n:translate="">
         No results!
       </h2>
+
       <tal:block tal:condition="python: view.is_text_view() and articles['all'] or articles_num == 0">
 
         <h2 i18n:translate="">Articles</h2>
@@ -257,6 +258,7 @@
             </script>
           </tal:block>
         </tal:block>
+      </tal:block>
       </div>
     </tal:block>
     <div tal:replace="structure provider:plone.belowcontentbody" />
