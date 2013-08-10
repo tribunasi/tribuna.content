@@ -7,6 +7,7 @@ from five import grok
 from mobile.sniffer.detect import  detect_mobile_browser
 from mobile.sniffer.utilities import get_user_agent
 from plone import api
+from plone.app.search.browser import quote_chars
 from Products.Five.browser import BrowserView
 from zope.interface import Interface
 
@@ -37,7 +38,7 @@ class SearchView(BrowserView):
     """
 
     def __call__(self):
-        query = self.request.form.get('SearchableText', '')
+        query = quote_chars(self.request.form.get('SearchableText', '')) + '*'
         sdm = self.context.session_data_manager
         session = sdm.getSessionData(create=True)
         search_articles(query, session)
