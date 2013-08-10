@@ -79,18 +79,21 @@
       ${view/tag_description}
     </div>
 
-    <div id="homepage-div">
-      <h2 id="empty-results" tal:condition="python: not articles['all'] or len(articles['all'])<1">
+    <div id="homepage-div"
+         tal:define="articles_num python: len(articles['all'])">
+      <h2 id="empty-results"
+          tal:condition="python: not articles['all'] or articles_num == 0"
+          i18n:translate="">
         No results!
       </h2>
-      <tal:block tal:condition="python: view.is_text_view() and articles['all'] or len(articles['all'])<1">
+      <tal:block tal:condition="python: view.is_text_view() and articles['all'] or articles_num == 0">
 
         <h2 i18n:translate="">Articles</h2>
 
-        <div>
-          <span tal:content="python: len(articles['all'])">num</span>
-          <span i18n:translate="">articles</span>
-        </div>
+        <span id="results-num">
+          <tal:block tal:content="articles_num">num</tal:block>
+          <tal:block i18n:translate="">results</tal:block>
+        </span>
 
         <div class="articles-intersection">
           <h5 i18n:translate=""
