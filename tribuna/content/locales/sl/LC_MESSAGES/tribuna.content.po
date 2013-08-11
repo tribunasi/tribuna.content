@@ -1,0 +1,298 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Tribuna\n"
+"POT-Creation-Date: 2013-08-11 14:40+0000\n"
+"PO-Revision-Date: 2013-08-11 16:41+0100\n"
+"Last-Translator: Jure Cerjak <jcerjak@termitnjak.si>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"Language-Code: en\n"
+"Language-Name: English\n"
+"Preferred-Encodings: utf-8 latin1\n"
+"Domain: DOMAIN\n"
+
+#: ./tag.py:25
+msgid "A short summary"
+msgstr "Kratek opis"
+
+#: ./portlets/sidebar.py:182
+msgid "All tags"
+msgstr "Vsi tagi"
+
+#: ./portlets/sidebar.py:191
+msgid "Alphabetical"
+msgstr "Po abecedi"
+
+#: ./profiles/default/types/tribuna.content.article.xml
+msgid "An article"
+msgstr "Članek"
+
+#: ./portlets/sidebar.py:201
+#: ./profiles/default/types/tribuna.content.article.xml
+msgid "Article"
+msgstr "Članek"
+
+#: ./article.py:28
+msgid "Article description"
+msgstr "Opis članka"
+
+#: ./homepage_templates/homepageview.pt:94
+#: ./tag_templates/view.pt:24
+msgid "Articles"
+msgstr "Članki"
+
+#: ./entrypage.py:83
+msgid "Author"
+msgstr "Avtor"
+
+#: ./behaviors/behaviors.py:66
+msgid "Categories"
+msgstr "Kategorije"
+
+#: ./entrypage.py:157
+msgid "Change"
+msgstr "Zamenjaj"
+
+#: ./entrypage_templates/view.pt:44
+msgid "Change entry page"
+msgstr "Zamenjaj naslovko"
+
+#: ./portlets/sidebar.py:202
+msgid "Comment"
+msgstr "Komentar"
+
+#: ./portlets/sidebar.py:199
+msgid "Content filters"
+msgstr "Filtriranje vsebine"
+
+#: ./entrypage.py:102
+msgid "Cover everything"
+msgstr "Prekrij celotno stran"
+
+#: ./homepage_templates/homepageview.pt:80
+msgid "Description"
+msgstr "Opis"
+
+#: ./entrypage.py:98
+msgid "Display image"
+msgstr "Prikaži sliko"
+
+#: ./portlets/sidebar.py:286
+msgid "Drag"
+msgstr "Slikovni pogled"
+
+#: ./entrypage_templates/view.pt:23
+#: ./profiles/default/types/tribuna.content.entrypage.xml
+msgid "Entry page"
+msgstr "Vstopna stran"
+
+#: ./portlets/sidebar.py:263
+msgid "Filter"
+msgstr "Filter"
+
+#: ./entrypage.py:88
+msgid "Font type"
+msgstr "Font"
+
+#: ./tag.py:30
+msgid "Highlight tag in navigation?"
+msgstr "Poudari tag v navigaciji?"
+
+#: ./article.py:32
+#: ./portlets/sidebar.py:203
+msgid "Image"
+msgstr "Slika"
+
+#: ./homepage_templates/homepageview.pt:102
+msgid "Intersection"
+msgstr "Presek"
+
+#: ./behaviors/behaviors.py:155
+msgid "Is article locked on first page?"
+msgstr "Članek zaklenjen na prvi strani?"
+
+#: ./portlets/sidebar.py:193
+msgid "Latest"
+msgstr "Najnovejši"
+
+#: ./behaviors/behaviors.py:34
+msgid "Lead Image"
+msgstr "Slika"
+
+#: ./article.py:24
+#: ./entrypage.py:69
+#: ./tag.py:21
+msgid "Name"
+msgstr "Naslov"
+
+#: ./homepage_templates/homepageview.pt:86
+msgid "No results!"
+msgstr "Ni rezultatov!"
+
+#: ./entrypage.py:42
+msgid "No title"
+msgstr "Brez naslova"
+
+#: ./portlets/sidebar.py:192
+msgid "Nr. of comments"
+msgstr "Število komentarjev"
+
+#: ./entrypage_templates/view.pt:63
+msgid "Old pages"
+msgstr "Prejšnje naslovnice"
+
+#: ./entrypage.py:22
+msgid "Only select text or image"
+msgstr "Izberi tekst ali sliko"
+
+#: ./entrypage.py:101
+msgid "Original size"
+msgstr "Originalna velikost"
+
+#: ./entrypage_templates/view.pt:55
+msgid "Picture"
+msgstr "Slika"
+
+#: ./entrypage.py:119
+msgid "Please upload an image"
+msgstr "Prosimo naložite sliko"
+
+#: ./homepage_templates/homepageview.pt:60
+msgid "Search.."
+msgstr "iskalnik.."
+
+#: ./portlets/sidebar.py:260
+msgid "Select appropriate tags"
+msgstr "Izberite primerne tag-e"
+
+#: ./entrypage.py:269
+msgid "Select entry page"
+msgstr "Izberi naslovnico"
+
+#: ./entrypage.py:154
+msgid "Select new page"
+msgstr "Izberi novo stran"
+
+#: ./entrypage.py:254
+msgid "Select one of the old pages"
+msgstr "Izberi prejšnjo naslovnico"
+
+#: ./entrypage.py:108
+msgid "Set as default"
+msgstr "Nastavi kot privzeto"
+
+#: ./entrypage.py:109
+msgid "Set this page as default entry page and disable editing."
+msgstr "Nastavi to stran kot privzeto vstopno stran in onemogoči urejanje."
+
+#: ./portlets/sidebar.py:301
+msgid "Sidebar navigation"
+msgstr "Stranska navigacija"
+
+#: ./portlets/sidebar.py:304
+msgid "Sidebar portlet"
+msgstr "Portlet"
+
+#: ./profiles/default/types/tribuna.content.tag.xml
+msgid "Tag"
+msgstr "Tag"
+
+#: ./behaviors/behaviors.py:60
+#: ./portlets/sidebar.py:174
+msgid "Tags"
+msgstr "Tag-i"
+
+#: ./portlets/sidebar.py:261
+msgid "Tags selection form"
+msgstr "Izbira tag-ov"
+
+#: ./entrypage.py:73
+#: ./entrypage_templates/view.pt:47
+#: ./portlets/sidebar.py:279
+msgid "Text"
+msgstr "Tekst"
+
+#: ./entrypage.py:100
+msgid "Tiles over page"
+msgstr "Tiled"
+
+#: ./entrypage.py:134
+msgid "Title"
+msgstr "Naslov"
+
+#: ./portlets/sidebar.py:189
+msgid "Type of sorting"
+msgstr "Tip sortiranja"
+
+#: ./homepage_templates/homepageview.pt:134
+msgid "Union"
+msgstr "Unija"
+
+#: ./entrypage.py:78
+msgid "Upload an image"
+msgstr "Naloži sliko"
+
+#: ./portlets/sidebar.py:302
+msgid "Use this portlet for tag navigation."
+msgstr "Portlet za navigacijo in filtriranje s pomočjo tag-ov"
+
+#: ./article.py:33
+msgid "Will be displayed on the article view."
+msgstr "Prikazana bo na članku."
+
+#: ./homepage_templates/homepageview.pt:123
+msgid "article"
+msgstr "članek"
+
+#: ./article_templates/view.pt:30
+msgid "by"
+msgstr "piše"
+
+#: ./comment_templates/commentview.pt:46
+#: ./homepage_templates/homepageview.pt:126
+msgid "comment"
+msgstr "komentar"
+
+#: ./article_templates/view.pt:41
+msgid "comments"
+msgstr "komentarji"
+
+#: ./portlets/sidebar.pt:38
+msgid "go home"
+msgstr "go home"
+
+#. Default: "Advanced Search…"
+#: ./browser/overrides/Products.CMFPlone.skins.plone_scripts.livesearch_reply.py:106
+msgid "label_advanced_search"
+msgstr "Iskalnik.."
+
+#. Default: "No matching results found."
+#: ./browser/overrides/Products.CMFPlone.skins.plone_scripts.livesearch_reply.py:104
+msgid "label_no_results_found"
+msgstr "Ni rezultatov."
+
+#. Default: "Show all items"
+#: ./browser/overrides/Products.CMFPlone.skins.plone_scripts.livesearch_reply.py:108
+msgid "label_show_all"
+msgstr "Prikaži vse"
+
+#. Default: "LiveSearch &#8595;"
+#: ./browser/overrides/Products.CMFPlone.skins.plone_scripts.livesearch_reply.py:103
+msgid "legend_livesearch"
+msgstr "Iskanje..."
+
+#: ./comment_templates/commentview.pt:33
+msgid "link to the article"
+msgstr "povezava do članka"
+
+#: ./homepage_templates/homepageview.pt:98
+msgid "results"
+msgstr "rezultatov"
+
+#: ./article_templates/view.pt:36
+msgid "text"
+msgstr "tekst"
+

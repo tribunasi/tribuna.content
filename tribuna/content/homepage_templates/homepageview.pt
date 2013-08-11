@@ -57,7 +57,9 @@
   <div id="search-form">
       <form id="searchForm" name="searchForm" method="post" action="@@search">
         <div class="LSBox">
-          <input type="text" id="searchGadget" class="searchField" placeholder="Search.." title="Search" name="SearchableText" autocomplete="off">
+          <input type="text" id="searchGadget" class="searchField"
+                 placeholder="Search.." title="Search" name="SearchableText"
+                 autocomplete="off" i18n:attributes="placeholder">
           <div class="LSResult bordered" id="LSResult" style="display:none;">
             <div class="LSShadow" id="LSShadow"></div>
           </div>
@@ -117,10 +119,10 @@
                      tal:content="structure python: view.shorten_text(article.getText())" />
                 </div>
                 <p tal:condition="isArticle" class="article-body" tal:content="article/description" />
-                <p i18n:translate="" tal:condition="isArticle" class="content-type">
+                <p tal:condition="isArticle" class="content-type">
                   <span class="red" i18n:translate="">article</span>
                 </p>
-                <p i18n:translate="" tal:condition="isComment" class="content-type">
+                <p tal:condition="isComment" class="content-type">
                   <span class="red" i18n:translate="">comment</span>
                 </p>
               </div>
@@ -148,10 +150,10 @@
                      tal:content="structure python: view.shorten_text(article.getText())" />
                 </div>
                 <p tal:condition="isArticle" class="article-body" tal:content="article/description" />
-                <p i18n:translate="" tal:condition="isArticle" class="content-type">
+                <p tal:condition="isArticle" class="content-type">
                   <span class="red" i18n:translate="">article</span>
                 </p>
-                <p i18n:translate="" tal:condition="isComment" class="content-type">
+                <p tal:condition="isComment" class="content-type">
                   <span class="red" i18n:translate="">comment</span>
                 </p>
               </div>
@@ -181,10 +183,10 @@
                      tal:content="structure python: view.shorten_text(article.getText())" />
                 </div>
                 <div id="drag-view-type">
-                  <p i18n:translate="" tal:condition="isArticle" class="content-type">
+                  <p tal:condition="isArticle" class="content-type">
                     <span class="red" i18n:translate="">article</span>
                   </p>
-                  <p i18n:translate="" tal:condition="isComment" class="content-type">
+                  <p tal:condition="isComment" class="content-type">
                     <span class="red" i18n:translate="">comment</span>
                   </p>
                 </div>

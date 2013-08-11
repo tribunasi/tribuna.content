@@ -27,7 +27,7 @@ class ITag(form.Schema):
     )
 
     highlight_in_navigation = schema.Bool(
-        title=_(u"Highlight article in navigation?")
+        title=_(u"Highlight tag in navigation?")
     )
 
 

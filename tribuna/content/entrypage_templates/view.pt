@@ -20,7 +20,7 @@
 
   <div tal:replace="structure provider:plone.abovecontentbody" />
 
-  <h2 i18n:translate="heading_sessions">Entry page</h2>
+  <h2 i18n:translate="">Entry page</h2>
   <div>
     <div tal:define="picture nocall:context/picture"
              tal:condition="nocall:picture">

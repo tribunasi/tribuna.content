@@ -29,7 +29,8 @@ class IArticle(form.Schema):
     )
 
     picture = NamedBlobImage(
-        title=_(u"Image for main view"),
+        title=_(u"Image"),
+        description=_(u"Will be displayed on the article view."),
         required=False,
     )
 

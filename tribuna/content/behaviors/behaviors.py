@@ -57,11 +57,7 @@ class ITags(form.Schema):
 
     form.widget(tags_old=CheckBoxFieldWidget)
     tags_old = schema.List(
-        title=_(u'label_tags'),
-        description=_(
-            u'help_tags',
-            default=u'Mine test.'
-        ),
+        title=_(u'Tags'),
         value_type=schema.Choice(source=TagsListHighlighted()),
     )
 

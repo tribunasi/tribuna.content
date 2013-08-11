@@ -109,12 +109,12 @@ def articles(session):
     # portal_type
     if session['portlet_data']['content_filters']:
         portal_type = []
-        for i in session['portlet_data']['content_filters']:
-            if i == 'articles':
+        for content_filter in session['portlet_data']['content_filters']:
+            if content_filter == 'article':
                 portal_type.append("tribuna.content.article")
-            elif i == 'comments':
+            elif content_filter == 'comment':
                 portal_type.append("Discussion Item")
-            elif i == 'images':
+            elif content_filter == 'image':
                 portal_type.append("Image")
 
     # sort_on
@@ -198,9 +198,9 @@ class ISidebarForm(form.Schema):
     content_filters = schema.List(
         title=_(u"Content filters"),
         value_type=schema.Choice(source=SimpleVocabulary([
-            SimpleTerm('articles', 'articles', _(u'Articles')),
-            SimpleTerm('comments', 'comments', _(u'Comments')),
-            SimpleTerm('images', 'images', _(u'Images')),
+            SimpleTerm('article', 'article', _(u'Article')),
+            SimpleTerm('comment', 'comment', _(u'Comment')),
+            SimpleTerm('image', 'image', _(u'Image')),
         ])),
         required=False,
     )
@@ -299,7 +299,7 @@ class Assignment(base.Assignment):
     implements(ISidebarPortlet)
 
     heading = _(u"Sidebar navigation")
-    description = _(u"Use this portlet for sidebag tag navigation.")
+    description = _(u"Use this portlet for tag navigation.")
 
     title = _(u"Sidebar portlet")
 

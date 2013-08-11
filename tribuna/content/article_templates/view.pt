@@ -32,13 +32,13 @@
           </h3>
         </div>
         <form class="article-display-options span4">
-          <label i18n:translate="">
-            text
+          <label>
+            <span i18n:translate="">text</span>
             <input class="activate-text"
                    id="activate-${context/UID}" type="checkbox"
                    checked="checked" /></label>
-          <label i18n:translate="">
-            comments
+          <label>
+            <span i18n:translate="">comments</span>
             <input class="activate-comments"
                    id="activate-comments-${context/UID}" type="checkbox"
                    data-uid="${context/UID}" /></label>

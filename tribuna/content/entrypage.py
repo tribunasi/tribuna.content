@@ -75,7 +75,7 @@ class IEntryPage(form.Schema):
     )
 
     picture = NamedBlobImage(
-        title=_(u"Please upload an image"),
+        title=_(u"Upload an image"),
         required=False,
     )
 
@@ -85,17 +85,17 @@ class IEntryPage(form.Schema):
     )
 
     font_type = schema.Choice(
-        title=_(u"Type of sorting"),
+        title=_(u"Font type"),
         vocabulary=SimpleVocabulary([
-            SimpleTerm('arial', 'arial', _(u'arial')),
-            SimpleTerm('times', 'times', _(u'times_new_roman')),
-            SimpleTerm('latest', 'latest', _(u'Latest')),
+            SimpleTerm('arial', 'arial', u'Arial'),
+            SimpleTerm('times', 'times', u'Times New Roman'),
+            SimpleTerm('helvetica', 'helvetica', u'Helvetica'),
         ]),
         required=False,
     )
 
     image_type = schema.Choice(
-        title=_(u"image type"),
+        title=_(u"Display image"),
         vocabulary=SimpleVocabulary([
             SimpleTerm('tile', 'tile', _(u'Tiles over page')),
             SimpleTerm('original', 'original', _(u'Original size')),
@@ -103,8 +103,11 @@ class IEntryPage(form.Schema):
         ]),
         required=False,
     )
+
     locked_page = schema.Bool(
-        title=_(u"Is entry page locked on this?"),
+        title=_(u"Set as default"),
+        description=_(u"Set this page as default entry page and disable "
+                      "editing."),
         required=False,
     )
 
@@ -118,7 +121,7 @@ class IChangePagePictureForm(form.Schema):
     )
 
     image_type = schema.Choice(
-        title=_(u"image type"),
+        title=_(u"Display image"),
         vocabulary=SimpleVocabulary([
             SimpleTerm('tile', 'tile', _(u'Tiles over page')),
             # SimpleTerm('original', 'original', _(u'Original size')),
@@ -151,7 +154,7 @@ class ChangePagePictureForm(form.SchemaForm):
     label = _(u"Select new page")
     #description = _(u"New entry page form")
 
-    @button.buttonAndHandler(_(u'Change Picture'))
+    @button.buttonAndHandler(_(u'Change'))
     def handleApply(self, action):
         """Method that created new entry page and selects it as new front"""
 
@@ -179,14 +182,14 @@ class ChangePagePictureForm(form.SchemaForm):
 class IChangePageTextForm(form.Schema):
     """Form for adding text to entry page"""
 
-    text = schema.Text(title=u"Entry page text")
+    text = schema.Text(title=_(u"Text"))
 
     font_type = schema.Choice(
-        title=_(u"font type"),
+        title=_(u"Font type"),
         vocabulary=SimpleVocabulary([
-            SimpleTerm('arial', 'arial', _(u'Arial')),
-            SimpleTerm('times', 'times', _(u'Times New Roman')),
-            SimpleTerm('helvetica', 'helvetica', _(u'Helvetica')),
+            SimpleTerm('arial', 'arial', u'Arial'),
+            SimpleTerm('times', 'times', u'Times New Roman'),
+            SimpleTerm('helvetica', 'helvetica', u'Helvetica'),
         ]),
         required=True,
     )
@@ -221,7 +224,7 @@ class ChangePageTextForm(form.SchemaForm):
     ignoreContext = True
     label = _(u"Select new page")
 
-    @button.buttonAndHandler(_(u'Change Text'))
+    @button.buttonAndHandler(_(u'Change'))
     def handleApply(self, action):
         """Method that creates new entry page and selects it as new front"""
         data, errors = self.extractData()
@@ -247,9 +250,10 @@ class ChangePageTextForm(form.SchemaForm):
 
 class IChangePageOldForm(form.Schema):
 
-    old_pages = schema.Choice(title=u"Select one of the old pages",
-                              source=OldEntryPages(),
-                              )
+    old_pages = schema.Choice(
+        title=_(u"Select one of the old pages"),
+        source=OldEntryPages(),
+    )
 
 
 class ChangePageOldForm(form.SchemaForm):
@@ -262,10 +266,10 @@ class ChangePageOldForm(form.SchemaForm):
 
     schema = IChangePageOldForm
     ignoreContext = True
-    label = _(u"Select new page")
+    label = _(u"Select entry page")
     #description = _(u"New entry page form")
 
-    @button.buttonAndHandler(_(u'Change old'))
+    @button.buttonAndHandler(_(u'Change'))
     def handleApply(self, action):
         data, errors = self.extractData()
         #if errors:

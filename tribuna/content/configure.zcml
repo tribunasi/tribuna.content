@@ -23,9 +23,11 @@
     <grok:grok package="." />
 
     <include package="z3c.jbot" file="meta.zcml" />
-
       <browser:jbot
         directory="overrides" />
+
+    <!-- Register translations directory -->
+    <i18n:registerTranslations directory="locales" />
 
     <!-- Register the installation GenericSetup extension profile -->
     <genericsetup:registerProfile
