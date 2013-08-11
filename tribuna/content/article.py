@@ -5,6 +5,7 @@
 
 from collective.z3cform.widgets.token_input_widget import TokenInputFieldWidget
 from five import grok
+from plone import api
 from plone.app.layout.globals.interfaces import IViewView
 from plone.directives import form
 from plone.namedfile.field import NamedBlobImage
@@ -79,3 +80,16 @@ class View(grok.View):
     """Article view."""
     grok.context(IArticle)
     grok.require('zope2.View')
+
+    def update(self):
+        """Redirect to @@articles view.
+
+        XXX: this might be problematic, since sometimes we might want to
+        get to the article itself.
+        """
+        portal = api.portal.get()
+        return self.request.response.redirect(
+            '{0}/@@articles/{1}'.format(
+                portal.absolute_url(), self.context.id
+            )
+        )
