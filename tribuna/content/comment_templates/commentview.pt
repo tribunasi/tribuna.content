@@ -31,7 +31,8 @@
         <span tal:content="structure context/text">Comment</span>
       </p>
       <a class="content-link" href="#"
-         i18n:translate="">link to the article</a>
+         i18n:translate=""
+         tal:attributes="href context/absolute_url">link to the article</a>
       <div id="comment-info">
         <span tal:define="creator context/Creator;
                      mtool context/@@plone_tools/membership;
