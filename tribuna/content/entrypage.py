@@ -163,7 +163,7 @@ class ChangePagePictureForm(form.SchemaForm):
             self.status = self.formErrorsMessage
             return
         folder = api.content.get(path=ENTRY_PAGES_PATH)
-        new_title = data.get('title', u'')
+        new_title = data.get('title') or u'Tribuna'
         with api.env.adopt_roles(['Site Administrator']):
             new_page = api.content.create(
                 type='tribuna.content.entrypage',
@@ -173,7 +173,7 @@ class ChangePagePictureForm(form.SchemaForm):
             api.content.transition(obj=new_page, transition='publish')
             new_page.title = new_title
             new_page.picture = data["picture"]
-            new_page.author = data.get('author', u'')
+            new_page.author = data.get('author') or u''
             new_page.image_type = data["image_type"]
             folder.setDefaultPage(new_page.id)
             self.request.response.redirect(api.portal.get().absolute_url())
@@ -232,7 +232,7 @@ class ChangePageTextForm(form.SchemaForm):
             self.status = self.formErrorsMessage
             return
         folder = api.content.get(path=ENTRY_PAGES_PATH)
-        new_title = data.get('title', u'')
+        new_title = data.get('title') or u'Tribuna'
         with api.env.adopt_roles(['Site Administrator']):
             new_page = api.content.create(
                 type='tribuna.content.entrypage',
@@ -242,7 +242,7 @@ class ChangePageTextForm(form.SchemaForm):
             api.content.transition(obj=new_page, transition='publish')
             new_page.title = new_title
             new_page.text = data["text"]
-            new_page.author = data.get('author', u'')
+            new_page.author = data.get('author') or u''
             new_page.font_type = data["font_type"]
             folder.setDefaultPage(new_page.id)
             self.request.response.redirect(api.portal.get().absolute_url())
@@ -272,9 +272,9 @@ class ChangePageOldForm(form.SchemaForm):
     @button.buttonAndHandler(_(u'Change'))
     def handleApply(self, action):
         data, errors = self.extractData()
-        #if errors:
-        #    self.status = self.formErrorsMessage
-        #    return
+        if errors:
+            self.status = self.formErrorsMessage
+            return
 
         folder = api.content.get(path=ENTRY_PAGES_PATH)
         page_id = data["old_pages"]
