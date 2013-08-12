@@ -8,12 +8,13 @@
         var options = {
             data: comments_form.serialize(),
             success:function() {
-                comments_container.load(comments_container.attr("data-url"));
+                comments_container.load(comments_container.attr("data-url") + "?replying=True");
+
             }
         };
         comments_form.ajaxForm(options);
 
-        $("#latest").bind("click", function (e) {
+        $("#latest").bind("change", function (e) {
             sel = $("#latest option:selected");
             comments_container.load(comments_container.attr("data-url") + "?" + $("#latest option:selected").attr("id") + "=True");
         });
