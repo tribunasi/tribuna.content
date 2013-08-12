@@ -80,7 +80,7 @@ msgstr "Prekrij celotno stran"
 
 #: ./homepage_templates/homepageview.pt:80
 msgid "Description"
-msgstr "Opis"
+msgstr "Uvod"
 
 #: ./entrypage.py:98
 msgid "Display image"

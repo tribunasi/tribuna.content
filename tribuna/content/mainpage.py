@@ -76,8 +76,12 @@ class GetArticle(grok.View):
         if not article_id:
             return ""
         catalog = api.portal.get_tool(name='portal_catalog')
-        if article_type == "Discussion":
+        if article_type == "comment":
             article_type = "Discussion Item"
+        elif article_type == "article":
+            article_type = "tribuna.content.article"
+        else:
+            article_type = "tribuna.content.image"
         article = catalog(id=article_id, portal_type=article_type)
         if not article:
             return ""
