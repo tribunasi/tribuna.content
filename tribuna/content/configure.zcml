@@ -38,30 +38,6 @@
         provides="Products.GenericSetup.interfaces.EXTENSION"
         />
 
-    <!-- <browser:viewlet
-        name="tribuna.content.gallery"
-        manager="plone.app.layout.viewlets.interfaces.IBelowContentBody"
-        class="tribuna.content.viewlet.GalleryViewlet"
-        permission="zope2.View"
-        layer=".interfaces.ITribunaContentLayer"
-        /> -->
-
-    <browser:viewlet
-        name="plone.global_sections"
-        manager="plone.app.layout.viewlets.interfaces.IPortalHeader"
-        class="tribuna.content.viewlet.NavbarViewlet"
-        permission="zope2.View"
-        layer=".interfaces.ITribunaContentLayer"
-        />
-
-    <browser:viewlet
-        name="tribuna.content.defaultsession"
-        manager="plone.app.layout.viewlets.interfaces.IHtmlHead"
-        class="tribuna.content.viewlet.DefaultSessionViewlet"
-        permission="zope2.View"
-        layer=".interfaces.ITribunaContentLayer"
-        />
-
     <!-- Adapter for the highlight_in_navgation indexer for Tags -->
     <adapter
         factory=".tag.highlight_in_navigation_indexer"

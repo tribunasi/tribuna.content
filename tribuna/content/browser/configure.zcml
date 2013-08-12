@@ -8,4 +8,29 @@
     <include package="z3c.jbot" file="meta.zcml" />
     <browser:jbot directory="overrides" layer="..interfaces.ITribunaContentLayer" />
 
+    <!-- <browser:viewlet
+        name="tribuna.content.gallery"
+        manager="plone.app.layout.viewlets.interfaces.IBelowContentBody"
+        class=".viewlet.GalleryViewlet"
+        permission="zope2.View"
+        layer="tribuna.content.interfaces.ITribunaContentLayer"
+        /> -->
+
+    <browser:viewlet
+        name="tribuna.content.defaultsession"
+        manager="plone.app.layout.viewlets.interfaces.IHtmlHead"
+        class=".viewlet.DefaultSessionViewlet"
+        permission="zope2.View"
+        layer="tribuna.content.interfaces.ITribunaContentLayer"
+        />
+
+    <!-- Override global navigation -->
+    <browser:viewlet
+        name="plone.global_sections"
+        manager="plone.app.layout.viewlets.interfaces.IPortalHeader"
+        class=".viewlet.NavbarViewlet"
+        permission="zope2.View"
+        layer="tribuna.content.interfaces.ITribunaContentLayer"
+        />
+
 </configure>
