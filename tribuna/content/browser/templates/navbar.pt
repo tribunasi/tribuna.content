@@ -1,12 +1,34 @@
-<ul id="navbar-template"
+<div id="navbar-template"
     tal:define="portal_url view/site_url">
+  <ul id="nav" class="nav">
     <li><a class="brand" href="#"><img src="/++theme++tribuna.diazotheme/img/home.png" alt="Home"/></a></li>
-    <li><a href="${portal_url}/home">Home page</a></li>
-    <li><a href="${portal_url}/articles/++add++tribuna.content.article">Add article</a></li>
-    <li><a href="${portal_url}/tags/++add++tribuna.content.tag">Add tag</a></li>
-    <li><a href="${portal_url}/images/createObject?type_name=Image">Add image</a></li>
-    <li><a href="${view/default_page_url}/edit">Edit entry page</a></li>
-    <li><a href="${portal_url}/articles">Manage articles</a></li>
-    <li><a href="${portal_url}/tags">Manage tags</a></li>
-    <li><a href="${portal_url}/images">Manage images</a></li>
-</ul>
+    <li><a href="${portal_url}/home">Home</a></li>
+  </ul>
+  <ul id="secondary-nav" class="nav pull-left">
+    <li class="dropdown" data-dropdown="dropdown">
+      <a class="dropdown-toggle" href="#">
+        <span id="add-menuheader">Add</span>
+        <b class="caret"></b>
+      </a>
+      <ul class="dropdown-menu" id="add-menu">
+        <li><a href="${portal_url}/articles/++add++tribuna.content.article">Add article</a></li>
+        <li><a href="${portal_url}/tags/++add++tribuna.content.tag">Add tag</a></li>
+        <li><a href="${portal_url}/images/createObject?type_name=Image">Add image</a></li>
+      </ul>
+    </li>
+  </ul>
+  <ul id="secondary-nav" class="nav pull-left">
+    <li class="dropdown" data-dropdown="dropdown">
+      <a class="dropdown-toggle" href="#">
+        <span id="edit-menuheader">Edit</span>
+        <b class="caret"></b>
+      </a>
+      <ul class="dropdown-menu" id="edit-menu">
+        <li><a href="${view/default_page_url}/edit">Entry page</a></li>
+        <li><a href="${portal_url}/articles">Articles</a></li>
+        <li><a href="${portal_url}/tags">Tags</a></li>
+        <li><a href="${portal_url}/images">Images</a></li>
+      </ul>
+    </li>
+  </ul>
+</div>
