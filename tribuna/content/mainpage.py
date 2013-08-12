@@ -9,7 +9,7 @@ from zope.interface import Interface
 from zope.publisher.interfaces import IPublishTraverse
 from zExceptions import NotFound
 
-from tribuna.content.portlets.sidebar import articles as get_articles
+from tribuna.content.utils import get_articles
 
 
 class MainPageView(grok.View):

@@ -13,7 +13,7 @@ from zope.viewlet.interfaces import IViewlet
 from tribuna.content.entrypage import View
 from tribuna.content.homepage import HomePageView
 from tribuna.content.mainpage import MainPageView
-from tribuna.content.portlets.sidebar import articles
+from tribuna.content.utils import get_articles
 
 
 class NavbarViewlet(BrowserView):
@@ -105,7 +105,7 @@ class DefaultSessionViewlet(BrowserView):
         pass
 
     def set_default_content_list(self, session):
-        articles(session)
+        get_articles(session)
 
     def set_default_view_type(self, session):
         session.set('view_type', 'drag')
@@ -116,7 +116,7 @@ class DefaultSessionViewlet(BrowserView):
         get_article = self.request.get('article')
         if get_article is not None:
             session.set('view_type', 'gallery')
-            all_articles = articles(session)
+            all_articles = get_articles(session)
             all_articles =  \
                 [i.id for i in all_articles[0] + all_articles[1]]
             if get_article in all_articles:

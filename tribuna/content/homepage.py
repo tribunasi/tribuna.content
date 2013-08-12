@@ -11,7 +11,7 @@ from plone.app.search.browser import quote_chars
 from Products.Five.browser import BrowserView
 from zope.interface import Interface
 
-from tribuna.content.portlets.sidebar import articles
+from tribuna.content.utils import get_articles
 
 
 def search_articles(query, session):
@@ -83,7 +83,7 @@ class HomePageView(grok.View):
     def _get_articles(self):
         """Return all articles for the given query."""
         self.check_if_default()
-        articles_all = articles(self.session)
+        articles_all = get_articles(self.session)
         return {
             'intersection': articles_all[0],
             'union': articles_all[1],
