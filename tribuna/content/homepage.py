@@ -151,7 +151,6 @@ class HomePageView(grok.View):
         return str(default_page.absolute_url()) + "/edit"
 
     def tags_selected(self):
-        import pdb; pdb.set_trace()
         if 'portlet_data' in self.session.keys() and \
             'tags' in self.session['portlet_data'] and \
                 len(self.session['portlet_data']['tags']) > 0:
