@@ -19,7 +19,7 @@
       <div class="content-slider responsive">
         <ul id="article-slider" class="unstyled">
           <tal:block tal:repeat="article view/articles_all">
-            <li id="${article/getId}"
+            <li id="slider-${article/getId}"
                 data-uid="${article/UID}"
                 tal:define="is_article python: article.portal_type == 'tribuna.content.article';
                             is_image python: article.portal_type == 'tribuna.content.image';
