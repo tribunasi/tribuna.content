@@ -24,7 +24,7 @@
       </div>
     </div>
 
-    <div id="center-column-${context/UID}"
+    <div id="center-column"
          class="articles-article-body span6">
       <img tal:attributes="src string:++theme++tribuna.diazotheme/img/blank.gif" />
       <p class="fit-text">

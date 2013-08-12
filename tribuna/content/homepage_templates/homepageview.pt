@@ -99,11 +99,12 @@
         </span>
 
         <div class="articles-intersection">
-          <h5 i18n:translate=""
-              tal:condition="python: view.show_intersection() and view.tags_selected()">Intersection</h5>
+          <h3 i18n:translate=""
+              tal:condition="python: view.show_intersection() and view.tags_selected()">Intersection</h3>
           <tal:block repeat="article python: articles['intersection']">
             <tal:block tal:define="isArticle python: article.portal_type == 'tribuna.content.article';
                                    isComment python: article.portal_type == 'Discussion Item';
+                                   isImage python: article.portal_type == 'tribuna.content.image';
                                    typeClassAddition python: isArticle and 'article' or 'comment';
                                    varUID python: isComment and article.getId() or article.UID()">
               <div id="${varUID}"
@@ -113,6 +114,11 @@
                      class="article-header"
                      href="${context/absolute_url}/@@articles/${article/id}"
                      tal:content="article/title" />
+                  <a tal:condition="isImage"
+                     class="article-header"
+                     href="${context/absolute_url}/@@articles/${article/id}">
+                     <img tal:attributes="src string:${article/absolute_url}/@@images/image/preview" />
+                  </a>
                   <a tal:condition="isComment"
                      class="comment-header"
                      href="${context/absolute_url}/@@articles/${article/id}"
@@ -124,6 +130,9 @@
                 </p>
                 <p tal:condition="isComment" class="content-type">
                   <span class="red" i18n:translate="">comment</span>
+                </p>
+                <p tal:condition="isImage" class="content-type">
+                  <span class="red" i18n:translate="">image</span>
                 </p>
               </div>
             </tal:block>
@@ -131,10 +140,11 @@
         </div>
 
         <div class="articles-union">
-          <h5 i18n:translate="" tal:condition="python: view.show_intersection() and view.tags_selected()">Union</h5>
+          <h3 i18n:translate="" tal:condition="python: view.show_union() and view.tags_selected()">Union</h3>
           <tal:block repeat="article python: articles['union']">
             <tal:block tal:define="isArticle python: article.portal_type == 'tribuna.content.article';
                                    isComment python: article.portal_type == 'Discussion Item';
+                                   isImage python: article.portal_type == 'tribuna.content.image';
                                    typeClassAddition python: isArticle and 'article' or 'comment';
                                    varUID python: isComment and article.getId() or article.UID()">
               <div id="${varUID}"
@@ -144,6 +154,11 @@
                      class="article-header"
                      href="${context/absolute_url}/@@articles/${article/id}"
                      tal:content="article/title" />
+                  <a tal:condition="isImage"
+                     class="article-header"
+                     href="${context/absolute_url}/@@articles/${article/id}">
+                     <img tal:attributes="src string:${article/absolute_url}/@@images/image/preview" />
+                  </a>
                   <a tal:condition="isComment"
                      class="comment-header"
                      href="${context/absolute_url}/@@articles/${article/id}"
@@ -155,6 +170,9 @@
                 </p>
                 <p tal:condition="isComment" class="content-type">
                   <span class="red" i18n:translate="">comment</span>
+                </p>
+                 <p tal:condition="isImage" class="content-type">
+                  <span class="red" i18n:translate="">image</span>
                 </p>
               </div>
             </tal:block>
@@ -166,14 +184,21 @@
         <tal:block repeat="article python: articles['all']">
           <tal:block tal:define="isArticle python: article.portal_type == 'tribuna.content.article';
                                  isComment python: article.portal_type == 'Discussion Item';
+                                 isImage python: article.portal_type == 'tribuna.content.image';
                                  typeClassAddition python: isArticle and 'article' or 'comment';
                                  varUID python: isComment and article.getId() or article.UID()">
             <div id="${varUID}" class="ui-widget-content drag-view-${typeClassAddition}">
               <img tal:condition="isArticle"
                    tal:attributes="src string:${article/absolute_url}/@@images/image/preview" />
+              <img tal:condition="isImage"
+                   tal:attributes="src string:${article/absolute_url}/@@images/image/preview" />
               <div id="text">
                 <div id="gallery-link">
                   <a tal:condition="isArticle"
+                     class="article-header"
+                     href="${context/absolute_url}/@@articles/${article/id}"
+                     tal:content="article/title" />
+                  <a tal:condition="isImage"
                      class="article-header"
                      href="${context/absolute_url}/@@articles/${article/id}"
                      tal:content="article/title" />
@@ -189,6 +214,9 @@
                   <p tal:condition="isComment" class="content-type">
                     <span class="red" i18n:translate="">comment</span>
                   </p>
+                  <p tal:condition="isImage" class="content-type">
+                  <span class="red" i18n:translate="">image</span>
+                </p>
                 </div>
                 <div id="drag-view-tags">
                   <span id="drag-view-tags-list">

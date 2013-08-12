@@ -72,10 +72,13 @@ class GetArticle(grok.View):
 
     def render(self):
         article_id = self.request.get('id')
+        article_type = self.request.get('type')
         if not article_id:
             return ""
         catalog = api.portal.get_tool(name='portal_catalog')
-        article = catalog(id=article_id)
+        if article_type == "Discussion":
+            article_type = "Discussion Item"
+        article = catalog(id=article_id, portal_type=article_type)
         if not article:
             return ""
         article = article[0].getObject()
@@ -86,7 +89,7 @@ class GetArticle(grok.View):
         # defined. [jcerjak]
         view_name = (
             article.portal_type == 'Discussion Item' and 'comment-view' or
-            'view'
+            (article.portal_type == 'tribuna.content.image' and 'image-view') or 'view'
         )
         view = api.content.get_view(
             context=article, request=self.request, name=view_name)

@@ -48,9 +48,8 @@ class ISidebarForm(form.Schema):
     sort_on = schema.Choice(
         title=_(u"Type of sorting"),
         vocabulary=SimpleVocabulary([
-            SimpleTerm('alphabetical', 'alphabetical', _(u'Alphabetical')),
-            SimpleTerm('comments', 'comments', _(u'Nr. of comments')),
             SimpleTerm('latest', 'latest', _(u'Latest')),
+            SimpleTerm('comments', 'comments', _(u'Nr. of comments')),
         ]),
     )
 

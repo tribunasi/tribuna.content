@@ -121,20 +121,21 @@ class HomePageView(grok.View):
 
     def is_search_view(self):
         if ("search-view" in self.session.keys() and
-            self.session["search-view"]["active"]):
+                self.session["search-view"]["active"]):
             return True
         return False
 
     def show_intersection(self):
         if (self.only_one_tag() or
             self.articles["intersection"] == [] or
-            self.is_search_view() or
-            self.session["default"]):
+                self.is_search_view()):
             return False
         return True
 
     def show_union(self):
-        if self.only_one_tag() or self.articles["union"] == []:
+        if (self.only_one_tag() or
+            self.articles["union"] == [] or
+                self.is_search_view()):
             return False
         return True
 
@@ -150,8 +151,9 @@ class HomePageView(grok.View):
         return str(default_page.absolute_url()) + "/edit"
 
     def tags_selected(self):
+        import pdb; pdb.set_trace()
         if 'portlet_data' in self.session.keys() and \
             'tags' in self.session['portlet_data'] and \
-             self.session['portlet_data']['tags'] > 0:
-             return True
+                len(self.session['portlet_data']['tags']) > 0:
+            return True
         return False

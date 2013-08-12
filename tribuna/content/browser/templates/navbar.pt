@@ -16,7 +16,7 @@
                i18n:translate="">Article</a></li>
         <li><a href="${portal_url}/tags/++add++tribuna.content.tag"
                i18n:translate="">Tag</a></li>
-        <li><a href="${portal_url}/images/createObject?type_name=Image"
+        <li><a href="${portal_url}/images/++add++tribuna.content.image"
                i18n:translate="">Image</a></li>
       </ul>
     </li>
