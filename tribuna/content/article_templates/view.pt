@@ -54,6 +54,25 @@
             Etiam vehicula mauris ac tortor convallis id mollis urna
           </p>
           <p tal:content="structure context/text"></p>
+          <a class="twitter-share" style="display: inline-block" href="#"
+                      onclick="
+                        window.open(
+                          'http://twitter.com/share?url=${context/@@plone_portal_state/navigation_root_url}/@@articles/${context/getId}',
+                          'twitter-share-dialog',
+                          'width=626,height=436');
+                        return false;">
+            <img src="${context/@@plone_portal_state/navigation_root_url}/++resource++tribuna.diazotheme/img/twitter_button.png"/>
+          </a>
+
+          <a class="facebook-share" style="display: inline-block" href="#"
+                      onclick="
+                        window.open(
+                          'https://www.facebook.com/sharer/sharer.php?u=${context/@@plone_portal_state/navigation_root_url}/@@articles/${context/getId}',
+                          'facebook-share-dialog',
+                          'width=626,height=436');
+                        return false;">
+            <img src="${context/@@plone_portal_state/navigation_root_url}/++resource++tribuna.diazotheme/img/facebook_icon.jpg" />
+          </a>
         </div>
         <div id="comments-${context/UID}"
              data-uid="${context/UID}"
