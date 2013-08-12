@@ -56,6 +56,14 @@ class MainPageView(grok.View):
 
     def update(self):
         """Disabling plone columns that we don't want here."""
+
+        # redirect to homepage if no article id was provided
+        path = self.request.getURL().strip('/').split('/')[-1]
+        if path == '@@articles':
+            portal = api.portal.get()
+            self.request.response.redirect('{0}/home'.format(
+                portal.absolute_url()))
+
         super(MainPageView, self).update()
         self.request.set('disable_plone.rightcolumn', 1)
         self.request.set('disable_plone.leftcolumn', 1)
