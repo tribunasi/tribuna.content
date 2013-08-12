@@ -93,3 +93,10 @@ class View(grok.View):
                 portal.absolute_url(), self.context.id
             )
         )
+
+
+class BaseView(grok.View):
+    """Article view."""
+    grok.context(IArticle)
+    grok.require('zope2.View')
+    grok.name('base-view')
