@@ -37,6 +37,7 @@
         <span tal:define="DateTime python:modules['DateTime'].DateTime;"
               tal:replace="python:context.toLocalizedTime(context.modification_date)" />
       </div>
+      <div class="red" i18n:translate="">image</div>
     </div>
   </div>
 

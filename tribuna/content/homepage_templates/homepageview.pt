@@ -185,7 +185,7 @@
           <tal:block tal:define="isArticle python: article.portal_type == 'tribuna.content.article';
                                  isComment python: article.portal_type == 'Discussion Item';
                                  isImage python: article.portal_type == 'tribuna.content.image';
-                                 typeClassAddition python: isArticle and 'article' or 'comment';
+                                 typeClassAddition python: isArticle and 'article' or (isImage and 'article') or 'comment';
                                  varUID python: isComment and article.getId() or article.UID()">
             <div id="${varUID}" class="ui-widget-content drag-view-${typeClassAddition}">
               <img tal:condition="isArticle"
@@ -199,7 +199,7 @@
                      href="${context/absolute_url}/@@articles/${article/id}"
                      tal:content="article/title" />
                   <a tal:condition="isImage"
-                     class="article-header"
+                     class="image-header"
                      href="${context/absolute_url}/@@articles/${article/id}"
                      tal:content="article/title" />
                   <a tal:condition="isComment"
@@ -220,7 +220,7 @@
                 </div>
                 <div id="drag-view-tags">
                   <span id="drag-view-tags-list">
-                    <tal:block tal:condition="isArticle">
+                    <tal:block tal:condition="python: isArticle or isImage">
                       <tal:block tal:define="varTagList python: ', '.join(article.Subject())">${varTagList}</tal:block>
                     </tal:block>
                   </span>
@@ -237,7 +237,7 @@
                   $(articleUID).draggable("option", "distance", 0 );
 
                   // Add the current height and width (defined by img) to the style, so the div doesn't shrink on hover. Need to add this on img.load, so it can always find the information
-                  if("${isArticle}" === "True"){
+                  if("${isArticle}" === "True" ||  "${isImage}" === "True"){
                     var image = $(articleUID).find('img');
                     image.load(function(){
                         var imageHeight = $(this).height();
