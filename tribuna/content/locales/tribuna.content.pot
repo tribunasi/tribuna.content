@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2013-08-12 09:40+0000\n"
+"POT-Creation-Date: 2013-08-12 13:52+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,11 +21,15 @@ msgstr ""
 msgid "A short summary"
 msgstr ""
 
-#: ./portlets/sidebar.py:182
+#: ./browser/templates/navbar.pt:11
+msgid "Add new..."
+msgstr ""
+
+#: ./portlets/sidebar.py:42
 msgid "All tags"
 msgstr ""
 
-#: ./portlets/sidebar.py:191
+#: ./portlets/sidebar.py:51
 msgid "Alphabetical"
 msgstr ""
 
@@ -33,7 +37,8 @@ msgstr ""
 msgid "An article"
 msgstr ""
 
-#: ./portlets/sidebar.py:201
+#: ./browser/templates/navbar.pt:15
+#: ./portlets/sidebar.py:61
 #: ./profiles/default/types/tribuna.content.article.xml
 msgid "Article"
 msgstr ""
@@ -42,6 +47,7 @@ msgstr ""
 msgid "Article description"
 msgstr ""
 
+#: ./browser/templates/navbar.pt:33
 #: ./homepage_templates/homepageview.pt:94
 #: ./tag_templates/view.pt:24
 msgid "Articles"
@@ -63,11 +69,11 @@ msgstr ""
 msgid "Change entry page"
 msgstr ""
 
-#: ./portlets/sidebar.py:202
+#: ./portlets/sidebar.py:62
 msgid "Comment"
 msgstr ""
 
-#: ./portlets/sidebar.py:199
+#: ./portlets/sidebar.py:59
 msgid "Content filters"
 msgstr ""
 
@@ -83,16 +89,21 @@ msgstr ""
 msgid "Display image"
 msgstr ""
 
-#: ./portlets/sidebar.py:286
+#: ./portlets/sidebar.py:146
 msgid "Drag"
 msgstr ""
 
+#: ./browser/templates/navbar.pt:27
+msgid "Edit"
+msgstr ""
+
+#: ./browser/templates/navbar.pt:31
 #: ./entrypage_templates/view.pt:23
 #: ./profiles/default/types/tribuna.content.entrypage.xml
 msgid "Entry page"
 msgstr ""
 
-#: ./portlets/sidebar.py:263
+#: ./portlets/sidebar.py:123
 msgid "Filter"
 msgstr ""
 
@@ -104,9 +115,18 @@ msgstr ""
 msgid "Highlight tag in navigation?"
 msgstr ""
 
+#: ./browser/templates/navbar.pt:6
+msgid "Home"
+msgstr ""
+
 #: ./article.py:33
-#: ./portlets/sidebar.py:203
+#: ./browser/templates/navbar.pt:19
+#: ./portlets/sidebar.py:63
 msgid "Image"
+msgstr ""
+
+#: ./browser/templates/navbar.pt:37
+msgid "Images"
 msgstr ""
 
 #: ./homepage_templates/homepageview.pt:102
@@ -117,7 +137,7 @@ msgstr ""
 msgid "Is article locked on first page?"
 msgstr ""
 
-#: ./portlets/sidebar.py:193
+#: ./portlets/sidebar.py:53
 msgid "Latest"
 msgstr ""
 
@@ -139,7 +159,7 @@ msgstr ""
 msgid "No title"
 msgstr ""
 
-#: ./portlets/sidebar.py:192
+#: ./portlets/sidebar.py:52
 msgid "Nr. of comments"
 msgstr ""
 
@@ -163,7 +183,7 @@ msgstr ""
 msgid "Search.."
 msgstr ""
 
-#: ./portlets/sidebar.py:260
+#: ./portlets/sidebar.py:120
 msgid "Select appropriate tags"
 msgstr ""
 
@@ -187,30 +207,32 @@ msgstr ""
 msgid "Set this page as default entry page and disable editing."
 msgstr ""
 
-#: ./portlets/sidebar.py:301
+#: ./portlets/sidebar.py:161
 msgid "Sidebar navigation"
 msgstr ""
 
-#: ./portlets/sidebar.py:304
+#: ./portlets/sidebar.py:164
 msgid "Sidebar portlet"
 msgstr ""
 
+#: ./browser/templates/navbar.pt:17
 #: ./profiles/default/types/tribuna.content.tag.xml
 msgid "Tag"
 msgstr ""
 
 #: ./behaviors/behaviors.py:60
-#: ./portlets/sidebar.py:174
+#: ./browser/templates/navbar.pt:35
+#: ./portlets/sidebar.py:34
 msgid "Tags"
 msgstr ""
 
-#: ./portlets/sidebar.py:261
+#: ./portlets/sidebar.py:121
 msgid "Tags selection form"
 msgstr ""
 
 #: ./entrypage.py:73
 #: ./entrypage_templates/view.pt:47
-#: ./portlets/sidebar.py:279
+#: ./portlets/sidebar.py:139
 msgid "Text"
 msgstr ""
 
@@ -222,7 +244,7 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-#: ./portlets/sidebar.py:189
+#: ./portlets/sidebar.py:49
 msgid "Type of sorting"
 msgstr ""
 
@@ -234,7 +256,7 @@ msgstr ""
 msgid "Upload an image"
 msgstr ""
 
-#: ./portlets/sidebar.py:302
+#: ./portlets/sidebar.py:162
 msgid "Use this portlet for tag navigation."
 msgstr ""
 
@@ -246,16 +268,16 @@ msgstr ""
 msgid "article"
 msgstr ""
 
-#: ./article_templates/view.pt:30
+#: ./article_templates/view.pt:34
 msgid "by"
 msgstr ""
 
-#: ./comment_templates/commentview.pt:47
+#: ./comment_templates/commentview.pt:46
 #: ./homepage_templates/homepageview.pt:126
 msgid "comment"
 msgstr ""
 
-#: ./article_templates/view.pt:41
+#: ./article_templates/view.pt:45
 msgid "comments"
 msgstr ""
 
@@ -291,7 +313,7 @@ msgstr ""
 msgid "results"
 msgstr ""
 
-#: ./article_templates/view.pt:36
+#: ./article_templates/view.pt:40
 msgid "text"
 msgstr ""
 

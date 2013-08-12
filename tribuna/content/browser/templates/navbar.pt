@@ -1,33 +1,41 @@
 <div id="navbar-template"
-    tal:define="portal_url view/site_url">
+     i18n:domain="tribuna.content"
+     tal:define="portal_url view/site_url">
   <ul id="nav" class="nav">
     <li><a class="brand" href="#"><img src="/++theme++tribuna.diazotheme/img/home.png" alt="Home"/></a></li>
-    <li><a href="${portal_url}/home">Home</a></li>
+    <li><a href="${portal_url}/home" i18n:translate="">Home</a></li>
   </ul>
   <ul id="secondary-nav" class="nav pull-left">
     <li class="dropdown" data-dropdown="dropdown">
       <a class="dropdown-toggle" href="#">
-        <span id="add-menuheader">Add</span>
+        <span id="add-menuheader" i18n:translate="">Add new...</span>
         <b class="caret"></b>
       </a>
       <ul class="dropdown-menu" id="add-menu">
-        <li><a href="${portal_url}/articles/++add++tribuna.content.article">Add article</a></li>
-        <li><a href="${portal_url}/tags/++add++tribuna.content.tag">Add tag</a></li>
-        <li><a href="${portal_url}/images/createObject?type_name=Image">Add image</a></li>
+        <li><a href="${portal_url}/articles/++add++tribuna.content.article"
+               i18n:translate="">Article</a></li>
+        <li><a href="${portal_url}/tags/++add++tribuna.content.tag"
+               i18n:translate="">Tag</a></li>
+        <li><a href="${portal_url}/images/createObject?type_name=Image"
+               i18n:translate="">Image</a></li>
       </ul>
     </li>
   </ul>
   <ul id="secondary-nav" class="nav pull-left">
     <li class="dropdown" data-dropdown="dropdown">
       <a class="dropdown-toggle" href="#">
-        <span id="edit-menuheader">Edit</span>
+        <span id="edit-menuheader" i18n:translate="">Edit</span>
         <b class="caret"></b>
       </a>
       <ul class="dropdown-menu" id="edit-menu">
-        <li><a href="${view/default_page_url}/edit">Entry page</a></li>
-        <li><a href="${portal_url}/articles">Articles</a></li>
-        <li><a href="${portal_url}/tags">Tags</a></li>
-        <li><a href="${portal_url}/images">Images</a></li>
+        <li><a href="${view/default_page_url}/edit" i18n:translate="">
+            Entry page</a></li>
+        <li><a href="${portal_url}/articles"
+               i18n:translate="">Articles</a></li>
+        <li><a href="${portal_url}/tags"
+               i18n:translate="">Tags</a></li>
+        <li><a href="${portal_url}/images"
+               i18n:translate="">Images</a></li>
       </ul>
     </li>
   </ul>
