@@ -116,7 +116,7 @@ class IChangePagePictureForm(form.Schema):
     """Form for adding new picture to entry page"""
 
     picture = NamedBlobImage(
-        title=_(u"Please upload an image"),
+        title=_(u"Upload an image"),
         required=True,
     )
 

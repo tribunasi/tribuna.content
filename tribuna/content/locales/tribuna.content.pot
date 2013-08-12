@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2013-08-11 14:40+0000\n"
+"POT-Creation-Date: 2013-08-12 09:40+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -38,7 +38,7 @@ msgstr ""
 msgid "Article"
 msgstr ""
 
-#: ./article.py:28
+#: ./article.py:29
 msgid "Article description"
 msgstr ""
 
@@ -104,7 +104,7 @@ msgstr ""
 msgid "Highlight tag in navigation?"
 msgstr ""
 
-#: ./article.py:32
+#: ./article.py:33
 #: ./portlets/sidebar.py:203
 msgid "Image"
 msgstr ""
@@ -125,7 +125,7 @@ msgstr ""
 msgid "Lead Image"
 msgstr ""
 
-#: ./article.py:24
+#: ./article.py:25
 #: ./entrypage.py:69
 #: ./tag.py:21
 msgid "Name"
@@ -157,10 +157,6 @@ msgstr ""
 
 #: ./entrypage_templates/view.pt:55
 msgid "Picture"
-msgstr ""
-
-#: ./entrypage.py:119
-msgid "Please upload an image"
 msgstr ""
 
 #: ./homepage_templates/homepageview.pt:60
@@ -242,7 +238,7 @@ msgstr ""
 msgid "Use this portlet for tag navigation."
 msgstr ""
 
-#: ./article.py:33
+#: ./article.py:34
 msgid "Will be displayed on the article view."
 msgstr ""
 
@@ -254,7 +250,7 @@ msgstr ""
 msgid "by"
 msgstr ""
 
-#: ./comment_templates/commentview.pt:46
+#: ./comment_templates/commentview.pt:47
 #: ./homepage_templates/homepageview.pt:126
 msgid "comment"
 msgstr ""
