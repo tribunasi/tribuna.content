@@ -30,17 +30,23 @@
 
     </fieldset>
   </div>
-  <input id="latest" class="submit-widget button-field context" value="Toggle latest at top/bottom" type="submit" />
-  <div   tal:attributes="class python: 'discussion latest' if 'latest' in request.form.keys() else 'discussion'"
+  <div id="latest">
+      <select>
+      <option id="threaded">Threaded</option>
+      <option id="latest" tal:attributes="selected python: 'latest' in request.form.keys()">Latest first</option>
+      <option id="oldest" tal:attributes="selected python: 'oldest' in request.form.keys()">Oldest first</option>
+  </select>
+</div>
+  <div   class="discussion"
          tal:condition="has_replies">
 
 
-    <tal:getreplies tal:repeat="reply_dict python: list(replies)[::-1] if 'latest' in request.form.keys() else list(replies)">
+    <tal:getreplies tal:repeat="reply_dict python: sorted(list(replies),key=lambda x: x['comment'].modification_date, reverse=True) if 'latest' in request.form.keys() else (sorted(list(replies),key=lambda x: x['comment'].modification_date, reverse=False) if 'oldest' in request.form.keys() else list(replies))">
 
       <div class="comment"
                  tal:define="reply reply_dict/comment;
                              depth reply_dict/depth|python:0;
-                             depth python: 0 if 'latest' in request.form.keys() else (depth > 10 and '10' or depth);
+                             depth python: 0 if ('latest' in request.form.keys()) or ('oldest' in request.form.keys()) else (depth > 10 and '10' or depth);
                              author_home_url python:view.get_commenter_home_url(username=reply.author_username);
                              has_author_link python:author_home_url and not isAnon;
                              portrait_url python:view.get_commenter_portrait(reply.author_username);

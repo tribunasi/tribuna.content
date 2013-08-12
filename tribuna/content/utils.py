@@ -106,9 +106,10 @@ def get_articles(session):
         sort_order = 'descending'
     elif tmp == 'alphabetical':
         sort_on = 'sortable_title'
-        sort_order = 'ascending'
+        sort_order = 'descending'
     elif tmp == 'comments':
-        pass
+        sort_on = 'total_comments'
+        sort_order = 'descending'
 
     if(session['portlet_data']['tags'] == [] and
        session['portlet_data']['all_tags'] == []):

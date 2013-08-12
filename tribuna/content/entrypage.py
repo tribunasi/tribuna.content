@@ -132,12 +132,14 @@ class IChangePagePictureForm(form.Schema):
 
     title = schema.TextLine(
         title=_(u"Title"),
-        required=False
+        required=False,
+        max_length=20
     )
 
     author = schema.TextLine(
         title=_(u"Author"),
-        required=False
+        required=False,
+        max_length=20
     )
 
 
@@ -182,8 +184,7 @@ class ChangePagePictureForm(form.SchemaForm):
 class IChangePageTextForm(form.Schema):
     """Form for adding text to entry page"""
 
-    text = schema.Text(title=_(u"Text"))
-
+    text = schema.Text(title=_(u"Text"), max_length=150)
     font_type = schema.Choice(
         title=_(u"Font type"),
         vocabulary=SimpleVocabulary([
@@ -196,12 +197,14 @@ class IChangePageTextForm(form.Schema):
 
     title = schema.TextLine(
         title=_(u"Name"),
-        required=False
+        required=False,
+        max_length=20
     )
 
     author = schema.TextLine(
         title=_(u"Author"),
-        required=False
+        required=False,
+        max_length=20
     )
 
     # @invariant

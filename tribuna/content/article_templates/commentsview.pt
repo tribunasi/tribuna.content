@@ -14,12 +14,8 @@
         comments_form.ajaxForm(options);
 
         $("#latest").bind("click", function (e) {
-            if (jQuery17(".discussion.latest").size() > 0) {
-                comments_container.load(comments_container.attr("data-url"));
-            }
-            else {
-                comments_container.load(comments_container.attr("data-url") + "?latest=True");
-            }
+            sel = $("#latest option:selected");
+            comments_container.load(comments_container.attr("data-url") + "?" + $("#latest option:selected").attr("id") + "=True");
         });
 </script>
 <script type="text/javascript"
