@@ -40,9 +40,8 @@
                tal:content="python:author and author['fullname'] or creator">
           Author name
         </span>
-        <span tal:define="DateTime python:modules['DateTime'].DateTime;
-                          date context/effective"
-              tal:replace="python:context.toLocalizedTime(date)" />
+        <span tal:define="DateTime python:modules['DateTime'].DateTime;"
+              tal:replace="python:context.toLocalizedTime(context.modification_date)" />
       </div>
       <div class="red" i18n:translate="">comment</div>
     </div>
