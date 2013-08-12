@@ -233,13 +233,11 @@
               $(function() {
                   var articleUID = "#${varUID}";
                   $(articleUID).css({'position' : 'absolute'});
-                  // $(articleUID).draggable({containment: "parent", stack: "div", cancel: "h3" });
                   $(articleUID).draggable({stack: "div", cancel: "a" });
                   $(articleUID).draggable("option", "distance", 0 );
 
                   // Add the current height and width (defined by img) to the style, so the div doesn't shrink on hover. Need to add this on img.load, so it can always find the information
                   if("${isArticle}" === "True"){
-                    // console.info("Article");
                     var image = $(articleUID).find('img');
                     image.load(function(){
                         var imageHeight = $(this).height();
@@ -266,7 +264,6 @@
                     });
                   }
                   else{
-                    // console.info("Other");
                     // Set the width so it doesn't get squished if we go over the border
                     var numRandx = Math.floor(Math.random() * ($('#homepage-div').width() - $(articleUID).width()));
                     var numRandy = Math.floor(Math.random() * ($('#homepage-div').height() - $(articleUID).height()));
