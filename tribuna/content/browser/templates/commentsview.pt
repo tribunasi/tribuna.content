@@ -1,5 +1,5 @@
 <div id="plone-comments-${context/UID}"
-     tal:content="structure view/get_comment_viewlet"></div>
+     tal:content="structure view/render_comments"></div>
 <script>
         var comments = jQuery("#plone-comments-${context/UID}"),
             comments_form = comments.find("#commenting form"),
