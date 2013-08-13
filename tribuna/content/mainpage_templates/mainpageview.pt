@@ -12,7 +12,8 @@
 
 <metal:main fill-slot="main">
 <tal:main-macro metal:define-macro="main"
-                tal:define="ploneview nocall:context/@@plone">
+                tal:define="ploneview nocall:context/@@plone;
+                            utils nocall:context/@@utils">
 
   <div id="header" class="slider-header">
     <div class="content-slider-wrapper">
@@ -28,7 +29,9 @@
                 data-url="${context/portal_url}/get-article?id=${article/getId}&type=${type}">
               <div class="item-inner">
                 <div tal:content="structure title">Title</div>
-                <div class="red" tal:content="type">Article</div>
+                <div class="red"
+                     tal:content="python: utils.translate(type)">
+                  Content type</div>
               </div>
             </li>
           </tal:block>

@@ -5,8 +5,11 @@
 
 from five import grok
 from plone import api
+from zope.interface import Interface
 from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.vocabulary import SimpleVocabulary
+
+from tribuna.content import _
 
 # Number of items to display
 LIMIT = 15
@@ -67,7 +70,11 @@ def get_articles(session):
         )
 
     catalog = api.portal.get_tool(name='portal_catalog')
-    portal_type = ["tribuna.content.article", "Discussion Item", "tribuna.content.image"]
+    portal_type = [
+        "tribuna.content.article",
+        "Discussion Item",
+        "tribuna.content.image"
+    ]
     review_state = "published"
     sort_on = "Date"
     query = None
@@ -207,3 +214,14 @@ def our_unicode(s):
     if not isinstance(s, unicode):
         return unicode(s, 'utf8')
     return s
+
+
+class UtilsView(grok.View):
+    grok.context(Interface)
+    grok.name('utils')
+
+    def translate(self, string):
+        return self.context.translate(_(string))
+
+    def render(self):
+        return ''
