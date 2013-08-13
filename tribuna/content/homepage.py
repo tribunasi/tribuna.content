@@ -38,7 +38,9 @@ class SearchView(BrowserView):
     """
 
     def __call__(self):
-        query = quote_chars(self.request.form.get('SearchableText', '')) + '*'
+        query = quote_chars(self.request.form.get('SearchableText', ''))
+        if query:
+            query = query + '*'
         sdm = self.context.session_data_manager
         session = sdm.getSessionData(create=True)
         search_articles(query, session)
