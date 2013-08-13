@@ -13,6 +13,7 @@ from Products.Five.browser import BrowserView
 from zope import schema
 from zope.component import getMultiAdapter
 from zope.interface import alsoProvides
+from zope.interface import Interface
 from zope.viewlet.interfaces import IViewletManager
 
 from tribuna.content import _
@@ -56,6 +57,7 @@ class CommentsView(grok.View):
         view = BrowserView(context, request)
         if not IViewView.providedBy(view):
             alsoProvides(view, IViewView)
+
         # finally, you need the name of the manager you want to find
         manager_name = 'plone.belowcontent'
 
@@ -65,6 +67,7 @@ class CommentsView(grok.View):
 
         # calling update() on a manager causes it to set up its viewlets
         manager.update()
+
         all_viewlets = manager.viewlets
         for viewlet in all_viewlets:
             if viewlet.__name__ == u"plone.comments":
@@ -73,6 +76,43 @@ class CommentsView(grok.View):
                     TokenInputFieldWidget
                 # Update widgets so it takes effect
                 viewlet.form.updateWidgets()
+                return viewlet.render()
+
+
+class ContentActionsView(grok.View):
+    """View for showing the content actions. Looks like Plone really needs
+    his context to work properly.
+    """
+
+    grok.context(Interface)
+    grok.require('zope2.View')
+    grok.name('contentactions-view')
+
+    def get_contentactions_viewlet(self):
+        """Method for getting content actions viewlet so we can use it in
+        other views"""
+
+        request = self.request
+        context = self.context
+
+        # viewlet managers also require a view object for adaptation
+        view = BrowserView(context, request)
+        if not IViewView.providedBy(view):
+            alsoProvides(view, IViewView)
+
+        # finally, you need the name of the manager you want to find
+        manager_name = 'plone.contentviews'
+
+        # viewlet managers are found by Multi-Adapter lookup
+        manager = getMultiAdapter(
+            (context, request, view), IViewletManager, manager_name)
+
+        # calling update() on a manager causes it to set up its viewlets
+        manager.update()
+
+        all_viewlets = manager.viewlets
+        for viewlet in all_viewlets:
+            if viewlet.__name__ == u"plone.contentactions":
                 return viewlet.render()
 
 

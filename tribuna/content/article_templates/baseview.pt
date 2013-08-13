@@ -23,6 +23,7 @@
 
     <div id="center-column-${context/UID}"
          class="articles-article-body span10">
+
       <div class="article-heading container-fluid">
         <div class="title span8">
           <div class="article-image">

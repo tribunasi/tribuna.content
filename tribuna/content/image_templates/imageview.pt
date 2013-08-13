@@ -26,6 +26,10 @@
 
     <div id="center-column-${context/UID}"
          class="articles-article-body span6">
+
+      <div id="content-actions"
+           tal:content="structure context/@@contentactions-view"></div>
+
       <img tal:attributes="src string:${context/absolute_url}/@@images/image" />
       <div id="image-info">
         <span tal:define="creator context/Creator;
