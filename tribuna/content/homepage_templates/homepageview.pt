@@ -106,9 +106,10 @@
                                    isComment python: article.portal_type == 'Discussion Item';
                                    isImage python: article.portal_type == 'tribuna.content.image';
                                    typeClassAddition python: isArticle and 'article' or 'comment';
-                                   varUID python: isComment and article.getId() or article.UID()">
+                                   varUID python: isComment and article.getId() or article.UID();
+                                   padding python: 'left-padding' if (view.show_intersection() and view.tags_selected()) else ''" >
               <div id="${varUID}"
-                   class="ui-widget-content text-view text-view-${typeClassAddition}${hasOneTagClassAddition}">
+                   class="ui-widget-content text-view text-view-${typeClassAddition}${hasOneTagClassAddition} ${padding}">
                 <div id="gallery-link">
                   <a tal:condition="isArticle"
                      class="article-header"
@@ -146,9 +147,10 @@
                                    isComment python: article.portal_type == 'Discussion Item';
                                    isImage python: article.portal_type == 'tribuna.content.image';
                                    typeClassAddition python: isArticle and 'article' or 'comment';
-                                   varUID python: isComment and article.getId() or article.UID()">
+                                   varUID python: isComment and article.getId() or article.UID();
+                                   padding python: 'left-padding' if (view.show_union() and view.tags_selected()) else '' " >
               <div id="${varUID}"
-                   class="ui-widget-content text-view text-view-${typeClassAddition}${hasOneTagClassAddition}">
+                   class="ui-widget-content text-view text-view-${typeClassAddition}${hasOneTagClassAddition} ${padding}">
                 <div id="gallery-link">
                   <a tal:condition="isArticle"
                      class="article-header"
