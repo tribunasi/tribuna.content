@@ -27,7 +27,8 @@
     <div class="articles-article-body span6">
       <img tal:attributes="src string:++theme++tribuna.diazotheme/img/blank.gif" />
       <p class="fit-text">
-        <span tal:content="structure context/text">Comment</span>
+        <span class="comment-text"
+              tal:content="structure context/text">Comment</span>
       </p>
       <a class="content-link" href="#"
          i18n:translate=""
