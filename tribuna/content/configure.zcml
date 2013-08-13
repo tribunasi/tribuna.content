@@ -22,10 +22,6 @@
     <!-- Register all components defined with grok -->
     <grok:grok package="." />
 
-    <include package="z3c.jbot" file="meta.zcml" />
-      <browser:jbot
-        directory="overrides" />
-
     <!-- Register translations directory -->
     <i18n:registerTranslations directory="locales" />
 
