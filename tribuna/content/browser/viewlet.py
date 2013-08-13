@@ -106,8 +106,8 @@ class DefaultSessionViewlet(BrowserView):
 class CommentsView(grok.View):
     """View for rendering the comments viewlet.
 
-    XXX: We need this e.g. on the @@articles view, because we load the content
-    via AJAX and we don't have a proper article context.
+    XXX: We need this e.g. on the @@articles view, because we load the
+    content via AJAX and we don't have a proper article context.
     """
 
     grok.context(Interface)
@@ -134,8 +134,8 @@ class CommentsView(grok.View):
 class ContentActionsView(grok.View):
     """View for rendering the content actions.
 
-    XXX: We need this e.g. on the @@articles view, because we load the content
-    via AJAX and we don't have a proper article context.
+    XXX: We need this e.g. on the @@articles view, because we load the
+    content via AJAX and we don't have a proper article context.
     """
 
     grok.context(Interface)
