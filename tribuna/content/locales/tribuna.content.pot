@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2013-08-12 22:29+0000\n"
+"POT-Creation-Date: 2013-08-13 00:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -252,7 +252,7 @@ msgstr ""
 msgid "Type of sorting"
 msgstr ""
 
-#: ./homepage_templates/homepageview.pt:143
+#: ./homepage_templates/homepageview.pt:144
 msgid "Union"
 msgstr ""
 
@@ -268,7 +268,7 @@ msgstr ""
 msgid "Will be displayed on the article view."
 msgstr ""
 
-#: ./homepage_templates/homepageview.pt:129
+#: ./homepage_templates/homepageview.pt:130
 msgid "article"
 msgstr ""
 
@@ -278,7 +278,7 @@ msgid "by"
 msgstr ""
 
 #: ./comment_templates/commentview.pt:45
-#: ./homepage_templates/homepageview.pt:132
+#: ./homepage_templates/homepageview.pt:133
 msgid "comment"
 msgstr ""
 
@@ -287,11 +287,19 @@ msgstr ""
 msgid "comments"
 msgstr ""
 
+#: ./browser/overrides/Products.CMFPlone.skins.plone_login.login_form.cpt:133
+msgid "e-mail"
+msgstr ""
+
 #: ./portlets/sidebar.pt:38
 msgid "go home"
 msgstr ""
 
-#: ./homepage_templates/homepageview.pt:135
+#: ./browser/overrides/Products.CMFPlone.skins.plone_login.login_form.cpt:273
+msgid "i forgot my password"
+msgstr ""
+
+#: ./homepage_templates/homepageview.pt:136
 #: ./image_templates/imageview.pt:40
 msgid "image"
 msgstr ""
@@ -318,6 +326,14 @@ msgstr ""
 
 #: ./comment_templates/commentview.pt:32
 msgid "link to the article"
+msgstr ""
+
+#: ./browser/overrides/Products.CMFPlone.skins.plone_login.login_form.cpt:128
+msgid "login name"
+msgstr ""
+
+#: ./browser/overrides/Products.CMFPlone.skins.plone_login.login_form.cpt:156
+msgid "password"
 msgstr ""
 
 #: ./homepage_templates/homepageview.pt:98

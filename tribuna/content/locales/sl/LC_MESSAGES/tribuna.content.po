@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tribuna\n"
-"POT-Creation-Date: 2013-08-12 22:29+0000\n"
+"POT-Creation-Date: 2013-08-13 00:55+0000\n"
 "PO-Revision-Date: 2013-08-12 15:52+0100\n"
 "Last-Translator: Jure Cerjak <jcerjak@termitnjak.si>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -249,7 +249,7 @@ msgstr "Tribuna slika"
 msgid "Type of sorting"
 msgstr "Tip sortiranja"
 
-#: ./homepage_templates/homepageview.pt:143
+#: ./homepage_templates/homepageview.pt:144
 msgid "Union"
 msgstr "Unija"
 
@@ -265,7 +265,7 @@ msgstr "Portlet za navigacijo in filtriranje s pomočjo tag-ov"
 msgid "Will be displayed on the article view."
 msgstr "Prikazana bo na članku."
 
-#: ./homepage_templates/homepageview.pt:129
+#: ./homepage_templates/homepageview.pt:130
 msgid "article"
 msgstr "članek"
 
@@ -275,7 +275,7 @@ msgid "by"
 msgstr "piše"
 
 #: ./comment_templates/commentview.pt:45
-#: ./homepage_templates/homepageview.pt:132
+#: ./homepage_templates/homepageview.pt:133
 msgid "comment"
 msgstr "komentar"
 
@@ -284,11 +284,19 @@ msgstr "komentar"
 msgid "comments"
 msgstr "komentarji"
 
+#: ./browser/overrides/Products.CMFPlone.skins.plone_login.login_form.cpt:133
+msgid "e-mail"
+msgstr "ime"
+
 #: ./portlets/sidebar.pt:38
 msgid "go home"
 msgstr "go home"
 
-#: ./homepage_templates/homepageview.pt:135
+#: ./browser/overrides/Products.CMFPlone.skins.plone_login.login_form.cpt:273
+msgid "i forgot my password"
+msgstr "pozabil sem geslo"
+
+#: ./homepage_templates/homepageview.pt:136
 #: ./image_templates/imageview.pt:40
 msgid "image"
 msgstr "slika"
@@ -316,6 +324,14 @@ msgstr "Iskanje..."
 #: ./comment_templates/commentview.pt:32
 msgid "link to the article"
 msgstr "povezava do članka ↪"
+
+#: ./browser/overrides/Products.CMFPlone.skins.plone_login.login_form.cpt:128
+msgid "login name"
+msgstr "ime"
+
+#: ./browser/overrides/Products.CMFPlone.skins.plone_login.login_form.cpt:156
+msgid "password"
+msgstr "geslo"
 
 #: ./homepage_templates/homepageview.pt:98
 msgid "results"
