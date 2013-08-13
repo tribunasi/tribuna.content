@@ -146,6 +146,16 @@ def get_articles(session):
     return (all_content[:intersection_count], all_content[intersection_count:])
 
 
+def count_same(li1, li2):
+    return len(set(li1).intersection(set(li2)))
+
+
+def our_unicode(s):
+    if not isinstance(s, unicode):
+        return unicode(s, 'utf8')
+    return s
+
+
 # XXX
 # FIX
 def tags_published_highlighted():
@@ -172,10 +182,6 @@ def tags_published():
     return tags
 
 
-def count_same(li1, li2):
-    return len(set(li1).intersection(set(li2)))
-
-
 class TagsListHighlighted(object):
     grok.implements(IContextSourceBinder)
 
@@ -198,12 +204,6 @@ class TagsList(object):
         items = tags_published()
         terms = [SimpleVocabulary.createTerm(i[1], i[0], i[1]) for i in items]
         return SimpleVocabulary(terms)
-
-
-def our_unicode(s):
-    if not isinstance(s, unicode):
-        return unicode(s, 'utf8')
-    return s
 
 
 class UtilsView(grok.View):
