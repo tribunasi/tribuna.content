@@ -25,9 +25,9 @@
          class="articles-article-body span10">
       <div class="article-heading container-fluid">
         <div class="title span8">
-          <div class="article-image">
-            <img tal:condition="context/picture"
-                 tal:replace="structure context/@@images/picture" />
+          <div class="article-image"
+               tal:condition="context/picture">
+            <img tal:replace="structure context/@@images/picture" />
           </div>
           <h2 tal:content="context/title">Lorem ipsum</h2>
           <h3>
