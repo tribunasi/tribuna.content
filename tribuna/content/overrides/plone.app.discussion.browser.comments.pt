@@ -30,11 +30,12 @@
 
     </fieldset>
   </div>
-  <div id="latest">
+  <div id="latest"
+       i18n:domain="tribuna.content">
       <select>
-      <option id="threaded">Threaded</option>
-      <option id="latest" tal:attributes="selected python: 'latest' in request.form.keys()">Latest first</option>
-      <option id="oldest" tal:attributes="selected python: 'oldest' in request.form.keys()">Oldest first</option>
+      <option i18n:translate="" id="threaded">Threaded</option>
+      <option i18n:translate="" id="latest" tal:attributes="selected python: 'latest' in request.form.keys()">Latest first</option>
+      <option i18n:translate="" id="oldest" tal:attributes="selected python: 'oldest' in request.form.keys()">Oldest first</option>
   </select>
 </div>
   <div   class="discussion"

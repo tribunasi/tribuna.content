@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2013-08-13 00:55+0000\n"
+"POT-Creation-Date: 2013-08-13 13:06+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -141,6 +141,10 @@ msgstr ""
 msgid "Latest"
 msgstr ""
 
+#: ./overrides/plone.app.discussion.browser.comments.pt:37
+msgid "Latest first"
+msgstr ""
+
 #: ./behaviors/behaviors.py:34
 msgid "Lead Image"
 msgstr ""
@@ -165,6 +169,10 @@ msgstr ""
 
 #: ./entrypage_templates/view.pt:63
 msgid "Old pages"
+msgstr ""
+
+#: ./overrides/plone.app.discussion.browser.comments.pt:38
+msgid "Oldest first"
 msgstr ""
 
 #: ./entrypage.py:22
@@ -236,6 +244,10 @@ msgstr ""
 msgid "Text"
 msgstr ""
 
+#: ./overrides/plone.app.discussion.browser.comments.pt:36
+msgid "Threaded"
+msgstr ""
+
 #: ./entrypage.py:100
 msgid "Tiles over page"
 msgstr ""
@@ -277,7 +289,7 @@ msgstr ""
 msgid "by"
 msgstr ""
 
-#: ./comment_templates/commentview.pt:45
+#: ./comment_templates/commentview.pt:46
 #: ./homepage_templates/homepageview.pt:133
 msgid "comment"
 msgstr ""
@@ -324,7 +336,7 @@ msgstr ""
 msgid "legend_livesearch"
 msgstr ""
 
-#: ./comment_templates/commentview.pt:32
+#: ./comment_templates/commentview.pt:33
 msgid "link to the article"
 msgstr ""
 
