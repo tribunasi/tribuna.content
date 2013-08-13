@@ -10,6 +10,7 @@ from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.vocabulary import SimpleVocabulary
 
 from tribuna.content import _
+from tribuna.content.config import SEARCHABLE_TYPES
 
 # Number of items to display
 LIMIT = 15
@@ -22,7 +23,7 @@ def get_articles(session):
     :returns: a tuple: first item is list of 'intersection' results, while
         second item is a list of 'union' results
     """
-    def returnDefaults():
+    def return_defaults():
         query = [i[1] for i in tags_published_highlighted()]
         all_content = catalog(
             portal_type=portal_type,
@@ -70,41 +71,30 @@ def get_articles(session):
         )
 
     catalog = api.portal.get_tool(name='portal_catalog')
-    portal_type = [
-        "tribuna.content.article",
-        "Discussion Item",
-        "tribuna.content.image"
-    ]
+    portal_type = SEARCHABLE_TYPES.values()
     review_state = "published"
     sort_on = "Date"
     query = None
     operator = "or"
     sort_order = "descending"
 
-    #session.set('content_list', {'union': [], 'intersection': []})
-
     if 'search-view' in session.keys() and session['search-view']['active']:
-
         results = catalog(
             SearchableText=session['search-view']['query'], portal_type={
-                "query": ["tribuna.content.article", "Discussion Item"],
+                "query": portal_type,
                 "operator": "or"
         })
         return ([content.getObject() for content in results], [])
     if 'portlet_data' not in session.keys():
-        return returnDefaults()
+        return return_defaults()
 
     session["default"] = False
+
     # portal_type
     if session['portlet_data']['content_filters']:
         portal_type = []
         for content_filter in session['portlet_data']['content_filters']:
-            if content_filter == 'article':
-                portal_type.append("tribuna.content.article")
-            elif content_filter == 'comment':
-                portal_type.append("Discussion Item")
-            elif content_filter == 'image':
-                portal_type.append("tribuna.content.image")
+            portal_type.append(SEARCHABLE_TYPES.get(content_filter))
 
     # sort_on
     tmp = session['portlet_data']['sort_on']
@@ -120,7 +110,7 @@ def get_articles(session):
 
     if(session['portlet_data']['tags'] == [] and
        session['portlet_data']['all_tags'] == []):
-        return returnDefaults()
+        return return_defaults()
 
     all_content = []
     session['portlet_data']['tags'] = \
@@ -217,6 +207,7 @@ def our_unicode(s):
 
 
 class UtilsView(grok.View):
+    """View with useful utility methods."""
     grok.context(Interface)
     grok.name('utils')
 
