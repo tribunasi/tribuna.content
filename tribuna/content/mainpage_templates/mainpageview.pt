@@ -22,6 +22,7 @@
           <tal:block tal:repeat="article view/articles_all">
             <li id="slider-${article/getId}"
                 data-uid="${article/UID}"
+                carousel-index="${repeat/article/index}"
                 tal:define="is_article python: article.portal_type == 'tribuna.content.article';
                             is_image python: article.portal_type == 'tribuna.content.image';
                             title python: (is_article or is_image) and article.title or ploneview.cropText(article.getText(), length=25, ellipsis='...');
