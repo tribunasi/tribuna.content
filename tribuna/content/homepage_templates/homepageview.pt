@@ -255,8 +255,8 @@
                         }
 
                         var article = $(articleUID);
-                        article.css({'height': imageHeight});
-                        article.css({'width': imageWidth});
+                        article.css({'min-height': imageHeight});
+                        article.css({'min-width': imageWidth});
                         article.css({'left': numRandx});
                         article.css({'top': numRandy});
                     });
@@ -278,10 +278,12 @@
                     }
 
                     var article = $(articleUID);
-                    article.css({'width': article.width()});
-                    article.css({'left': numRandx});
-                    article.css({'top': numRandy});
-                    article.css({"min-width": "100px"});
+                    // Move it to the left somewhere, get the width and move back
+                    article.css('left', -5000);
+                    article.css('min-width', article.width());
+
+                    article.css('left', numRandx);
+                    article.css('top', numRandy);
                   }
               });
             </script>

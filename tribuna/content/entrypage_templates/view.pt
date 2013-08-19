@@ -40,7 +40,7 @@
 
       </div>
     </div>
-    <div tal:condition="not:context/locked_page" id="change-form">
+    <div tal:condition="not:context/locked_page" id="change-form" class="bordered">
       <h3 i18n:translate="">Change entry page</h3>
       <div>
         <div id="change-form-multiple">
@@ -79,8 +79,8 @@
     <span id ="entrypage-title" tal:content="title">Suspense</span>,
     <span id ="entrypage-author" tal:content="author">Slavoj Žižek</span>
   </div>
-  <div id="entrypage-home-link">
-    <a href="${context/portal_url}/home">Go to Home Page</a>
+  <div id="entrypage-home-link" class="bordered">
+    <a href="${context/portal_url}/home" i18n:translate="">Go to Home Page</a>
   </div>
   <div tal:replace="structure provider:plone.belowcontentbody" />
 

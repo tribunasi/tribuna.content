@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2013-08-13 13:06+0000\n"
+"POT-Creation-Date: 2013-08-19 10:44+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -39,7 +39,7 @@ msgstr ""
 msgid "Article"
 msgstr ""
 
-#: ./article.py:29
+#: ./article.py:30
 msgid "Article description"
 msgstr ""
 
@@ -107,6 +107,10 @@ msgstr ""
 msgid "Font type"
 msgstr ""
 
+#: ./entrypage_templates/view.pt:83
+msgid "Go to Home Page"
+msgstr ""
+
 #: ./tag.py:30
 msgid "Highlight tag in navigation?"
 msgstr ""
@@ -115,7 +119,7 @@ msgstr ""
 msgid "Home"
 msgstr ""
 
-#: ./article.py:33
+#: ./article.py:34
 #: ./browser/templates/navbar.pt:19
 #: ./portlets/sidebar.py:62
 msgid "Image"
@@ -149,7 +153,7 @@ msgstr ""
 msgid "Lead Image"
 msgstr ""
 
-#: ./article.py:25
+#: ./article.py:26
 #: ./entrypage.py:69
 #: ./image.py:12
 msgid "Name"
@@ -276,7 +280,7 @@ msgstr ""
 msgid "Use this portlet for tag navigation."
 msgstr ""
 
-#: ./article.py:34
+#: ./article.py:35
 msgid "Will be displayed on the article view."
 msgstr ""
 
@@ -284,8 +288,8 @@ msgstr ""
 msgid "article"
 msgstr ""
 
-#: ./article_templates/baseview.pt:34
-#: ./article_templates/view.pt:34
+#: ./article_templates/baseview.pt:35
+#: ./article_templates/view.pt:38
 msgid "by"
 msgstr ""
 
@@ -294,8 +298,8 @@ msgstr ""
 msgid "comment"
 msgstr ""
 
-#: ./article_templates/baseview.pt:45
-#: ./article_templates/view.pt:45
+#: ./article_templates/baseview.pt:46
+#: ./article_templates/view.pt:49
 msgid "comments"
 msgstr ""
 
@@ -312,7 +316,7 @@ msgid "i forgot my password"
 msgstr ""
 
 #: ./homepage_templates/homepageview.pt:136
-#: ./image_templates/imageview.pt:40
+#: ./image_templates/imageview.pt:44
 msgid "image"
 msgstr ""
 
@@ -352,8 +356,8 @@ msgstr ""
 msgid "results"
 msgstr ""
 
-#: ./article_templates/baseview.pt:40
-#: ./article_templates/view.pt:40
+#: ./article_templates/baseview.pt:41
+#: ./article_templates/view.pt:44
 msgid "text"
 msgstr ""
 

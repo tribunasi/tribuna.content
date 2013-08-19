@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tribuna\n"
-"POT-Creation-Date: 2013-08-13 13:06+0000\n"
+"POT-Creation-Date: 2013-08-19 10:44+0000\n"
 "PO-Revision-Date: 2013-08-13 15:21+0100\n"
 "Last-Translator: Jure Cerjak <jcerjak@termitnjak.si>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -36,7 +36,7 @@ msgstr "Članek"
 msgid "Article"
 msgstr "Članek"
 
-#: ./article.py:29
+#: ./article.py:30
 msgid "Article description"
 msgstr "Opis članka"
 
@@ -104,6 +104,10 @@ msgstr "Filter"
 msgid "Font type"
 msgstr "Font"
 
+#: ./entrypage_templates/view.pt:83
+msgid "Go to Home Page"
+msgstr "Na domačo stran"
+
 #: ./tag.py:30
 msgid "Highlight tag in navigation?"
 msgstr "Poudari tag v navigaciji?"
@@ -112,7 +116,7 @@ msgstr "Poudari tag v navigaciji?"
 msgid "Home"
 msgstr "Domov"
 
-#: ./article.py:33
+#: ./article.py:34
 #: ./browser/templates/navbar.pt:19
 #: ./portlets/sidebar.py:62
 msgid "Image"
@@ -146,7 +150,7 @@ msgstr "Novejši najprej"
 msgid "Lead Image"
 msgstr "Slika (predogled)"
 
-#: ./article.py:25
+#: ./article.py:26
 #: ./entrypage.py:69
 #: ./image.py:12
 msgid "Name"
@@ -273,7 +277,7 @@ msgstr "Naloži sliko"
 msgid "Use this portlet for tag navigation."
 msgstr "Portlet za navigacijo in filtriranje s pomočjo tag-ov"
 
-#: ./article.py:34
+#: ./article.py:35
 msgid "Will be displayed on the article view."
 msgstr "Prikazana bo na članku."
 
@@ -281,8 +285,8 @@ msgstr "Prikazana bo na članku."
 msgid "article"
 msgstr "članek"
 
-#: ./article_templates/baseview.pt:34
-#: ./article_templates/view.pt:34
+#: ./article_templates/baseview.pt:35
+#: ./article_templates/view.pt:38
 msgid "by"
 msgstr "piše"
 
@@ -291,8 +295,8 @@ msgstr "piše"
 msgid "comment"
 msgstr "komentar"
 
-#: ./article_templates/baseview.pt:45
-#: ./article_templates/view.pt:45
+#: ./article_templates/baseview.pt:46
+#: ./article_templates/view.pt:49
 msgid "comments"
 msgstr "komentarji"
 
@@ -309,7 +313,7 @@ msgid "i forgot my password"
 msgstr "pozabil sem geslo"
 
 #: ./homepage_templates/homepageview.pt:136
-#: ./image_templates/imageview.pt:40
+#: ./image_templates/imageview.pt:44
 msgid "image"
 msgstr "slika"
 
@@ -349,8 +353,8 @@ msgstr "geslo"
 msgid "results"
 msgstr "rezultatov"
 
-#: ./article_templates/baseview.pt:40
-#: ./article_templates/view.pt:40
+#: ./article_templates/baseview.pt:41
+#: ./article_templates/view.pt:44
 msgid "text"
 msgstr "tekst"
 
