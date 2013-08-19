@@ -136,7 +136,6 @@
 
       </div>
       <br />
-      <br />
     </tal:getreplies>
 
     <div tal:condition="python: has_replies and not isDiscussionAllowed"
