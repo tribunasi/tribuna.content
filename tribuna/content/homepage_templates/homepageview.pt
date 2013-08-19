@@ -125,7 +125,10 @@
                      href="${context/absolute_url}/@@articles/${article/id}"
                      tal:content="structure python: view.shorten_text(article.getText())" />
                 </div>
-                <p tal:condition="isArticle" class="article-body" tal:content="article/description" />
+                <p class="article-body" tal:condition="isArticle">
+                  <a tal:content="article/description"
+                     href="${context/absolute_url}/@@articles/${article/id}"></a>
+                </p>
                 <p tal:condition="isArticle" class="content-type">
                   <span class="red" i18n:translate="">article</span>
                 </p>
@@ -166,7 +169,10 @@
                      href="${context/absolute_url}/@@articles/${article/id}"
                      tal:content="structure python: view.shorten_text(article.getText())" />
                 </div>
-                <p tal:condition="isArticle" class="article-body" tal:content="article/description" />
+                <p class="article-body" tal:condition="isArticle">
+                  <a tal:content="article/description"
+                     href="${context/absolute_url}/@@articles/${article/id}"></a>
+                </p>
                 <p tal:condition="isArticle" class="content-type">
                   <span class="red" i18n:translate="">article</span>
                 </p>
