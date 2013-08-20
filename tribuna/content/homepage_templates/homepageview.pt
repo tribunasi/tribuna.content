@@ -79,7 +79,7 @@
     </div>
     <div id="tag-description-div" tal:condition="has_one_tag">
       <h2 i18n:translate="">Description</h2>
-      <p class="tag-description-text" tal:content="view/tag_description" />
+      <p class="tag-description-text" tal:content="structure view/tag_text" />
     </div>
 
     <div id="homepage-div"

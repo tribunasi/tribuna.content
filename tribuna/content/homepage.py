@@ -4,13 +4,14 @@
 """Views for the home page."""
 
 from five import grok
-from mobile.sniffer.detect import  detect_mobile_browser
+from mobile.sniffer.detect import detect_mobile_browser
 from mobile.sniffer.utilities import get_user_agent
 from plone import api
 from plone.app.search.browser import quote_chars
 from Products.Five.browser import BrowserView
 from zope.interface import Interface
 
+from tribuna.content import _
 from tribuna.content.utils import get_articles
 from tribuna.content.utils import reset_session
 
@@ -62,7 +63,6 @@ class HomePageView(grok.View):
         self.articles = self._get_articles()
         super(HomePageView, self).__init__(context, request)
 
-
     def set_default_view_type(self, session):
         session.set('view_type', 'drag')
 
@@ -110,7 +110,7 @@ class HomePageView(grok.View):
             return len(self.session['portlet_data']['tags']) == 1
         return False
 
-    def tag_description(self):
+    def tag_text(self):
         title = self.session['portlet_data']['tags'][0]
         with api.env.adopt_user('tags_user'):
             catalog = api.portal.get_tool(name='portal_catalog')
@@ -118,9 +118,9 @@ class HomePageView(grok.View):
                 Title=title,
                 portal_type='tribuna.content.tag',
             )[0].getObject()
-        if not tag.description:
-            return u"Description not added yet!"
-        return tag.description
+        if not tag.text:
+            return _(u"Description not added yet!")
+        return tag.text
 
     def tag_picture(self):
         title = self.session['portlet_data']['tags'][0]

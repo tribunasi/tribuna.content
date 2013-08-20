@@ -24,6 +24,7 @@
  <property name="behaviors">
      <element value="plone.app.content.interfaces.INameFromTitle" />
      <element value="tribuna.content.behaviors.behaviors.ITermitnjakLeadImage" />
+     <element value="collective.miscbehaviors.behavior.bodytext.IBodyText" />
  </property>
 
  <!-- View information -->
