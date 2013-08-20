@@ -51,7 +51,8 @@
                              author_home_url python:view.get_commenter_home_url(username=reply.author_username);
                              has_author_link python:author_home_url and not isAnon;
                              portrait_url python:view.get_commenter_portrait(reply.author_username);
-                             review_state python:wtool.getInfoFor(reply, 'review_state', 'none');"
+                             review_state python:wtool.getInfoFor(reply, 'review_state', 'none');
+                             obj_title python: reply.__parent__.__parent__.Title;"
                  tal:attributes="class python:'comment replyTreeLevel'+str(depth)+' state-'+str(review_state);
                                  id string:${reply/getId}"
                  tal:condition="python:canReview or review_state == 'published'">
@@ -65,7 +66,7 @@
           <a class="twitter-share" href="#"
                       onclick="
                         window.open(
-                          'http://twitter.com/share?url=${context/@@plone_portal_state/navigation_root_url}/@@articles/${reply/getId}',
+                          'http://twitter.com/share?text=${obj_title}&url=${context/@@plone_portal_state/navigation_root_url}/@@articles/${reply/getId}',
                           'twitter-share-dialog',
                           'width=626,height=436');
                         return false;">
