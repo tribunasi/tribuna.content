@@ -118,9 +118,9 @@ class HomePageView(grok.View):
                 Title=title,
                 portal_type='tribuna.content.tag',
             )[0].getObject()
-        if not tag.text:
+        if not tag.description:
             return _(u"Description not added yet!")
-        return tag.text
+        return tag.description
 
     def tag_picture(self):
         title = self.session['portlet_data']['tags'][0]

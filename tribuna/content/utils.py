@@ -89,8 +89,13 @@ def get_articles(session):
     if 'search-view' in session.keys() and session['search-view']['active']:
 
         results = catalog(
-            SearchableText=session['search-view']['query'], portal_type={
-                "query": ["tribuna.content.article", "Discussion Item"],
+            SearchableText=session['search-view']['query'],
+            portal_type={
+                "query": [
+                    "tribuna.content.article",
+                    "Discussion Item",
+                    "tribuna.content.image"
+                    ],
                 "operator": "or"
             })
         return ([content.getObject() for content in results], [])
