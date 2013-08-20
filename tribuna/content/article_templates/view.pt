@@ -61,7 +61,7 @@
           <a class="twitter-share" style="display: inline-block" href="#"
                       onclick="
                         window.open(
-                          'http://twitter.com/share?url=${context/@@plone_portal_state/navigation_root_url}/@@articles/${context/getId}',
+                          'http://twitter.com/share?text=${context/title}&url=${context/@@plone_portal_state/navigation_root_url}/@@articles/${context/getId}',
                           'twitter-share-dialog',
                           'width=626,height=436');
                         return false;">
@@ -71,7 +71,7 @@
           <a class="facebook-share" style="display: inline-block" href="#"
                       onclick="
                         window.open(
-                          'https://www.facebook.com/sharer/sharer.php?u=${context/@@plone_portal_state/navigation_root_url}/@@articles/${context/getId}',
+                          'http://www.facebook.com/sharer.php?s=100&p[title]=${context/title}&p[summary]=${context/Description}&p[url]=${context/@@plone_portal_state/navigation_root_url}/@@articles/${context/getId}&p[images][0]=${context/absolute_url}/@@images/image/preview',
                           'facebook-share-dialog',
                           'width=626,height=436');
                         return false;">
