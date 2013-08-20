@@ -90,6 +90,9 @@ class IEntryPage(form.Schema):
             SimpleTerm('arial', 'arial', u'Arial'),
             SimpleTerm('times', 'times', u'Times New Roman'),
             SimpleTerm('helvetica', 'helvetica', u'Helvetica'),
+            SimpleTerm('impact', 'impact', u'Impact'),
+            SimpleTerm('cursive', 'cursive', u'Cursive'),
+            SimpleTerm('lucida', 'lucida', u'Lucida'),
         ]),
         required=False,
     )
@@ -191,6 +194,9 @@ class IChangePageTextForm(form.Schema):
             SimpleTerm('arial', 'arial', u'Arial'),
             SimpleTerm('times', 'times', u'Times New Roman'),
             SimpleTerm('helvetica', 'helvetica', u'Helvetica'),
+            SimpleTerm('impact', 'impact', u'Impact'),
+            SimpleTerm('cursive', 'cursive', u'Cursive'),
+            SimpleTerm('lucida', 'lucida', u'Lucida'),
         ]),
         required=True,
     )

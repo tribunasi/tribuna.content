@@ -186,10 +186,42 @@ def tags_published():
 
 
 def count_same(li1, li2):
+    """Count how many elements are the same in li1 and li2"""
     return len(set(li1).intersection(set(li2)))
+
+def our_unicode(s):
+    if not isinstance(s, unicode):
+        return unicode(s, 'utf8')
+    return s
+
+
+def set_default_view_type(session):
+    """Set the default view_type to drag"""
+    session.set('view_type', 'drag')
+
+def set_default_filters(session):
+    """Set default filters - no tags, sort on latest and all filters enabled"""
+    session.set('portlet_data', {
+        'all_tags': [],
+        'tags': [],
+        'sort_on': 'latest',
+        'content_filters': ['article', 'comment', 'image']
+    })
+
+def reset_session(session, default):
+    """Fill the session with default data if it's empty of specifically asks
+    for it"""
+    if default:
+        for key in session.keys():
+            del session[key]
+    if default or 'portlet_data' not in session.keys():
+        set_default_filters(session)
+    if default or 'view_type' not in session.keys():
+        set_default_view_type(session)
 
 
 class TagsListHighlighted(object):
+    """Return a vocabulary of highlighted tags"""
     grok.implements(IContextSourceBinder)
 
     def __init__(self):
@@ -202,6 +234,7 @@ class TagsListHighlighted(object):
 
 
 class TagsList(object):
+    """Return a vocabulary of all tags"""
     grok.implements(IContextSourceBinder)
 
     def __init__(self):
@@ -211,12 +244,6 @@ class TagsList(object):
         items = tags_published()
         terms = [SimpleVocabulary.createTerm(i[1], i[0], i[1]) for i in items]
         return SimpleVocabulary(terms)
-
-
-def our_unicode(s):
-    if not isinstance(s, unicode):
-        return unicode(s, 'utf8')
-    return s
 
 
 class UtilsView(grok.View):

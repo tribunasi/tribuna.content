@@ -26,7 +26,8 @@ class NavbarViewlet(base.ViewletBase):
 
         return default_page.absolute_url()
 
-
+# XXX: Since we moved that to the mainpageview, we don't need the viewlet
+# anymore
 class DefaultSessionViewlet(BrowserView):
     """Viewlet for managing the session"""
 
@@ -70,6 +71,7 @@ class DefaultSessionViewlet(BrowserView):
             self.set_default_view_type(session)
 
     def render(self):
+        return ""
         if (isinstance(self.__parent__, HomePageView)
                 or isinstance(self.__parent__, MainPageView)):
             self.reset_session()

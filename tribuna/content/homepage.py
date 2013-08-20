@@ -12,6 +12,7 @@ from Products.Five.browser import BrowserView
 from zope.interface import Interface
 
 from tribuna.content.utils import get_articles
+from tribuna.content.utils import reset_session
 
 
 def search_articles(query, session):
@@ -61,11 +62,21 @@ class HomePageView(grok.View):
         self.articles = self._get_articles()
         super(HomePageView, self).__init__(context, request)
 
-    # def check_if_default(self):
-    #     get_default = self.request.get('default')
-    #     if get_default:
-    #         for i in self.session.keys():
-    #             del self.session[i]
+
+    def set_default_view_type(self, session):
+        session.set('view_type', 'drag')
+
+    def set_default_filters(self, session):
+        session.set('portlet_data', {
+            'all_tags': [],
+            'tags': [],
+            'sort_on': 'latest',
+            'content_filters': ['article', 'comment', 'image']
+        })
+
+    def check_if_default(self):
+        get_default = self.request.get('default')
+        reset_session(self.session, get_default)
 
     def is_text_view(self):
         """Check if text view (this is the basic view) is selected.
@@ -86,7 +97,7 @@ class HomePageView(grok.View):
         """Return all articles for the given query."""
         # XXX: The viewlet takes care of that, we should either move everything
         # here or leave everything there
-        # self.check_if_default()
+        self.check_if_default()
         articles_all = get_articles(self.session)
         return {
             'intersection': articles_all[0],

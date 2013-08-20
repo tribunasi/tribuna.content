@@ -41,7 +41,8 @@
                      scrollTop: $("#container").offset().top
                  }, 500);
             })
-
+          var tmpheight = jQuery17(window).height() - parseInt(jQuery17("#articles_list").css("margin-top"), 10) - jQuery17("#topside-content-name").height() - 25;
+          $("#homepage-div").height(tmpheight);
         });
   </script>
 </metal:block>

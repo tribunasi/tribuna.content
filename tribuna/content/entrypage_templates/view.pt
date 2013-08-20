@@ -34,10 +34,10 @@
     </div>
     <div tal:condition="context/text">
       <div id="text-container" class="entrypage-text-container">
-        <p tal:condition="python: context.font_type == 'times'" id="entrypage-text" >${context/text}</p>
-        <p tal:condition="python: context.font_type == 'arial'" id="entrypage-text" class="arial">${context/text}</p>
-        <p tal:condition="python: context.font_type == 'helvetica'" id="entrypage-text" class="helvetica">${context/text}</p>
-
+        <p tal:attributes="class context/font_type"
+           id="entrypage-text">
+           ${context/text}
+        </p>
       </div>
     </div>
     <div tal:condition="not:context/locked_page" id="change-form" class="bordered">
