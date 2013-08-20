@@ -118,7 +118,7 @@
                   <a tal:condition="isImage"
                      class="article-header"
                      href="${context/absolute_url}/@@articles/${article/id}">
-                     <img tal:attributes="src string:${article/absolute_url}/@@images/image/preview" />
+                     <img tal:attributes="src string:${article/absolute_url}/@@images/image" />
                   </a>
                   <a tal:condition="isComment"
                      class="comment-header"
@@ -162,7 +162,7 @@
                   <a tal:condition="isImage"
                      class="article-header"
                      href="${context/absolute_url}/@@articles/${article/id}">
-                     <img tal:attributes="src string:${article/absolute_url}/@@images/image/preview" />
+                     <img tal:attributes="src string:${article/absolute_url}/@@images/image" />
                   </a>
                   <a tal:condition="isComment"
                      class="comment-header"
@@ -197,9 +197,9 @@
                                  varUID python: isComment and article.getId() or article.UID()">
             <div id="${varUID}" class="ui-widget-content drag-view-${typeClassAddition}">
               <img tal:condition="isArticle"
-                   tal:attributes="src string:${article/absolute_url}/@@images/image/preview" />
+                   tal:attributes="src string:${article/absolute_url}/@@images/image" />
               <img tal:condition="isImage"
-                   tal:attributes="src string:${article/absolute_url}/@@images/image/preview" />
+                   tal:attributes="src string:${article/absolute_url}/@@images/image" />
               <div id="text">
                 <div id="gallery-link">
                   <a tal:condition="isArticle"

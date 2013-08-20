@@ -70,11 +70,14 @@ def get_articles(session):
         )
 
     catalog = api.portal.get_tool(name='portal_catalog')
-    portal_type = [
-        "tribuna.content.article",
-        "Discussion Item",
-        "tribuna.content.image"
-    ]
+    # XXX: Leave here temporarily while we check if this is indeed how it
+    # should work
+    # portal_type = [
+    #     "tribuna.content.article",
+    #     "Discussion Item",
+    #     "tribuna.content.image"
+    # ]
+    portal_type = []
     review_state = "published"
     sort_on = "Date"
     query = None

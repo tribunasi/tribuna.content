@@ -61,11 +61,11 @@ class HomePageView(grok.View):
         self.articles = self._get_articles()
         super(HomePageView, self).__init__(context, request)
 
-    def check_if_default(self):
-        get_default = self.request.get('default')
-        if get_default:
-            for i in self.session.keys():
-                del self.session[i]
+    # def check_if_default(self):
+    #     get_default = self.request.get('default')
+    #     if get_default:
+    #         for i in self.session.keys():
+    #             del self.session[i]
 
     def is_text_view(self):
         """Check if text view (this is the basic view) is selected.
@@ -84,7 +84,9 @@ class HomePageView(grok.View):
 
     def _get_articles(self):
         """Return all articles for the given query."""
-        self.check_if_default()
+        # XXX: The viewlet takes care of that, we should either move everything
+        # here or leave everything there
+        # self.check_if_default()
         articles_all = get_articles(self.session)
         return {
             'intersection': articles_all[0],
