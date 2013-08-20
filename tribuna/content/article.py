@@ -26,6 +26,14 @@ class IArticle(form.Schema):
         title=_(u"Name"),
     )
 
+    subtitle = schema.TextLine(
+        title=_(u"Article subtitle"),
+    )
+
+    article_author = schema.TextLine(
+        title=_(u"Article author"),
+    )
+
     description = schema.Text(
         title=_(u"Article description"),
     )

@@ -34,9 +34,11 @@
             <img tal:replace="structure context/@@images/picture" />
           </div>
           <h2 tal:content="context/title">Lorem ipsum</h2>
-          <h3>
+          <h3 tal:content="context/subtitle"
+              tal:condition="context/subtitle">ipsum</h3>
+          <h3 tal:condition="context/article_author">
             <span i18n:translate="">by</span>
-            <span tal:content="context/Creator">The Ipsum Master</span>
+            <span tal:content="context/article_author">The Ipsum Master</span>
           </h3>
         </div>
         <form class="article-display-options span4">
