@@ -1,0 +1,11 @@
+<registry>
+  <record name="plone.app.discussion.interfaces.IDiscussionSettings.text_transform" interface="plone.app.discussion.interfaces.IDiscussionSettings" field="text_transform">
+    <field type="plone.registry.field.Choice">
+      <default>text/plain</default>
+      <description>help_text_transform</description>
+      <title>label_text_transform</title>
+      <vocabulary>plone.app.discussion.vocabularies.TextTransformVocabulary</vocabulary>
+    </field>
+    <value>text/x-web-intelligent</value>
+  </record>
+</registry>
