@@ -92,7 +92,7 @@ def get_articles(session):
             SearchableText=session['search-view']['query'], portal_type={
                 "query": ["tribuna.content.article", "Discussion Item"],
                 "operator": "or"
-        })
+            })
         return ([content.getObject() for content in results], [])
     if 'portlet_data' not in session.keys():
         return returnDefaults()
@@ -252,6 +252,12 @@ class UtilsView(grok.View):
 
     def translate(self, string):
         return self.context.translate(_(string))
+
+    def get_selected_tags(self):
+        """Get a list of selected tags from the session."""
+        session = self.context.session_data_manager.getSessionData(create=True)
+        data = session.get('portlet_data', None)
+        return data and data.get('tags', []) or []
 
     def render(self):
         return ''

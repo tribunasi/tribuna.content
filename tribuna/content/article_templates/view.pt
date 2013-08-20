@@ -9,14 +9,21 @@
 
 <metal:main fill-slot="main">
 <tal:main-macro metal:define-macro="main"
-                tal:define="ploneview nocall:context/@@plone">
+                tal:define="ploneview nocall:context/@@plone;
+                            utilsview nocall:context/@@utils">
 
   <div id="article" class="row-fluid">
+
     <div id="left-column" class="span2">
       <div id="selected-tags">
-        <div class="unstyled" id="selected-tags-list">
-          <span tal:repeat="tag context/Subject"
-                class="selected">${tag}</span>
+        <div id="selected-tags-list"
+             tal:define="selected_tags utilsview/get_selected_tags"
+             tal:condition="selected_tags">
+          <span tal:repeat="tag selected_tags"
+                class="selected"
+                tal:content="tag">tag</span>
+          <!--span tal:repeat="tag context/Subject"
+                class="selected" tal:content="tag">tag</span-->
         </div>
       </div>
     </div>
