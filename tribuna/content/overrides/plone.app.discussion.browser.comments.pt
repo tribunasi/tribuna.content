@@ -52,7 +52,9 @@
                              has_author_link python:author_home_url and not isAnon;
                              portrait_url python:view.get_commenter_portrait(reply.author_username);
                              review_state python:wtool.getInfoFor(reply, 'review_state', 'none');
-                             obj_title python: reply.__parent__.__parent__.Title;"
+                             obj_url python: reply.__parent__.__parent__.absolute_url;
+                             obj_title python: reply.__parent__.__parent__.Title;
+                             obj_description python: reply.__parent__.__parent__.Description;"
                  tal:attributes="class python:'comment replyTreeLevel'+str(depth)+' state-'+str(review_state);
                                  id string:${reply/getId}"
                  tal:condition="python:canReview or review_state == 'published'">
@@ -72,11 +74,10 @@
                         return false;">
             <img src="${context/@@plone_portal_state/navigation_root_url}/++resource++tribuna.diazotheme/img/twitter_button.png"/>
           </a>
-
           <a class="facebook-share" href="#"
                       onclick="
                         window.open(
-                          'https://www.facebook.com/sharer/sharer.php?u=${context/@@plone_portal_state/navigation_root_url}/@@articles/${reply/getId}',
+                          'http://www.facebook.com/sharer.php?s=100&p[title]=${obj_title}&p[summary]=${obj_description}&p[url]=${context/@@plone_portal_state/navigation_root_url}/@@articles/${reply/getId}&p[images][0]=${obj_url}/@@images/image/preview',
                           'facebook-share-dialog',
                           'width=626,height=436');
                         return false;">
