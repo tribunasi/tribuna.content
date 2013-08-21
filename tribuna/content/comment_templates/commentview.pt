@@ -51,9 +51,7 @@
               tal:replace="python:context.toLocalizedTime(context.modification_date)" />
       </div>
       <div id="article-tags-info">
-        <tal:tags tal:repeat="tag context/subject">
-          <li  class="articleTag" tal:content="string: ${tag}," />
-        </tal:tags>
+          <p class="articleTag" tal:content="python: ', '.join(context.subject)" />
       </div>
       <div class="red" i18n:translate="">comment</div>
     </div>
