@@ -65,6 +65,9 @@
             <div class="LSShadow" id="LSShadow"></div>
           </div>
         </div>
+        <div id="search-controls" class="formControls">
+          <input id="search-button" name="search-button" class="submit-widget button-field" value="Search" type="submit" />
+        </div>
       </form>
   </div>
   <div id="search-view" tal:condition="view/is_search_view" style="display:none"></div>
@@ -124,7 +127,7 @@
                   <a tal:condition="isComment"
                      class="comment-header"
                      href="${context/absolute_url}/@@articles/${article/id}"
-                     tal:content="structure python: view.shorten_text(article.getText())" />
+                     tal:content="structure python: view.shorten_text(article.text)" />
                 </div>
                 <p class="article-body" tal:condition="isArticle">
                   <a tal:content="article/description"
@@ -168,7 +171,7 @@
                   <a tal:condition="isComment"
                      class="comment-header"
                      href="${context/absolute_url}/@@articles/${article/id}"
-                     tal:content="structure python: view.shorten_text(article.getText())" />
+                     tal:content="structure python: view.shorten_text(article.text)" />
                 </div>
                 <p class="article-body" tal:condition="isArticle">
                   <a tal:content="article/description"
@@ -214,7 +217,7 @@
                   <a tal:condition="isComment"
                      class="drag-comment-header"
                      href="${context/absolute_url}/@@articles/${article/id}"
-                     tal:content="structure python: view.shorten_text(article.getText())" />
+                     tal:content="structure python: view.shorten_text(article.text)" />
                 </div>
                 <div id="drag-view-type">
                   <p tal:condition="isArticle" class="content-type">

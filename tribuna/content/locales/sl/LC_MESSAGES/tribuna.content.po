@@ -354,8 +354,8 @@ msgid "legend_livesearch"
 msgstr "Iskanje..."
 
 #: ./comment_templates/commentview.pt:40
-msgid "link to the article"
-msgstr "povezava do članka ↪"
+msgid "link to the article →"
+msgstr "povezava do članka →"
 
 #: ./browser/overrides/Products.CMFPlone.skins.plone_login.login_form.cpt:128
 msgid "login name"
