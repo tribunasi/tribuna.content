@@ -207,10 +207,18 @@
                    tal:attributes="src string:${article/absolute_url}/@@images/image" />
               <div id="text">
                 <div id="gallery-link">
+                  <a tal:condition="python: isArticle and article.article_author"
+                     class="article-author"
+                     href="${context/absolute_url}/@@articles/${article/id}"
+                     tal:content="article/article_author" />
                   <a tal:condition="isArticle"
                      class="article-header"
                      href="${context/absolute_url}/@@articles/${article/id}"
                      tal:content="article/title" />
+                  <a tal:condition="python: isArticle and article.subtitle"
+                     class="article-subtitle"
+                     href="${context/absolute_url}/@@articles/${article/id}"
+                     tal:content="article/subtitle" />
                   <a tal:condition="isImage"
                      class="image-header"
                      href="${context/absolute_url}/@@articles/${article/id}"
@@ -239,6 +247,16 @@
                   </span>
                 </div>
                 <p tal:condition="isArticle" class="article-body" tal:content="article/description" />
+                <div tal:condition="isComment" id="comment-info">
+                  <span tal:define="creator article/Creator;
+                               mtool article/@@plone_tools/membership;
+                               author python:mtool.getMemberInfo(creator)"
+                         tal:content="python:author and author['fullname'] or creator">
+                    Author name
+                  </span>
+                  <span tal:define="DateTime python:modules['DateTime'].DateTime;"
+                        tal:replace="python:article.toLocalizedTime(article.modification_date)" />
+                </div>
               </div>
             </div>
 
