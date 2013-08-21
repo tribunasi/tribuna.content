@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 """Viewlets."""
@@ -25,6 +24,13 @@ class NavbarViewlet(base.ViewletBase):
         default_page = entry_pages[entry_pages.getDefaultPage()]
 
         return default_page.absolute_url()
+
+    # def get_permissions(self):
+    #     user = api.user.get_current()
+    #     portal = api.portal.get()
+    #     import pdb; pdb.set_trace()
+
+    # FOO NATAN (navbar.pt)
 
 # XXX: Since we moved that to the mainpageview, we don't need the viewlet
 # anymore

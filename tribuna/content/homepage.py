@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 """Views for the home page."""
@@ -118,9 +117,9 @@ class HomePageView(grok.View):
                 Title=title,
                 portal_type='tribuna.content.tag',
             )[0].getObject()
-        if not tag.description:
+        if not tag.text:
             return _(u"Description not added yet!")
-        return tag.description
+        return tag.text
 
     def tag_picture(self):
         title = self.session['portlet_data']['tags'][0]

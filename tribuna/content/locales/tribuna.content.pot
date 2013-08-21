@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2013-08-19 10:44+0000\n"
+"POT-Creation-Date: 2013-08-21 13:19+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,12 +17,12 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: tribuna.content\n"
 
-#: ./tag.py:25
-msgid "A short summary"
-msgstr ""
-
 #: ./browser/templates/navbar.pt:11
 msgid "Add new..."
+msgstr ""
+
+#: ./portlets/sidebar.py:60
+msgid "All"
 msgstr ""
 
 #: ./portlets/sidebar.py:42
@@ -34,17 +34,25 @@ msgid "An article"
 msgstr ""
 
 #: ./browser/templates/navbar.pt:15
-#: ./portlets/sidebar.py:60
+#: ./portlets/sidebar.py:61
 #: ./profiles/default/types/tribuna.content.article.xml
 msgid "Article"
 msgstr ""
 
-#: ./article.py:30
+#: ./article.py:34
+msgid "Article author"
+msgstr ""
+
+#: ./article.py:38
 msgid "Article description"
 msgstr ""
 
+#: ./article.py:30
+msgid "Article subtitle"
+msgstr ""
+
 #: ./browser/templates/navbar.pt:33
-#: ./homepage_templates/homepageview.pt:94
+#: ./homepage_templates/homepageview.pt:95
 #: ./tag_templates/view.pt:24
 msgid "Articles"
 msgstr ""
@@ -57,7 +65,7 @@ msgstr ""
 msgid "Categories"
 msgstr ""
 
-#: ./entrypage.py:159
+#: ./entrypage.py:162
 msgid "Change"
 msgstr ""
 
@@ -65,7 +73,7 @@ msgstr ""
 msgid "Change entry page"
 msgstr ""
 
-#: ./portlets/sidebar.py:61
+#: ./portlets/sidebar.py:62
 msgid "Comment"
 msgstr ""
 
@@ -73,19 +81,23 @@ msgstr ""
 msgid "Content filters"
 msgstr ""
 
-#: ./entrypage.py:102
+#: ./entrypage.py:105
 msgid "Cover everything"
 msgstr ""
 
-#: ./homepage_templates/homepageview.pt:80
+#: ./homepage_templates/homepageview.pt:81
 msgid "Description"
 msgstr ""
 
-#: ./entrypage.py:98
+#: ./homepage.py:121
+msgid "Description not added yet!"
+msgstr ""
+
+#: ./entrypage.py:101
 msgid "Display image"
 msgstr ""
 
-#: ./portlets/sidebar.py:145
+#: ./portlets/sidebar.py:151
 msgid "Drag"
 msgstr ""
 
@@ -99,7 +111,7 @@ msgstr ""
 msgid "Entry page"
 msgstr ""
 
-#: ./portlets/sidebar.py:122
+#: ./portlets/sidebar.py:128
 msgid "Filter"
 msgstr ""
 
@@ -111,7 +123,7 @@ msgstr ""
 msgid "Go to Home Page"
 msgstr ""
 
-#: ./tag.py:30
+#: ./tag.py:25
 msgid "Highlight tag in navigation?"
 msgstr ""
 
@@ -119,9 +131,9 @@ msgstr ""
 msgid "Home"
 msgstr ""
 
-#: ./article.py:34
+#: ./article.py:42
 #: ./browser/templates/navbar.pt:19
-#: ./portlets/sidebar.py:62
+#: ./portlets/sidebar.py:63
 msgid "Image"
 msgstr ""
 
@@ -133,11 +145,11 @@ msgstr ""
 msgid "Images"
 msgstr ""
 
-#: ./homepage_templates/homepageview.pt:102
+#: ./homepage_templates/homepageview.pt:103
 msgid "Intersection"
 msgstr ""
 
-#: ./behaviors/behaviors.py:154
+#: ./behaviors/behaviors.py:155
 msgid "Is article locked on first page?"
 msgstr ""
 
@@ -153,13 +165,17 @@ msgstr ""
 msgid "Lead Image"
 msgstr ""
 
+#: ./browser/overrides/Products.PasswordResetTool.skins.PasswordReset.pwreset_finish.pt:17
+msgid "Log in"
+msgstr ""
+
 #: ./article.py:26
 #: ./entrypage.py:69
 #: ./image.py:12
 msgid "Name"
 msgstr ""
 
-#: ./homepage_templates/homepageview.pt:86
+#: ./homepage_templates/homepageview.pt:87
 msgid "No results!"
 msgstr ""
 
@@ -183,7 +199,7 @@ msgstr ""
 msgid "Only select text or image"
 msgstr ""
 
-#: ./entrypage.py:101
+#: ./entrypage.py:104
 msgid "Original size"
 msgstr ""
 
@@ -191,39 +207,39 @@ msgstr ""
 msgid "Picture"
 msgstr ""
 
-#: ./homepage_templates/homepageview.pt:60
+#: ./homepage_templates/homepageview.pt:61
 msgid "Search.."
 msgstr ""
 
-#: ./portlets/sidebar.py:119
+#: ./portlets/sidebar.py:125
 msgid "Select appropriate tags"
 msgstr ""
 
-#: ./entrypage.py:272
+#: ./entrypage.py:278
 msgid "Select entry page"
 msgstr ""
 
-#: ./entrypage.py:156
+#: ./entrypage.py:159
 msgid "Select new page"
 msgstr ""
 
-#: ./entrypage.py:257
+#: ./entrypage.py:263
 msgid "Select one of the old pages"
 msgstr ""
 
-#: ./entrypage.py:108
+#: ./entrypage.py:111
 msgid "Set as default"
 msgstr ""
 
-#: ./entrypage.py:109
+#: ./entrypage.py:112
 msgid "Set this page as default entry page and disable editing."
 msgstr ""
 
-#: ./portlets/sidebar.py:160
+#: ./portlets/sidebar.py:166
 msgid "Sidebar navigation"
 msgstr ""
 
-#: ./portlets/sidebar.py:163
+#: ./portlets/sidebar.py:169
 msgid "Sidebar portlet"
 msgstr ""
 
@@ -238,13 +254,13 @@ msgstr ""
 msgid "Tags"
 msgstr ""
 
-#: ./portlets/sidebar.py:120
+#: ./portlets/sidebar.py:126
 msgid "Tags selection form"
 msgstr ""
 
 #: ./entrypage.py:73
 #: ./entrypage_templates/view.pt:47
-#: ./portlets/sidebar.py:138
+#: ./portlets/sidebar.py:144
 msgid "Text"
 msgstr ""
 
@@ -252,11 +268,11 @@ msgstr ""
 msgid "Threaded"
 msgstr ""
 
-#: ./entrypage.py:100
+#: ./entrypage.py:103
 msgid "Tiles over page"
 msgstr ""
 
-#: ./entrypage.py:134
+#: ./entrypage.py:137
 msgid "Title"
 msgstr ""
 
@@ -268,7 +284,7 @@ msgstr ""
 msgid "Type of sorting"
 msgstr ""
 
-#: ./homepage_templates/homepageview.pt:144
+#: ./homepage_templates/homepageview.pt:148
 msgid "Union"
 msgstr ""
 
@@ -276,30 +292,30 @@ msgstr ""
 msgid "Upload an image"
 msgstr ""
 
-#: ./portlets/sidebar.py:161
+#: ./portlets/sidebar.py:167
 msgid "Use this portlet for tag navigation."
 msgstr ""
 
-#: ./article.py:35
+#: ./article.py:43
 msgid "Will be displayed on the article view."
 msgstr ""
 
-#: ./homepage_templates/homepageview.pt:130
+#: ./homepage_templates/homepageview.pt:134
 msgid "article"
 msgstr ""
 
 #: ./article_templates/baseview.pt:35
-#: ./article_templates/view.pt:38
+#: ./article_templates/view.pt:47
 msgid "by"
 msgstr ""
 
-#: ./comment_templates/commentview.pt:46
-#: ./homepage_templates/homepageview.pt:133
+#: ./comment_templates/commentview.pt:53
+#: ./homepage_templates/homepageview.pt:137
 msgid "comment"
 msgstr ""
 
 #: ./article_templates/baseview.pt:46
-#: ./article_templates/view.pt:49
+#: ./article_templates/view.pt:58
 msgid "comments"
 msgstr ""
 
@@ -315,32 +331,32 @@ msgstr ""
 msgid "i forgot my password"
 msgstr ""
 
-#: ./homepage_templates/homepageview.pt:136
-#: ./image_templates/imageview.pt:44
+#: ./homepage_templates/homepageview.pt:140
+#: ./image_templates/imageview.pt:51
 msgid "image"
 msgstr ""
 
 #. Default: "Advanced Search…"
-#: ./browser/overrides/Products.CMFPlone.skins.plone_scripts.livesearch_reply.py:106
+#: ./browser/overrides/Products.CMFPlone.skins.plone_scripts.livesearch_reply.py:108
 msgid "label_advanced_search"
 msgstr ""
 
 #. Default: "No matching results found."
-#: ./browser/overrides/Products.CMFPlone.skins.plone_scripts.livesearch_reply.py:104
+#: ./browser/overrides/Products.CMFPlone.skins.plone_scripts.livesearch_reply.py:106
 msgid "label_no_results_found"
 msgstr ""
 
 #. Default: "Show all items"
-#: ./browser/overrides/Products.CMFPlone.skins.plone_scripts.livesearch_reply.py:108
+#: ./browser/overrides/Products.CMFPlone.skins.plone_scripts.livesearch_reply.py:110
 msgid "label_show_all"
 msgstr ""
 
 #. Default: "LiveSearch &#8595;"
-#: ./browser/overrides/Products.CMFPlone.skins.plone_scripts.livesearch_reply.py:103
+#: ./browser/overrides/Products.CMFPlone.skins.plone_scripts.livesearch_reply.py:105
 msgid "legend_livesearch"
 msgstr ""
 
-#: ./comment_templates/commentview.pt:33
+#: ./comment_templates/commentview.pt:40
 msgid "link to the article"
 msgstr ""
 
@@ -352,12 +368,12 @@ msgstr ""
 msgid "password"
 msgstr ""
 
-#: ./homepage_templates/homepageview.pt:98
+#: ./homepage_templates/homepageview.pt:99
 msgid "results"
 msgstr ""
 
 #: ./article_templates/baseview.pt:41
-#: ./article_templates/view.pt:44
+#: ./article_templates/view.pt:53
 msgid "text"
 msgstr ""
 
