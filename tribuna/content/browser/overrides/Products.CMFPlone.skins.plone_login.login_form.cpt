@@ -262,6 +262,7 @@
                        tal:define="join_url python:test(came_from, join_url+test(join_url.find('?')==-1, '?', '&amp;')+ztu.make_query(came_from=came_from), join_url);"
                        tal:attributes="href join_url; target target;"
                        i18n:translate=""
+                       i18n:domain="tribuna.content"
                         >registration</a>
 
             </div>

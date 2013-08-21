@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tribuna\n"
-"POT-Creation-Date: 2013-08-21 13:19+0000\n"
-"PO-Revision-Date: 2013-08-13 15:21+0100\n"
+"POT-Creation-Date: 2013-08-21 18:43+0000\n"
+"PO-Revision-Date: 2013-08-21 20:49+0100\n"
 "Last-Translator: Jure Cerjak <jcerjak@termitnjak.si>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -20,7 +20,7 @@ msgstr "Dodaj nov..."
 
 #: ./portlets/sidebar.py:60
 msgid "All"
-msgstr ""
+msgstr "Vse"
 
 #: ./portlets/sidebar.py:42
 msgid "All tags"
@@ -36,20 +36,20 @@ msgstr "Članek"
 msgid "Article"
 msgstr "Članek"
 
-#: ./article.py:34
+#: ./article.py:36
 msgid "Article author"
-msgstr ""
+msgstr "Avtor"
 
-#: ./article.py:38
+#: ./article.py:41
 msgid "Article description"
 msgstr "Opis članka"
 
-#: ./article.py:30
+#: ./article.py:31
 msgid "Article subtitle"
-msgstr ""
+msgstr "Podnaslov članka"
 
 #: ./browser/templates/navbar.pt:33
-#: ./homepage_templates/homepageview.pt:95
+#: ./homepage_templates/homepageview.pt:98
 #: ./tag_templates/view.pt:24
 msgid "Articles"
 msgstr "Članki"
@@ -82,13 +82,13 @@ msgstr "Filtriranje vsebine"
 msgid "Cover everything"
 msgstr "Prekrij celotno stran"
 
-#: ./homepage_templates/homepageview.pt:81
+#: ./homepage_templates/homepageview.pt:84
 msgid "Description"
 msgstr "Uvod"
 
 #: ./homepage.py:121
 msgid "Description not added yet!"
-msgstr ""
+msgstr "Opis še ni bil dodan."
 
 #: ./entrypage.py:101
 msgid "Display image"
@@ -128,7 +128,7 @@ msgstr "Poudari tag v navigaciji?"
 msgid "Home"
 msgstr "Domov"
 
-#: ./article.py:42
+#: ./article.py:46
 #: ./browser/templates/navbar.pt:19
 #: ./portlets/sidebar.py:63
 msgid "Image"
@@ -142,7 +142,7 @@ msgstr "Image tip za stran Tribuna"
 msgid "Images"
 msgstr "Slike"
 
-#: ./homepage_templates/homepageview.pt:103
+#: ./homepage_templates/homepageview.pt:106
 msgid "Intersection"
 msgstr "Presek"
 
@@ -166,13 +166,13 @@ msgstr "Slika (predogled)"
 msgid "Log in"
 msgstr "Prijava"
 
-#: ./article.py:26
+#: ./article.py:27
 #: ./entrypage.py:69
-#: ./image.py:12
+#: ./image.py:13
 msgid "Name"
 msgstr "Naslov"
 
-#: ./homepage_templates/homepageview.pt:87
+#: ./homepage_templates/homepageview.pt:90
 msgid "No results!"
 msgstr "Ni rezultatov!"
 
@@ -281,7 +281,7 @@ msgstr "Tribuna slika"
 msgid "Type of sorting"
 msgstr "Tip sortiranja"
 
-#: ./homepage_templates/homepageview.pt:148
+#: ./homepage_templates/homepageview.pt:151
 msgid "Union"
 msgstr "Unija"
 
@@ -293,11 +293,12 @@ msgstr "Naloži sliko"
 msgid "Use this portlet for tag navigation."
 msgstr "Portlet za navigacijo in filtriranje s pomočjo tag-ov"
 
-#: ./article.py:43
+#: ./article.py:47
 msgid "Will be displayed on the article view."
 msgstr "Prikazana bo na članku."
 
-#: ./homepage_templates/homepageview.pt:134
+#: ./article_templates/view.pt:77
+#: ./homepage_templates/homepageview.pt:137
 msgid "article"
 msgstr "članek"
 
@@ -306,8 +307,8 @@ msgstr "članek"
 msgid "by"
 msgstr "piše"
 
-#: ./comment_templates/commentview.pt:53
-#: ./homepage_templates/homepageview.pt:137
+#: ./comment_templates/commentview.pt:56
+#: ./homepage_templates/homepageview.pt:140
 msgid "comment"
 msgstr "komentar"
 
@@ -324,12 +325,12 @@ msgstr "ime"
 msgid "go home"
 msgstr "go home"
 
-#: ./browser/overrides/Products.CMFPlone.skins.plone_login.login_form.cpt:273
+#: ./browser/overrides/Products.CMFPlone.skins.plone_login.login_form.cpt:274
 msgid "i forgot my password"
 msgstr "pozabil sem geslo"
 
-#: ./homepage_templates/homepageview.pt:140
-#: ./image_templates/imageview.pt:51
+#: ./homepage_templates/homepageview.pt:143
+#: ./image_templates/imageview.pt:54
 msgid "image"
 msgstr "slika"
 
@@ -354,8 +355,8 @@ msgid "legend_livesearch"
 msgstr "Iskanje..."
 
 #: ./comment_templates/commentview.pt:40
-msgid "link to the article →"
-msgstr "povezava do članka →"
+msgid "link to the article"
+msgstr "povezava do članka"
 
 #: ./browser/overrides/Products.CMFPlone.skins.plone_login.login_form.cpt:128
 msgid "login name"
@@ -365,7 +366,11 @@ msgstr "ime"
 msgid "password"
 msgstr "geslo"
 
-#: ./homepage_templates/homepageview.pt:99
+#: ./browser/overrides/Products.CMFPlone.skins.plone_login.login_form.cpt:260
+msgid "registration"
+msgstr "registracija"
+
+#: ./homepage_templates/homepageview.pt:102
 msgid "results"
 msgstr "rezultatov"
 
