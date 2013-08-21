@@ -33,10 +33,10 @@
 
     <div class="articles-article-body span6">
       <img tal:attributes="src string:++theme++tribuna.diazotheme/img/blank.gif" />
-      <p class="fit-text">
+      <div class="fit-text">
         <span class="comment-text"
               tal:content="structure context/getText">Comment</span>
-      </p>
+      </div>
       <a class="content-link" href="#"
          i18n:translate=""
          tal:attributes="href context/absolute_url">link to the article →</a>
