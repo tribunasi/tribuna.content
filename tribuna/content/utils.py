@@ -97,7 +97,9 @@ def get_articles(session):
                     "tribuna.content.image"
                     ],
                 "operator": "or"
-            })
+                },
+            review_state="published",
+            )
         return ([content.getObject() for content in results], [])
     if 'portlet_data' not in session.keys():
         return returnDefaults()

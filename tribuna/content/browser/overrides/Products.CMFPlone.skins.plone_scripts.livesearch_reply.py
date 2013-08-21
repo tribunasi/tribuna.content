@@ -79,7 +79,9 @@ searchterms = url_quote_plus(r)
 
 params = {'SearchableText': r,
           'portal_type': friendly_types,
-          'sort_limit': limit + 1}
+          'sort_limit': limit + 1,
+          'review_state': "published",
+          }
 
 if path is None:
     # useful for subsides
