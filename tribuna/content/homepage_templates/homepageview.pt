@@ -232,6 +232,16 @@
                   <p tal:condition="isArticle" class="content-type">
                     <span class="red" i18n:translate="">article</span>
                   </p>
+                  <div tal:condition="isComment" id="drag-comment-info">
+                    <span tal:define="creator article/Creator;
+                                 mtool article/@@plone_tools/membership;
+                                 author python:mtool.getMemberInfo(creator)"
+                           tal:content="python:author and author['fullname'] or creator">
+                      Author name
+                    </span>
+                    <span tal:define="DateTime python:modules['DateTime'].DateTime;"
+                          tal:replace="python:article.toLocalizedTime(article.modification_date)" />
+                  </div>
                   <p tal:condition="isComment" class="content-type">
                     <span class="red" i18n:translate="">comment</span>
                   </p>
@@ -247,16 +257,7 @@
                   </span>
                 </div>
                 <p tal:condition="isArticle" class="article-body" tal:content="article/description" />
-                <div tal:condition="isComment" id="comment-info">
-                  <span tal:define="creator article/Creator;
-                               mtool article/@@plone_tools/membership;
-                               author python:mtool.getMemberInfo(creator)"
-                         tal:content="python:author and author['fullname'] or creator">
-                    Author name
-                  </span>
-                  <span tal:define="DateTime python:modules['DateTime'].DateTime;"
-                        tal:replace="python:article.toLocalizedTime(article.modification_date)" />
-                </div>
+
               </div>
             </div>
 
