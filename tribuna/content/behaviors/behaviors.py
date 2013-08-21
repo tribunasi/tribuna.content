@@ -32,7 +32,8 @@ class ITermitnjakLeadImage(form.Schema):
 
     image = namedfile.NamedBlobImage(
         title=_(u"Lead Image"),
-        description=u""
+        description=u"",
+        required=False
     )
 
 alsoProvides(ITermitnjakLeadImage, form.IFormFieldProvider)

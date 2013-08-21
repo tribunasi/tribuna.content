@@ -198,8 +198,9 @@
                                  isComment python: article.portal_type == 'Discussion Item';
                                  isImage python: article.portal_type == 'tribuna.content.image';
                                  typeClassAddition python: isArticle and 'article' or (isImage and 'article') or 'comment';
+                                 articleWithImage python: (isArticle and not article.image) and 'article-no-image' or '';
                                  varUID python: isComment and article.getId() or article.UID()">
-            <div id="${varUID}" class="ui-widget-content drag-view-${typeClassAddition}">
+            <div id="${varUID}" class="ui-widget-content drag-view-${typeClassAddition} ${articleWithImage}">
               <img tal:condition="isArticle"
                    tal:attributes="src string:${article/absolute_url}/@@images/image" />
               <img tal:condition="isImage"
