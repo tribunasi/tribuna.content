@@ -29,14 +29,17 @@ class IArticle(form.Schema):
 
     subtitle = schema.TextLine(
         title=_(u"Article subtitle"),
+        required=False,
     )
 
     article_author = schema.TextLine(
         title=_(u"Article author"),
+        required=False,
     )
 
     description = schema.Text(
         title=_(u"Article description"),
+        required=False,
     )
 
     picture = NamedBlobImage(
