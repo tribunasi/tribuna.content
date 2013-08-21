@@ -22,6 +22,7 @@ from tribuna.content import _
 class IArticle(form.Schema):
     """Interface for Article content type."""
 
+    form.primary('title')
     title = schema.TextLine(
         title=_(u"Name"),
     )
