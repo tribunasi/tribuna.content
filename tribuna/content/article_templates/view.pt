@@ -9,14 +9,21 @@
 
 <metal:main fill-slot="main">
 <tal:main-macro metal:define-macro="main"
-                tal:define="ploneview nocall:context/@@plone">
+                tal:define="ploneview nocall:context/@@plone;
+                            utilsview nocall:context/@@utils">
 
   <div id="article" class="row-fluid">
+
     <div id="left-column" class="span2">
       <div id="selected-tags">
-        <div class="unstyled" id="selected-tags-list">
-          <span tal:repeat="tag context/Subject"
-                class="selected">${tag}</span>
+        <div id="selected-tags-list"
+             tal:define="selected_tags utilsview/get_selected_tags"
+             tal:condition="selected_tags">
+          <span tal:repeat="tag selected_tags"
+                class="selected"
+                tal:content="tag">tag</span>
+          <!--span tal:repeat="tag context/Subject"
+                class="selected" tal:content="tag">tag</span-->
         </div>
       </div>
     </div>
@@ -28,18 +35,20 @@
            tal:content="structure context/@@contentactions-view"></div>
 
       <div class="article-heading container-fluid">
-        <div class="title span8">
+        <div class="article-text title span7">
           <div class="article-image"
                tal:condition="context/picture">
             <img tal:replace="structure context/@@images/picture" />
           </div>
           <h2 tal:content="context/title">Lorem ipsum</h2>
-          <h3>
+          <h3 tal:content="context/subtitle"
+              tal:condition="context/subtitle">ipsum</h3>
+          <h3 tal:condition="context/article_author">
             <span i18n:translate="">by</span>
-            <span tal:content="context/Creator">The Ipsum Master</span>
+            <span tal:content="context/article_author">The Ipsum Master</span>
           </h3>
         </div>
-        <form class="article-display-options span4">
+        <form class="article-display-options">
           <label>
             <span i18n:translate="">text</span>
             <input class="activate-text"
@@ -53,15 +62,23 @@
         </form>
       </div>
       <div class="row-fluid">
-        <div class="content-core span9">
+        <div class="article-text content-core span7">
           <p class="description" tal:content="context/Description">
             Etiam vehicula mauris ac tortor convallis id mollis urna
           </p>
           <p tal:content="structure context/text"></p>
+          <div id="article-info">
+            <span tal:define="DateTime python:modules['DateTime'].DateTime;"
+                  tal:replace="python:context.toLocalizedTime(context.modification_date)" />
+          </div>
+      <div id="article-tags-info">
+          <p class="articleTag" tal:content="python: ', '.join(context.subject)" />
+      </div>
+      <div class="red" i18n:translate="">article</div>
           <a class="twitter-share" style="display: inline-block" href="#"
                       onclick="
                         window.open(
-                          'http://twitter.com/share?url=${context/@@plone_portal_state/navigation_root_url}/@@articles/${context/getId}',
+                          'http://twitter.com/share?text=${context/title}&url=${context/@@plone_portal_state/navigation_root_url}/@@articles/${context/getId}',
                           'twitter-share-dialog',
                           'width=626,height=436');
                         return false;">
@@ -71,7 +88,7 @@
           <a class="facebook-share" style="display: inline-block" href="#"
                       onclick="
                         window.open(
-                          'https://www.facebook.com/sharer/sharer.php?u=${context/@@plone_portal_state/navigation_root_url}/@@articles/${context/getId}',
+                          'http://www.facebook.com/sharer.php?s=100&p[title]=${context/title}&p[summary]=${context/Description}&p[url]=${context/@@plone_portal_state/navigation_root_url}/@@articles/${context/getId}&p[images][0]=${context/absolute_url}/@@images/image/preview',
                           'facebook-share-dialog',
                           'width=626,height=436');
                         return false;">

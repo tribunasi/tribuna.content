@@ -41,7 +41,8 @@
                      scrollTop: $("#container").offset().top
                  }, 500);
             })
-
+          var tmpheight = jQuery17(window).height() - parseInt(jQuery17("#articles_list").css("margin-top"), 10) - jQuery17("#topside-content-name").height() - 25;
+          $("#homepage-div").height(tmpheight);
         });
   </script>
 </metal:block>
@@ -64,6 +65,9 @@
             <div class="LSShadow" id="LSShadow"></div>
           </div>
         </div>
+        <div id="search-controls" class="formControls">
+          <input id="search-button" name="search-button" class="submit-widget button-field" value="Search" type="submit" />
+        </div>
       </form>
   </div>
   <div id="search-view" tal:condition="view/is_search_view" style="display:none"></div>
@@ -78,7 +82,7 @@
     </div>
     <div id="tag-description-div" tal:condition="has_one_tag">
       <h2 i18n:translate="">Description</h2>
-      <p class="tag-description-text" tal:content="view/tag_description" />
+      <p class="tag-description-text" tal:content="structure view/tag_text" />
     </div>
 
     <div id="homepage-div"
@@ -118,14 +122,17 @@
                   <a tal:condition="isImage"
                      class="article-header"
                      href="${context/absolute_url}/@@articles/${article/id}">
-                     <img tal:attributes="src string:${article/absolute_url}/@@images/image/preview" />
+                     <img tal:attributes="src string:${article/absolute_url}/@@images/image" />
                   </a>
                   <a tal:condition="isComment"
                      class="comment-header"
                      href="${context/absolute_url}/@@articles/${article/id}"
-                     tal:content="structure python: view.shorten_text(article.getText())" />
+                     tal:content="structure python: view.shorten_text(article.text)" />
                 </div>
-                <p tal:condition="isArticle" class="article-body" tal:content="article/description" />
+                <p class="article-body" tal:condition="isArticle">
+                  <a tal:content="article/description"
+                     href="${context/absolute_url}/@@articles/${article/id}"></a>
+                </p>
                 <p tal:condition="isArticle" class="content-type">
                   <span class="red" i18n:translate="">article</span>
                 </p>
@@ -159,14 +166,17 @@
                   <a tal:condition="isImage"
                      class="article-header"
                      href="${context/absolute_url}/@@articles/${article/id}">
-                     <img tal:attributes="src string:${article/absolute_url}/@@images/image/preview" />
+                     <img tal:attributes="src string:${article/absolute_url}/@@images/image" />
                   </a>
                   <a tal:condition="isComment"
                      class="comment-header"
                      href="${context/absolute_url}/@@articles/${article/id}"
-                     tal:content="structure python: view.shorten_text(article.getText())" />
+                     tal:content="structure python: view.shorten_text(article.text)" />
                 </div>
-                <p tal:condition="isArticle" class="article-body" tal:content="article/description" />
+                <p class="article-body" tal:condition="isArticle">
+                  <a tal:content="article/description"
+                     href="${context/absolute_url}/@@articles/${article/id}"></a>
+                </p>
                 <p tal:condition="isArticle" class="content-type">
                   <span class="red" i18n:translate="">article</span>
                 </p>
@@ -188,18 +198,27 @@
                                  isComment python: article.portal_type == 'Discussion Item';
                                  isImage python: article.portal_type == 'tribuna.content.image';
                                  typeClassAddition python: isArticle and 'article' or (isImage and 'article') or 'comment';
+                                 articleWithImage python: (isArticle and not article.image) and 'article-no-image' or '';
                                  varUID python: isComment and article.getId() or article.UID()">
-            <div id="${varUID}" class="ui-widget-content drag-view-${typeClassAddition}">
+            <div id="${varUID}" class="ui-widget-content drag-view-${typeClassAddition} ${articleWithImage}">
               <img tal:condition="isArticle"
-                   tal:attributes="src string:${article/absolute_url}/@@images/image/preview" />
+                   tal:attributes="src string:${article/absolute_url}/@@images/image" />
               <img tal:condition="isImage"
-                   tal:attributes="src string:${article/absolute_url}/@@images/image/preview" />
+                   tal:attributes="src string:${article/absolute_url}/@@images/image" />
               <div id="text">
                 <div id="gallery-link">
+                  <a tal:condition="python: isArticle and article.article_author"
+                     class="article-author"
+                     href="${context/absolute_url}/@@articles/${article/id}"
+                     tal:content="article/article_author" />
                   <a tal:condition="isArticle"
                      class="article-header"
                      href="${context/absolute_url}/@@articles/${article/id}"
                      tal:content="article/title" />
+                  <a tal:condition="python: isArticle and article.subtitle"
+                     class="article-subtitle"
+                     href="${context/absolute_url}/@@articles/${article/id}"
+                     tal:content="article/subtitle" />
                   <a tal:condition="isImage"
                      class="image-header"
                      href="${context/absolute_url}/@@articles/${article/id}"
@@ -207,12 +226,22 @@
                   <a tal:condition="isComment"
                      class="drag-comment-header"
                      href="${context/absolute_url}/@@articles/${article/id}"
-                     tal:content="structure python: view.shorten_text(article.getText())" />
+                     tal:content="structure python: view.shorten_text(article.text)" />
                 </div>
                 <div id="drag-view-type">
                   <p tal:condition="isArticle" class="content-type">
                     <span class="red" i18n:translate="">article</span>
                   </p>
+                  <div tal:condition="isComment" id="drag-comment-info">
+                    <span tal:define="creator article/Creator;
+                                 mtool article/@@plone_tools/membership;
+                                 author python:mtool.getMemberInfo(creator)"
+                           tal:content="python:author and author['fullname'] or creator">
+                      Author name
+                    </span>
+                    <span tal:define="DateTime python:modules['DateTime'].DateTime;"
+                          tal:replace="python:article.toLocalizedTime(article.modification_date)" />
+                  </div>
                   <p tal:condition="isComment" class="content-type">
                     <span class="red" i18n:translate="">comment</span>
                   </p>
@@ -228,6 +257,7 @@
                   </span>
                 </div>
                 <p tal:condition="isArticle" class="article-body" tal:content="article/description" />
+
               </div>
             </div>
 
@@ -255,8 +285,8 @@
                         }
 
                         var article = $(articleUID);
-                        article.css({'height': imageHeight});
-                        article.css({'width': imageWidth});
+                        article.css({'min-height': imageHeight});
+                        article.css({'min-width': imageWidth});
                         article.css({'left': numRandx});
                         article.css({'top': numRandy});
                     });
@@ -278,10 +308,12 @@
                     }
 
                     var article = $(articleUID);
-                    article.css({'width': article.width()});
-                    article.css({'left': numRandx});
-                    article.css({'top': numRandy});
-                    article.css({"min-width": "100px"});
+                    // Move it to the left somewhere, get the width and move back
+                    article.css('left', -5000);
+                    article.css('min-width', article.width());
+
+                    article.css('left', numRandx);
+                    article.css('top', numRandy);
                   }
               });
             </script>

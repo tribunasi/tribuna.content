@@ -1,6 +1,7 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:cmf="http://namespaces.zope.org/cmf"
     xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="tribuna.content">
 
@@ -30,7 +31,7 @@
         manager="plone.app.layout.viewlets.interfaces.IPortalHeader"
         class=".viewlet.NavbarViewlet"
         template="templates/navbar.pt"
-        permission="zope2.View"
+        permission="cmf.ManagePortal"
         layer="tribuna.content.interfaces.ITribunaContentLayer"
         />
 

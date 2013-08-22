@@ -57,6 +57,7 @@ class ISidebarForm(form.Schema):
     content_filters = schema.List(
         title=_(u"Content filters"),
         value_type=schema.Choice(source=SimpleVocabulary([
+            SimpleTerm('all', 'all', _(u'All')),
             SimpleTerm('article', 'article', _(u'Article')),
             SimpleTerm('comment', 'comment', _(u'Comment')),
             SimpleTerm('image', 'image', _(u'Image')),
@@ -100,6 +101,11 @@ def default_content_filters(data):
     sdm = data.context.session_data_manager
     session = sdm.getSessionData(create=True)
     if "portlet_data" in session.keys():
+        if 'all' in session['portlet_data']['content_filters']:
+            session['portlet_data']['content_filters'].remove('all')
+        all_filters = ['article', 'comment', 'image']
+        if session['portlet_data']['content_filters'] == all_filters:
+            return session["portlet_data"]["content_filters"] + ['all']
         return session["portlet_data"]["content_filters"]
     else:
         return []

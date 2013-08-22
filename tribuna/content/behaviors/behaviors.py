@@ -101,7 +101,8 @@ class Tags(object):
         if value is None:
             value = []
 
-        #old_tags = set(self.context.Subject())
+        # Add all tags from 'tags_old' to our values
+        value += list(self.context.Subject())
 
         # Get all 'new' tags
         # XXX

@@ -15,12 +15,24 @@ from tribuna.content import _
 class IArticle(form.Schema):
     """Interface for Article content type."""
 
+    form.primary('title')
     title = schema.TextLine(
         title=_(u"Name"),
     )
 
+    subtitle = schema.TextLine(
+        title=_(u"Article subtitle"),
+        required=False,
+    )
+
+    article_author = schema.TextLine(
+        title=_(u"Article author"),
+        required=False,
+    )
+
     description = schema.Text(
         title=_(u"Article description"),
+        required=False,
     )
 
     picture = NamedBlobImage(

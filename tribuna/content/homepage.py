@@ -1,17 +1,18 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 """Views for the home page."""
 
 from five import grok
-from mobile.sniffer.detect import  detect_mobile_browser
+from mobile.sniffer.detect import detect_mobile_browser
 from mobile.sniffer.utilities import get_user_agent
 from plone import api
 from plone.app.search.browser import quote_chars
 from Products.Five.browser import BrowserView
 from zope.interface import Interface
 
+from tribuna.content import _
 from tribuna.content.utils import get_articles
+from tribuna.content.utils import reset_session
 
 
 def search_articles(query, session):
@@ -61,11 +62,20 @@ class HomePageView(grok.View):
         self.articles = self._get_articles()
         super(HomePageView, self).__init__(context, request)
 
+    def set_default_view_type(self, session):
+        session.set('view_type', 'drag')
+
+    def set_default_filters(self, session):
+        session.set('portlet_data', {
+            'all_tags': [],
+            'tags': [],
+            'sort_on': 'latest',
+            'content_filters': ['article', 'comment', 'image']
+        })
+
     def check_if_default(self):
         get_default = self.request.get('default')
-        if get_default:
-            for i in self.session.keys():
-                del self.session[i]
+        reset_session(self.session, get_default)
 
     def is_text_view(self):
         """Check if text view (this is the basic view) is selected.
@@ -84,6 +94,8 @@ class HomePageView(grok.View):
 
     def _get_articles(self):
         """Return all articles for the given query."""
+        # XXX: The viewlet takes care of that, we should either move everything
+        # here or leave everything there
         self.check_if_default()
         articles_all = get_articles(self.session)
         return {
@@ -97,7 +109,7 @@ class HomePageView(grok.View):
             return len(self.session['portlet_data']['tags']) == 1
         return False
 
-    def tag_description(self):
+    def tag_text(self):
         title = self.session['portlet_data']['tags'][0]
         with api.env.adopt_user('tags_user'):
             catalog = api.portal.get_tool(name='portal_catalog')
@@ -105,9 +117,9 @@ class HomePageView(grok.View):
                 Title=title,
                 portal_type='tribuna.content.tag',
             )[0].getObject()
-        if not tag.description:
-            return u"Description not added yet!"
-        return tag.description
+        if not tag.text:
+            return _(u"Description not added yet!")
+        return tag.text
 
     def tag_picture(self):
         title = self.session['portlet_data']['tags'][0]

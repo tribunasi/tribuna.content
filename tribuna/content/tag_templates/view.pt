@@ -17,9 +17,9 @@
 
         <div tal:replace="structure provider:plone.belowcontenttitle" />
 
-        <p class="documentDescription" tal:content="context/description" />
-
         <div tal:replace="structure provider:plone.abovecontentbody" />
+
+        <p tal:content="structure context/text"></p>
 
         <h2 i18n:translate="">Articles</h2>
         <!-- <p class="tagBodyText" tal:content="structure context/text" />

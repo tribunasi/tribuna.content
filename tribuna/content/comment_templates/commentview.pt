@@ -12,27 +12,34 @@
 
 <metal:main fill-slot="main">
 <tal:main-macro metal:define-macro="main"
-                tal:define="ploneview nocall:context/@@plone">
+                tal:define="ploneview nocall:context/@@plone;
+                            utilsview nocall:context/@@utils">
 
   <div id="article" class="row-fluid">
+
     <div id="left-column" class="span2">
       <div id="selected-tags">
-        <div class="unstyled" id="selected-tags-list">
-          <span tal:repeat="tag context/subject"
-                class="selected">${tag}</span>
+        <div id="selected-tags-list"
+             tal:define="selected_tags utilsview/get_selected_tags"
+             tal:condition="selected_tags">
+          <span tal:repeat="tag selected_tags"
+                class="selected"
+                tal:content="tag">tag</span>
+          <!--span tal:repeat="tag context/subject"
+                class="selected" tal:content="tag">tag</span-->
         </div>
       </div>
     </div>
 
     <div class="articles-article-body span6">
       <img tal:attributes="src string:++theme++tribuna.diazotheme/img/blank.gif" />
-      <p class="fit-text">
+      <div class="fit-text">
         <span class="comment-text"
-              tal:content="structure context/text">Comment</span>
-      </p>
+              tal:content="structure context/getText">Comment</span>
+      </div>
       <a class="content-link" href="#"
          i18n:translate=""
-         tal:attributes="href context/absolute_url">link to the article</a>
+         tal:attributes="href context/absolute_url">link to the article</a> →
       <div id="comment-info">
         <span tal:define="creator context/Creator;
                      mtool context/@@plone_tools/membership;
@@ -42,6 +49,9 @@
         </span>
         <span tal:define="DateTime python:modules['DateTime'].DateTime;"
               tal:replace="python:context.toLocalizedTime(context.modification_date)" />
+      </div>
+      <div id="article-tags-info">
+          <p class="articleTag" tal:content="python: ', '.join(context.subject)" />
       </div>
       <div class="red" i18n:translate="">comment</div>
     </div>

@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 """Various utilites."""
@@ -71,7 +70,9 @@ def get_articles(session):
         )
 
     catalog = api.portal.get_tool(name='portal_catalog')
-    portal_type = SEARCHABLE_TYPES.values()
+
+    portal_type = []
+
     review_state = "published"
     sort_on = "Date"
     query = None
@@ -80,10 +81,18 @@ def get_articles(session):
 
     if 'search-view' in session.keys() and session['search-view']['active']:
         results = catalog(
-            SearchableText=session['search-view']['query'], portal_type={
-                "query": portal_type,
+
+            SearchableText=session['search-view']['query'],
+            portal_type={
+                "query": [
+                    "tribuna.content.article",
+                    "Discussion Item",
+                    "tribuna.content.image"
+                    ],
                 "operator": "or"
-        })
+                },
+            review_state="published",
+            )
         return ([content.getObject() for content in results], [])
     if 'portlet_data' not in session.keys():
         return return_defaults()
@@ -181,8 +190,42 @@ def tags_published():
         ))
     return tags
 
+def count_same(li1, li2):
+    """Count how many elements are the same in li1 and li2"""
+    return len(set(li1).intersection(set(li2)))
+
+def our_unicode(s):
+    if not isinstance(s, unicode):
+        return unicode(s, 'utf8')
+    return s
+
+def set_default_view_type(session):
+    """Set the default view_type to drag"""
+    session.set('view_type', 'drag')
+
+def set_default_filters(session):
+    """Set default filters - no tags, sort on latest and all filters enabled"""
+    session.set('portlet_data', {
+        'all_tags': [],
+        'tags': [],
+        'sort_on': 'latest',
+        'content_filters': ['article', 'comment', 'image']
+    })
+
+def reset_session(session, default):
+    """Fill the session with default data if it's empty of specifically asks
+    for it"""
+    if default:
+        for key in session.keys():
+            del session[key]
+    if default or 'portlet_data' not in session.keys():
+        set_default_filters(session)
+    if default or 'view_type' not in session.keys():
+        set_default_view_type(session)
+
 
 class TagsListHighlighted(object):
+    """Return a vocabulary of highlighted tags"""
     grok.implements(IContextSourceBinder)
 
     def __init__(self):
@@ -195,6 +238,7 @@ class TagsListHighlighted(object):
 
 
 class TagsList(object):
+    """Return a vocabulary of all tags"""
     grok.implements(IContextSourceBinder)
 
     def __init__(self):
@@ -213,6 +257,12 @@ class UtilsView(grok.View):
 
     def translate(self, string):
         return self.context.translate(_(string))
+
+    def get_selected_tags(self):
+        """Get a list of selected tags from the session."""
+        session = self.context.session_data_manager.getSessionData(create=True)
+        data = session.get('portlet_data', None)
+        return data and data.get('tags', []) or []
 
     def render(self):
         return ''

@@ -8,6 +8,7 @@ from tribuna.content import _
 class IImage(form.Schema):
     """Interface for Image content type."""
 
+    form.primary('title')
     title = schema.TextLine(
         title=_(u"Name"),
     )
