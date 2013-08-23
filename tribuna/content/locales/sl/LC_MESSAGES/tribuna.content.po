@@ -323,7 +323,7 @@ msgstr "ime"
 
 #: ./portlets/sidebar.pt:38
 msgid "go home"
-msgstr "go home"
+msgstr "domov"
 
 #: ./browser/overrides/Products.CMFPlone.skins.plone_login.login_form.cpt:274
 msgid "i forgot my password"
