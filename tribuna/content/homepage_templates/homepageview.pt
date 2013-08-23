@@ -211,14 +211,18 @@
                      class="article-author"
                      href="${context/absolute_url}/@@articles/${article/id}"
                      tal:content="article/article_author" />
+                  <br tal:condition="python: isArticle and article.article_author">
+                  <br tal:condition="python: isArticle and article.article_author">
                   <a tal:condition="isArticle"
                      class="article-header"
                      href="${context/absolute_url}/@@articles/${article/id}"
                      tal:content="article/title" />
+                  <br tal:condition="isArticle">
                   <a tal:condition="python: isArticle and article.subtitle"
                      class="article-subtitle"
                      href="${context/absolute_url}/@@articles/${article/id}"
                      tal:content="article/subtitle" />
+
                   <a tal:condition="isImage"
                      class="image-header"
                      href="${context/absolute_url}/@@articles/${article/id}"
