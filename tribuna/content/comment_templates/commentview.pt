@@ -15,7 +15,7 @@
                 tal:define="ploneview nocall:context/@@plone;
                             utilsview nocall:context/@@utils">
 
-  <div id="article" class="row-fluid">
+  <div id="article-comment" class="row-fluid ">
 
     <div id="left-column" class="span2">
       <div id="selected-tags">
@@ -50,10 +50,10 @@
         <span tal:define="DateTime python:modules['DateTime'].DateTime;"
               tal:replace="python:context.toLocalizedTime(context.modification_date)" />
       </div>
-      <div id="article-tags-info">
-          <p class="articleTag" tal:content="python: ', '.join(context.subject)" />
+      <div id="comment-tags-info">
+          <p class="oneCommentTag" tal:content="python: ', '.join(context.subject)" />
       </div>
-      <div class="red" i18n:translate="">comment</div>
+      <div class="red redTag" i18n:translate="">comment</div>
     </div>
   </div>
 
