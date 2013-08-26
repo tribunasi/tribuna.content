@@ -45,6 +45,17 @@ class CommentExtender(extensible.FormExtender):
     fields = Fields(ICommentExtenderFields)
 
     def __init__(self, context, request, form):
+        """
+        Extends Comment with additional field
+
+        :param    context: Current context
+        :type     context: Comment
+        :param    request: Current HTTP request
+        :type     request: Http request object
+        :param    form:    Form of the comment
+        :type     form:    form
+
+        """
         self.context = context
         self.request = request
         self.form = form

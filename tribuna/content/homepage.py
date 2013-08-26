@@ -19,9 +19,9 @@ def search_articles(query, session):
     """Method for getting correct search results
 
     :param query: Text that we search for
-    :type query: string
+    :type  query: string
     :param session: Current session
-    :type session: Session getObject
+    :type  session: Session getObject
     """
     if 'search-view' not in session.keys():
         return
@@ -39,6 +39,9 @@ class SearchView(BrowserView):
     """
 
     def __call__(self):
+        """
+        Makes the search and redirects to correct URL
+        """
         query = quote_chars(self.request.form.get('SearchableText', ''))
         if query:
             query = query + '*'
@@ -55,6 +58,15 @@ class HomePageView(grok.View):
     grok.name('home')
 
     def __init__(self, context, request):
+        """
+        Initializes the homepage view
+
+        :param    context: Current site context
+        :type     context: Context object
+        :param    request: Current HTTP request
+        :type     request: Request object
+        """
+
         self.context = context
         self.request = request
         self.session = self.context.session_data_manager.getSessionData(
@@ -63,9 +75,23 @@ class HomePageView(grok.View):
         super(HomePageView, self).__init__(context, request)
 
     def set_default_view_type(self, session):
+        """
+        Set session to default view type
+
+        :param    session: current session
+        :type     session: Session object
+        """
+
         session.set('view_type', 'drag')
 
     def set_default_filters(self, session):
+        """
+        Set default filters on session
+
+        :param    session: Current session
+        :type     session: Session object
+        """
+
         session.set('portlet_data', {
             'all_tags': [],
             'tags': [],
@@ -74,13 +100,19 @@ class HomePageView(grok.View):
         })
 
     def check_if_default(self):
+        """
+        Checks if session is set to default
+        """
+
         get_default = self.request.get('default')
         reset_session(self.session, get_default)
 
     def is_text_view(self):
-        """Check if text view (this is the basic view) is selected.
+        """
+        Check if text view (this is the basic view) is selected.
 
-        Read data from the session, if it isn't there, return True.
+        :returns: returns True or False, depending on text view being selected
+        :rtype:   boolean
         """
         # Get HTTP_USER_AGENT from HTTP request object
         ua = get_user_agent(self.request)
@@ -93,7 +125,12 @@ class HomePageView(grok.View):
         return True
 
     def _get_articles(self):
-        """Return all articles for the given query."""
+        """
+        Get all articles for our home view
+
+        :returns: Dictionary of all articles that are shown on home view
+        :rtype:   dict
+        """
         # XXX: The viewlet takes care of that, we should either move everything
         # here or leave everything there
         self.check_if_default()
@@ -105,11 +142,23 @@ class HomePageView(grok.View):
         }
 
     def only_one_tag(self):
+        """
+        Method to see if there is only one tag selected
+
+        :returns: True if one tag is selected, false otherwise
+        :rtype:   boolean
+        """
         if 'portlet_data' in self.session.keys():
             return len(self.session['portlet_data']['tags']) == 1
         return False
 
     def tag_text(self):
+        """
+        Method for getting description of our tag
+
+        :returns: Description of our tag
+        :rtype:   string
+        """
         title = self.session['portlet_data']['tags'][0]
         with api.env.adopt_user('tags_user'):
             catalog = api.portal.get_tool(name='portal_catalog')
@@ -122,6 +171,12 @@ class HomePageView(grok.View):
         return tag.text
 
     def tag_picture(self):
+        """
+        Method for getting picture of our tag
+
+        :returns: Url of picture of our tag
+        :rtype:   str
+        """
         title = self.session['portlet_data']['tags'][0]
         with api.env.adopt_user('tags_user'):
             catalog = api.portal.get_tool(name='portal_catalog')
@@ -134,12 +189,24 @@ class HomePageView(grok.View):
         return str(tag.absolute_url()) + "/@@images/image"
 
     def is_search_view(self):
+        """
+        Method that checks if we are in search view
+
+        :returns: True if we are in search view, False otherwise
+        :rtype:   boolean
+        """
         if ("search-view" in self.session.keys() and
                 self.session["search-view"]["active"]):
             return True
         return False
 
     def show_intersection(self):
+        """
+        Method for checking if we want to show the intersection
+
+        :returns: True if we are showing intersection, False otherwise
+        :rtype:   boolean
+        """
         if (self.only_one_tag() or
             self.articles["intersection"] == [] or
                 self.is_search_view()):
@@ -147,6 +214,12 @@ class HomePageView(grok.View):
         return True
 
     def show_union(self):
+        """
+        Method for checking if we want to show the union
+
+        :returns: True if we are showing union, False otherwise
+        :rtype:   boolean
+        """
         if (self.only_one_tag() or
             self.articles["union"] == [] or
                 self.is_search_view()):
@@ -154,17 +227,38 @@ class HomePageView(grok.View):
         return True
 
     def shorten_text(self, text):
+        """
+        Method for shortening text to 140 characters
+
+        :param    text: Text that we are shortening
+        :type     text: str
+
+        :returns: Shortened text
+        :rtype:   str
+        """
         if len(text) > 140:
             return text[:140] + ' ...'
         return text
 
     def entry_page_edit(self):
+        """
+        Method for getting url of edit view of entry page
+
+        :returns: URL of edit view
+        :rtype:   str
+        """
         portal = api.portal.get()
         entry_pages = portal["entry-pages"]
         default_page = entry_pages[entry_pages.getDefaultPage()]
         return str(default_page.absolute_url()) + "/edit"
 
     def tags_selected(self):
+        """
+        Method for checking if any tags are selected
+
+        :returns: True if tags are selected, False otherwise
+        :rtype:   boolean
+        """
         if 'portlet_data' in self.session.keys() and \
             'tags' in self.session['portlet_data'] and \
                 len(self.session['portlet_data']['tags']) > 0:

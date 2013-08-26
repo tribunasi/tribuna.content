@@ -16,13 +16,25 @@ LIMIT = 15
 
 
 def get_articles(session):
-    """Return a list of all articles depending on the specified filters
+    """
+    Gets all the articles that matches the selected filters in session
 
-    :param session: session object which contains the query parameters
-    :returns: a tuple: first item is list of 'intersection' results, while
+    :param    session: Current session
+    :type     session: Session object
+
+    :returns: first item is list of 'intersection' results, while
         second item is a list of 'union' results
+    :rtype:   tuple
     """
     def return_defaults():
+        """
+        Method for returning articles that get selected when no filters are
+        present
+
+        :returns: first item is list of 'intersection' results, while
+            second item is a list of 'union' results
+        :rtype:   tuple
+        """
         query = [i[1] for i in tags_published_highlighted()]
         all_content = catalog(
             portal_type=portal_type,
@@ -190,21 +202,23 @@ def tags_published():
         ))
     return tags
 
-def count_same(li1, li2):
-    """Count how many elements are the same in li1 and li2"""
-    return len(set(li1).intersection(set(li2)))
-
-def our_unicode(s):
-    if not isinstance(s, unicode):
-        return unicode(s, 'utf8')
-    return s
-
 def set_default_view_type(session):
-    """Set the default view_type to drag"""
+    """
+    Set the default view_type to drag
+
+    :param    session: current session
+    :type     session: Session object
+    """
     session.set('view_type', 'drag')
 
 def set_default_filters(session):
-    """Set default filters - no tags, sort on latest and all filters enabled"""
+    """
+    Set default filters - no tags, sort on latest and all filters enabled
+
+    :param    session: current session
+    :type     session: Session object
+    """
+
     session.set('portlet_data', {
         'all_tags': [],
         'tags': [],
@@ -213,8 +227,15 @@ def set_default_filters(session):
     })
 
 def reset_session(session, default):
-    """Fill the session with default data if it's empty of specifically asks
-    for it"""
+    """
+    Fill the session with default data if it's empty of specifically asks
+    for it
+
+    :param    session: Current session
+    :type     session: Session object
+    :param    default: True or False depending on if we selected default view
+    :type     default: boolean
+    """
     if default:
         for key in session.keys():
             del session[key]
@@ -232,6 +253,15 @@ class TagsListHighlighted(object):
         pass
 
     def __call__(self, context):
+        """
+        Get simple vocabulary
+
+        :param    context: Current context
+        :type     context: Context object
+
+        :returns: vocabulary of highlighted tags
+        :rtype:   SimpleVocabulary
+        """
         items = tags_published_highlighted()
         terms = [SimpleVocabulary.createTerm(i[1], i[0], i[1]) for i in items]
         return SimpleVocabulary(terms)
@@ -245,6 +275,15 @@ class TagsList(object):
         pass
 
     def __call__(self, context):
+        """
+        Get simple vocabulary
+
+        :param    context: Current context
+        :type     context: Context object
+
+        :returns: vocabulary of all tags
+        :rtype:   SimpleVocabulary
+        """
         items = tags_published()
         terms = [SimpleVocabulary.createTerm(i[1], i[0], i[1]) for i in items]
         return SimpleVocabulary(terms)
@@ -256,10 +295,24 @@ class UtilsView(grok.View):
     grok.name('utils')
 
     def translate(self, string):
+        """
+        Method for internaly translating string
+
+        :param    string: String that we want to translate
+        :type     string: str
+
+        :returns: translated string
+        :rtype:   str
+        """
         return self.context.translate(_(string))
 
     def get_selected_tags(self):
-        """Get a list of selected tags from the session."""
+        """
+        Get a list of selected tags from the session.
+
+        :returns: Selected tags
+        :rtype:   list
+        """
         session = self.context.session_data_manager.getSessionData(create=True)
         data = session.get('portlet_data', None)
         return data and data.get('tags', []) or []

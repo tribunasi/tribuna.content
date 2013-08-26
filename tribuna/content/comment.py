@@ -28,6 +28,15 @@ TribunaCommentFactory = Factory(Comment)
 
 @indexer(IComment)
 def subject(object):
+    """
+    Returns subject of our object
+
+    :param    object: current comment
+    :type     object: TribunaComment
+
+    :returns: Subject of our object
+    :rtype:   str
+    """
     return object.subject
 
 

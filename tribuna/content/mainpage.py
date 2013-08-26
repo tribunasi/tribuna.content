@@ -21,9 +21,18 @@ class MainPageView(grok.View):
     article_id = None
 
     def publishTraverse(self, request, name):
-        """Custom traverse method which enables us to have urls in format
+        """
+        Custom traverse method which enables us to have urls in format
         ../@@articles/some-article instead of
         ../@@articles?article=some-article.
+
+        :param    request: Current request
+        :type     request: Request object
+        :param    name:    Name of current article/comment/image
+        :type     name:    str
+
+        :returns: View of the current object shown in main page
+        :rtype:   View object
         """
         # Need this hack so resolving url for an uuid works (e.g. article
         # images use this view to get the real url)
@@ -40,7 +49,12 @@ class MainPageView(grok.View):
             raise NotFound()
 
     def articles_all(self):
-        """Return all articles that match the criteria."""
+        """
+        Return all articles that match the criteria.
+
+        :returns: All articles that match
+        :rtype:   list
+        """
         if not self.article_id:
             return []
         sdm = self.context.session_data_manager
@@ -79,6 +93,12 @@ class GetArticle(grok.View):
     grok.name('get-article')
 
     def render(self):
+        """
+        Method for rendering our view
+
+        :returns: Rendered HTML for our view
+        :rtype:   HTML
+        """
         article_id = self.request.get('id')
         article_type = self.request.get('type')
         if not article_id:

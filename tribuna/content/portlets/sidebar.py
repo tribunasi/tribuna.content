@@ -127,6 +127,13 @@ class SidebarForm(form.SchemaForm):
 
     @button.buttonAndHandler(_(u'Filter'))
     def handleApply(self, action):
+        """
+        Method for setting selected filters in session and setting correct
+        articles
+
+        :param    action: action selected on form
+        :type     action: str
+        """
         data, errors = self.extractData()
         if errors:
             self.status = self.formErrorsMessage
@@ -143,6 +150,12 @@ class SidebarForm(form.SchemaForm):
 
     @button.buttonAndHandler(_(u'Text'))
     def handleApply(self, action):
+        """
+        Method for setting text view
+
+        :param    action: action selected on form
+        :type     action: str
+        """
         sdm = self.context.session_data_manager
         session = sdm.getSessionData(create=True)
         session.set('view_type', 'text')
@@ -150,6 +163,12 @@ class SidebarForm(form.SchemaForm):
 
     @button.buttonAndHandler(_(u'Drag'))
     def handleApply(self, action):
+        """
+        Method for setting drag view
+
+        :param    action: action selected on form
+        :type     action: str
+        """
         sdm = self.context.session_data_manager
         session = sdm.getSessionData(create=True)
         session.set('view_type', 'drag')
@@ -173,7 +192,11 @@ class Renderer(base.Renderer):
     render = ViewPageTemplateFile('sidebar.pt')
 
     def portlet_data(self):
-        """Return a catalog search result of articles that have this tag
+        """
+        Method for getting sidebar form for rendering
+
+        :returns: our sidebar form
+        :rtype:   Form object
         """
         form1 = SidebarForm(self.context, self.request)
         form1.update()
