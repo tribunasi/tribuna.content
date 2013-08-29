@@ -15,7 +15,7 @@
                 tal:define="ploneview nocall:context/@@plone;
                             utilsview nocall:context/@@utils">
 
-  <div id="article-comment" class="row-fluid ">
+  <div id="article" class="row-fluid ">
 
     <div id="left-column" class="span2">
       <div id="selected-tags">
@@ -31,7 +31,7 @@
       </div>
     </div>
 
-    <div class="articles-article-body span6">
+    <div id="article-comment" class="articles-article-body span6">
       <img tal:attributes="src string:++theme++tribuna.diazotheme/img/blank.gif" />
       <div class="fit-text">
         <span class="comment-text"
