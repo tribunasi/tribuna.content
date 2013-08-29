@@ -38,7 +38,7 @@
       <option i18n:translate="" id="oldest" tal:attributes="selected python: 'oldest' in request.form.keys()">Oldest first</option>
   </select>
 </div>
-  <div   class="discussion"
+  <div id="discussion"   class="discussion"
          tal:condition="has_replies">
 
 
