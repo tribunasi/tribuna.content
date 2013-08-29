@@ -33,13 +33,13 @@
 
       <div id="content-actions"
            tal:content="structure context/@@contentactions-view"></div>
-
-      <div class="article-heading container-fluid">
-        <div class="article-text title span7">
-          <div class="article-image"
+      <div class="article-image"
                tal:condition="context/picture">
             <img tal:replace="structure context/@@images/picture" />
           </div>
+      <div class="article-heading container-fluid">
+        <div class="article-text title span7">
+
           <h2 tal:content="context/title">Lorem ipsum</h2>
           <h3 tal:content="context/subtitle"
               tal:condition="context/subtitle">ipsum</h3>
