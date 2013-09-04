@@ -47,8 +47,11 @@
         </form>
       <div class="article-image"
                tal:condition="context/picture">
-            <img tal:replace="structure context/@@images/picture" />
+                <img tal:define="scale context/@@images"
+           tal:replace="structure python: scale.scale('picture', width=1000, height=1000).tag()" />
+            <!-- <img tal:replace="structure context/@@images/picture" /> -->
           </div>
+
 
       <div class="article-heading container-fluid">
         <div class="article-text title span7">
