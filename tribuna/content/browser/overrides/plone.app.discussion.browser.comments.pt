@@ -38,7 +38,7 @@
       <option i18n:translate="" id="oldest" tal:attributes="selected python: 'oldest' in request.form.keys()">Oldest first</option>
   </select>
 </div>
-  <div   class="discussion"
+  <div id="discussion"   class="discussion"
          tal:condition="has_replies">
 
 
@@ -51,7 +51,10 @@
                              author_home_url python:view.get_commenter_home_url(username=reply.author_username);
                              has_author_link python:author_home_url and not isAnon;
                              portrait_url python:view.get_commenter_portrait(reply.author_username);
-                             review_state python:wtool.getInfoFor(reply, 'review_state', 'none');"
+                             review_state python:wtool.getInfoFor(reply, 'review_state', 'none');
+                             obj_url python: reply.__parent__.__parent__.absolute_url;
+                             obj_title python: reply.__parent__.__parent__.Title;
+                             obj_description python: reply.__parent__.__parent__.Description;"
                  tal:attributes="class python:'comment replyTreeLevel'+str(depth)+' state-'+str(review_state);
                                  id string:${reply/getId}"
                  tal:condition="python:canReview or review_state == 'published'">
@@ -65,17 +68,16 @@
           <a class="twitter-share" href="#"
                       onclick="
                         window.open(
-                          'http://twitter.com/share?url=${context/@@plone_portal_state/navigation_root_url}/@@articles/${reply/getId}',
+                          'http://twitter.com/share?text=${obj_title}&url=${context/@@plone_portal_state/navigation_root_url}/@@articles/${reply/getId}',
                           'twitter-share-dialog',
                           'width=626,height=436');
                         return false;">
             <img src="${context/@@plone_portal_state/navigation_root_url}/++resource++tribuna.diazotheme/img/twitter_button.png"/>
           </a>
-
           <a class="facebook-share" href="#"
                       onclick="
                         window.open(
-                          'https://www.facebook.com/sharer/sharer.php?u=${context/@@plone_portal_state/navigation_root_url}/@@articles/${reply/getId}',
+                          'http://www.facebook.com/sharer.php?s=100&p[title]=${obj_title}&p[summary]=${obj_description}&p[url]=${context/@@plone_portal_state/navigation_root_url}/@@articles/${reply/getId}&p[images][0]=${obj_url}/@@images/image/preview',
                           'facebook-share-dialog',
                           'width=626,height=436');
                         return false;">
@@ -135,7 +137,6 @@
         </ul>
 
       </div>
-      <br />
       <br />
     </tal:getreplies>
 
