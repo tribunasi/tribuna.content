@@ -125,6 +125,29 @@ class SidebarForm(form.SchemaForm):
     label = _(u"Select appropriate tags")
     description = _(u"Tags selection form")
 
+    def buildGetArgs(self):
+            st = ""
+            name = 'form.widgets.all_tags'
+            if name in self.request.form:
+                st += '/' + ','.join(self.request.form[name])
+
+            name = 'form.widgets.content_filters'
+            st += '&filters='
+            if name in self.request.form:
+                st += ','.join((i for i in self.request.form[name]
+                                if i != 'all'))
+            else:
+                st += "None"
+
+            name = 'form.widgets.sort_on'
+            if name in self.request.form:
+                st += '&sort_on=' + ','.join(self.request.form[name])
+
+            first_letter = st.find('&')
+            if first_letter != -1:
+                st = st[:first_letter] + '?' + st[first_letter + 1:]
+            return st
+
     @button.buttonAndHandler(_(u'Filter'))
     def handleApply(self, action):
         """
@@ -134,6 +157,7 @@ class SidebarForm(form.SchemaForm):
         :param    action: action selected on form
         :type     action: str
         """
+
         data, errors = self.extractData()
         if errors:
             self.status = self.formErrorsMessage
@@ -145,8 +169,12 @@ class SidebarForm(form.SchemaForm):
         session["search-view"] = {}
         session["search-view"]['active'] = False
         get_articles(session)
-        url = api.portal.get().absolute_url()
-        self.request.response.redirect("{0}/home".format(url))
+        get_args = self.buildGetArgs()
+        url = self.context.url().split('/')
+        if url[-1] == 'home':
+            url[-1] = 'tags'
+        url = '/'.join(url)
+        self.request.response.redirect(url + get_args)
 
     @button.buttonAndHandler(_(u'Text'))
     def handleApply(self, action):
