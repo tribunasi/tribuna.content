@@ -10,5 +10,10 @@ ENTRY_PAGES_PATH = '/entry-pages'
 SEARCHABLE_TYPES = {
     'article': 'tribuna.content.article',
     'comment': 'Discussion Item',
-    'image': 'tribuna.content.image'
+    'image': 'tribuna.content.image',
+}
+
+SORT_ON_TYPES = {
+    'latest': 'Date',
+    'comments': 'total_comments',
 }

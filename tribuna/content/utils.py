@@ -10,12 +10,131 @@ from zope.schema.vocabulary import SimpleVocabulary
 
 from tribuna.content import _
 from tribuna.content.config import SEARCHABLE_TYPES
+from tribuna.content.config import SORT_ON_TYPES
 
 # Number of items to display
 LIMIT = 15
 
 
-def get_articles(session):
+def get_articles(form):
+    """
+    Gets all the articles that matches the selected filters in session
+
+    :param    session: Current session
+    :type     session: Session object
+
+    :returns: first item is list of 'intersection' results, while
+        second item is a list of 'union' results
+    :rtype:   tuple
+    """
+    def return_defaults():
+        """
+        Method for returning articles that get selected when no filters are
+        present
+
+        :returns: first item is list of 'intersection' results, while
+            second item is a list of 'union' results
+        :rtype:   tuple
+        """
+        pass
+        # query = [i[1] for i in tags_published_highlighted()]
+        # all_content = catalog(
+        #     portal_type=portal_type,
+        #     locked_on_home=True,
+        #     review_state=review_state,
+        #     sort_on=sort_on,
+        #     sort_order=sort_order,
+        #     sort_limit=LIMIT,
+        #     Subject={'query': query, 'operator': operator}
+        # )[:LIMIT]
+
+        # currentLen = len(all_content)
+
+        # if currentLen < LIMIT:
+        #     all_content += catalog(
+        #         portal_type=portal_type,
+        #         locked_on_home=False,
+        #         review_state=review_state,
+        #         sort_on=sort_on,
+        #         sort_order=sort_order,
+        #         sort_limit=(LIMIT - currentLen),
+        #         Subject={'query': query, 'operator': operator}
+        #     )[:(LIMIT - currentLen)]
+
+        # all_content = [content for content in all_content]
+        # all_content.sort(
+        #     key=lambda x: count_same(x.Subject, query), reverse=True)
+        # all_content = all_content[:LIMIT]
+
+        # intersection_count = 0
+        # num_all_tags = len(query)
+        # for i in all_content:
+        #     if count_same(i.Subject, query) == num_all_tags:
+        #         intersection_count += 1
+        #     else:
+        #         break
+
+        # all_content = [content.getObject() for content in all_content]
+        # session["search-view"] = {}
+        # session["search-view"]['active'] = False
+        # session["default"] = True
+        # return (
+        #     all_content[:intersection_count],
+        #     all_content[intersection_count:]
+        # )
+
+    catalog = api.portal.get_tool(name='portal_catalog')
+
+    review_state = "published"
+    operator = "or"
+    sort_order = "descending"
+
+    query = ""
+    try:
+        query = form.get("tags").split(',')
+    except AttributeError:
+        pass
+
+    tags_dict = tags_published_dict()
+
+    query = [tags_dict.get(i) for i in query]
+
+    sort_on = SORT_ON_TYPES.get(form.get("sort_on")) or 'Date'
+
+    filters = form.get("filters", "article,comment,image")
+    portal_type = [SEARCHABLE_TYPES.get(i) for i in filters.split(',')
+                   if SEARCHABLE_TYPES.get(i)]
+
+    if not query:
+        return return_defaults()
+
+    all_content = catalog(
+        portal_type=portal_type,
+        review_state=review_state,
+        sort_on=sort_on,
+        sort_order=sort_order,
+        Subject={'query': query, 'operator': operator},
+    )
+
+    all_content = [content for content in all_content]
+    all_content.sort(
+        key=lambda x: count_same(x.Subject, query), reverse=True)
+    all_content = all_content[:LIMIT]
+
+    intersection_count = 0
+    num_all_tags = len(query)
+    for i in all_content:
+        if count_same(i.Subject, query) == num_all_tags:
+            intersection_count += 1
+        else:
+            break
+
+    all_content = [content.getObject() for content in all_content]
+
+    return (all_content[:intersection_count], all_content[intersection_count:])
+
+
+def get_articles_old(session):
     """
     Gets all the articles that matches the selected filters in session
 
@@ -190,6 +309,7 @@ def tags_published_highlighted():
         ))
     return tags
 
+
 # XXX
 # FIX
 def tags_published():
@@ -201,6 +321,11 @@ def tags_published():
             sort_on="sortable_title"
         ))
     return tags
+
+
+def tags_published_dict():
+    return dict(tags_published())
+
 
 def set_default_view_type(session):
     """
@@ -263,7 +388,7 @@ class TagsListHighlighted(object):
         :rtype:   SimpleVocabulary
         """
         items = tags_published_highlighted()
-        terms = [SimpleVocabulary.createTerm(i[1], i[0], i[1]) for i in items]
+        terms = [SimpleVocabulary.createTerm(i[0], i[0], i[1]) for i in items]
         return SimpleVocabulary(terms)
 
 
@@ -285,7 +410,7 @@ class TagsList(object):
         :rtype:   SimpleVocabulary
         """
         items = tags_published()
-        terms = [SimpleVocabulary.createTerm(i[1], i[0], i[1]) for i in items]
+        terms = [SimpleVocabulary.createTerm(i[0], i[0], i[1]) for i in items]
         return SimpleVocabulary(terms)
 
 

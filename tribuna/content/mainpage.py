@@ -57,10 +57,9 @@ class MainPageView(grok.View):
         """
         if not self.article_id:
             return []
-        sdm = self.context.session_data_manager
-        session = sdm.getSessionData(create=True)
-        articles = get_articles(session)
+        articles = get_articles(self.request.form)
         all_articles = articles[0] + articles[1]
+
         if self.article_id in [i.id for i in all_articles]:
             return all_articles
         else:
