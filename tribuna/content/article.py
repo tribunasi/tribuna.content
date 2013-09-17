@@ -5,14 +5,16 @@
 
 from five import grok
 from plone import api
+from plone.dexterity.content import Container
 from plone.directives import form
 from plone.namedfile.field import NamedBlobImage
+from tribuna.annotator.interfaces import ITribunaAnnotator
 from zope import schema
 
 from tribuna.content import _
 
 
-class IArticle(form.Schema):
+class IArticle(form.Schema, ITribunaAnnotator):
     """Interface for Article content type."""
 
     form.primary('title')
@@ -40,6 +42,10 @@ class IArticle(form.Schema):
         description=_(u"Will be displayed on the article view."),
         required=False,
     )
+
+
+class Article(Container):
+    """Article model."""
 
 
 class View(grok.View):
