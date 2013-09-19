@@ -13,6 +13,7 @@ from zope.publisher.interfaces import IPublishTraverse
 
 from tribuna.content import _
 from tribuna.content.utils import get_articles
+from tribuna.content.utils import get_articles_home
 from tribuna.content.utils import tags_published_dict
 
 
@@ -70,6 +71,13 @@ class HomePageView(grok.View):
 
         self.context = context
         self.request = request
+        if ('form.buttons.filter' not in self.request.form and
+            'form.buttons.text' not in self.request.form and
+                'form.buttons.drag' not in self.request.form):
+            for key in self.request.form.keys()[:]:
+                if key != 'view_type':
+                    del self.request.form[key]
+
         super(HomePageView, self).__init__(context, request)
 
     def is_text_view(self):
@@ -97,19 +105,10 @@ class HomePageView(grok.View):
         articles_all = ([], [])
 
         # XXX: Temporary workaround for not getting articles twice.
-        if('form.buttons.filter' not in self.request.form and
-           'form.buttons.text' not in self.request.form and
-           'form.buttons.drag' not in self.request.form):
-            # Get the articles
-            articles_all = get_articles(self.request.form)
+        # Get the articles
+        articles_all = get_articles_home({})
 
-            # Get the GET arguments
-            self.getArgs = ''
-            for name in self.request.form:
-                self.getArgs += '&' + name + '=' + self.request.form[name]
-
-            if self.getArgs:
-                self.getArgs = '?' + self.getArgs[1:]
+        self.getArgs = ''
 
         self.articles = {
             'intersection': articles_all[0],

@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 from five import grok
@@ -11,6 +10,7 @@ from zope.interface import implements
 from zope.lifecycleevent.interfaces import IObjectCreatedEvent
 
 from tribuna.content.utils import our_unicode
+from tribuna.content.utils import tags_string_to_list
 
 
 class TribunaComment(Comment):
@@ -134,3 +134,6 @@ class CommentView(grok.View):
         )
 
         return article_url
+
+    def get_selected_tags(self):
+        return tags_string_to_list(self.request.form.get('tags'))

@@ -10,6 +10,7 @@ from plone.namedfile.field import NamedBlobImage
 from zope import schema
 
 from tribuna.content import _
+from tribuna.content.utils import tags_string_to_list
 
 
 class IArticle(form.Schema):
@@ -59,6 +60,9 @@ class View(grok.View):
                 portal.absolute_url(), self.context.id
             )
         )
+
+    def get_selected_tags(self):
+        return tags_string_to_list(self.request.form.get('tags'))
 
 
 class BaseView(grok.View):

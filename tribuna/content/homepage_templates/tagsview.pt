@@ -45,7 +45,7 @@
       <form id="searchForm" name="searchForm" method="post" action="@@search">
         <div class="LSBox">
           <input type="text" id="searchGadget" class="searchField"
-                 placeholder="Search.." title="Search" name="SearchableText"
+                 placeholder="Search ..." title="Search" name="SearchableText"
                  autocomplete="off" i18n:attributes="placeholder">
           <div class="LSResult bordered" id="LSResult" style="display:none;">
             <div class="LSShadow" id="LSShadow"></div>

@@ -45,7 +45,7 @@
       <form id="searchForm" name="searchForm" method="post" action="@@search">
         <div class="LSBox">
           <input type="text" id="searchGadget" class="searchField"
-                 placeholder="Search.." title="Search" name="SearchableText"
+                 placeholder="Search ..." title="Search" name="SearchableText"
                  autocomplete="off" i18n:attributes="placeholder">
           <div class="LSResult bordered" id="LSResult" style="display:none;">
             <div class="LSShadow" id="LSShadow"></div>
@@ -56,20 +56,8 @@
         </div>
       </form>
   </div>
-  <div id="search-view" tal:condition="view/is_search_view" style="display:none"></div>
 
-  <tal:block tal:define="has_one_tag view/only_one_tag;
-                         hasOneTagClassAddition python: has_one_tag and '-one' or '';
-                         articles view/articles">
-
-    <div id="tag-picture" tal:condition="has_one_tag">
-      <img tal:condition="view/tag_picture"  src="${view/tag_picture}"/>
-      <div tal:condition="view/tag_picture" id="scroll"/>
-    </div>
-    <div id="tag-description-div" tal:condition="has_one_tag">
-      <h2 i18n:translate="">Description</h2>
-      <p class="tag-description-text" tal:content="structure view/tag_text" />
-    </div>
+  <tal:block tal:define="articles view/_get_articles">
 
     <div id="homepage-div"
          tal:define="articles_num python: len(articles['all'])">
@@ -88,36 +76,36 @@
           <tal:block i18n:translate="">results</tal:block>
         </span>
 
-        <div class="articles-intersection">
-          <h3 i18n:translate=""
-              tal:condition="python: view.show_intersection() and view.tags_selected()">Intersection</h3>
+        <div class="articles-intersection"
+             tal:define="show_intersection view/show_intersection">
+          <h3 i18n:translate="">Intersection</h3>
           <tal:block repeat="article python: articles['intersection']">
             <tal:block tal:define="isArticle python: article.portal_type == 'tribuna.content.article';
                                    isComment python: article.portal_type == 'Discussion Item';
                                    isImage python: article.portal_type == 'tribuna.content.image';
                                    typeClassAddition python: isArticle and 'article' or 'comment';
                                    varUID python: isComment and article.getId() or article.UID();
-                                   padding python: 'left-padding' if (view.show_intersection() and view.tags_selected()) else ''" >
+                                   padding python: ''" >
               <div id="${varUID}"
-                   class="ui-widget-content text-view text-view-${typeClassAddition}${hasOneTagClassAddition} ${padding}">
+                   class="ui-widget-content text-view text-view-${typeClassAddition} ${padding}">
                 <div id="gallery-link">
                   <a tal:condition="isArticle"
                      class="article-header"
-                     href="${context/absolute_url}/articles/${article/id}"
+                     href="${context/absolute_url}/articles/${article/id}${view/getArgs}"
                      tal:content="article/title" />
                   <a tal:condition="isImage"
                      class="article-header"
-                     href="${context/absolute_url}/articles/${article/id}">
+                     href="${context/absolute_url}/articles/${article/id}${view/getArgs}">
                      <img tal:attributes="src string:${article/absolute_url}/@@images/image" />
                   </a>
                   <a tal:condition="isComment"
                      class="comment-header"
-                     href="${context/absolute_url}/articles/${article/id}"
+                     href="${context/absolute_url}/articles/${article/id}${view/getArgs}"
                      tal:content="structure python: view.shorten_text(article.text)" />
                 </div>
                 <p class="article-body" tal:condition="isArticle">
                   <a tal:content="article/description"
-                     href="${context/absolute_url}/articles/${article/id}"></a>
+                     href="${context/absolute_url}/articles/${article/id}${view/getArgs}"></a>
                 </p>
                 <p tal:condition="isArticle" class="content-type">
                   <span class="red" i18n:translate="">article</span>
@@ -133,35 +121,36 @@
           </tal:block>
         </div>
 
-        <div class="articles-union">
-          <h3 i18n:translate="" tal:condition="python: view.show_union() and view.tags_selected()">Union</h3>
+        <div class="articles-union"
+             tal:define="show_union view/show_union">
+          <h3 i18n:translate="">Union</h3>
           <tal:block repeat="article python: articles['union']">
             <tal:block tal:define="isArticle python: article.portal_type == 'tribuna.content.article';
                                    isComment python: article.portal_type == 'Discussion Item';
                                    isImage python: article.portal_type == 'tribuna.content.image';
                                    typeClassAddition python: isArticle and 'article' or 'comment';
                                    varUID python: isComment and article.getId() or article.UID();
-                                   padding python: 'left-padding' if (view.show_union() and view.tags_selected()) else '' " >
+                                   padding python: ''">
               <div id="${varUID}"
-                   class="ui-widget-content text-view text-view-${typeClassAddition}${hasOneTagClassAddition} ${padding}">
+                   class="ui-widget-content text-view text-view-${typeClassAddition} ${padding}">
                 <div id="gallery-link">
                   <a tal:condition="isArticle"
                      class="article-header"
-                     href="${context/absolute_url}/articles/${article/id}"
+                     href="${context/absolute_url}/articles/${article/id}${view/getArgs}"
                      tal:content="article/title" />
                   <a tal:condition="isImage"
                      class="article-header"
-                     href="${context/absolute_url}/articles/${article/id}">
+                     href="${context/absolute_url}/articles/${article/id}${view/getArgs}">
                      <img tal:attributes="src string:${article/absolute_url}/@@images/image" />
                   </a>
                   <a tal:condition="isComment"
                      class="comment-header"
-                     href="${context/absolute_url}/articles/${article/id}"
+                     href="${context/absolute_url}/articles/${article/id}${view/getArgs}"
                      tal:content="structure python: view.shorten_text(article.text)" />
                 </div>
                 <p class="article-body" tal:condition="isArticle">
                   <a tal:content="article/description"
-                     href="${context/absolute_url}/articles/${article/id}"></a>
+                     href="${context/absolute_url}/articles/${article/id}${view/getArgs}"></a>
                 </p>
                 <p tal:condition="isArticle" class="content-type">
                   <span class="red" i18n:translate="">article</span>
@@ -195,27 +184,27 @@
                 <div id="gallery-link">
                   <a tal:condition="python: isArticle and article.article_author"
                      class="article-author"
-                     href="${context/absolute_url}/articles/${article/id}"
+                     href="${context/absolute_url}/articles/${article/id}${view/getArgs}"
                      tal:content="article/article_author" />
                   <br tal:condition="python: isArticle and article.article_author">
                   <br tal:condition="python: isArticle and article.article_author">
                   <a tal:condition="isArticle"
                      class="article-header"
-                     href="${context/absolute_url}/articles/${article/id}"
+                     href="${context/absolute_url}/articles/${article/id}${view/getArgs}"
                      tal:content="article/title" />
                   <br tal:condition="isArticle">
                   <a tal:condition="python: isArticle and article.subtitle"
                      class="article-subtitle"
-                     href="${context/absolute_url}/articles/${article/id}"
+                     href="${context/absolute_url}/articles/${article/id}${view/getArgs}"
                      tal:content="article/subtitle" />
 
                   <a tal:condition="isImage"
                      class="image-header"
-                     href="${context/absolute_url}/articles/${article/id}"
+                     href="${context/absolute_url}/articles/${article/id}${view/getArgs}"
                      tal:content="article/title" />
                   <a tal:condition="isComment"
                      class="drag-comment-header"
-                     href="${context/absolute_url}/articles/${article/id}"
+                     href="${context/absolute_url}/articles/${article/id}${view/getArgs}"
                      tal:content="structure python: view.shorten_text(article.text)" />
                 </div>
                 <div id="drag-view-type">

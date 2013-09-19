@@ -20,6 +20,7 @@ from Products.PythonScripts.standard import url_unquote
 from tribuna.content import _
 from tribuna.content.utils import TagsList
 from tribuna.content.utils import TagsListHighlighted
+from tribuna.content.config import SEARCHABLE_TYPES
 
 # SimpleTerm(value (actual value), token (request), title (shown in browser))
 # tags, sort_on, content_filters, operator
@@ -116,10 +117,13 @@ def default_view_type(data):
 
 @form.default_value(field=ISidebarForm['content_filters'])
 def default_content_filters(data):
-    filters = data.request.form.get("filters", "article,comment,image")
-    if filters == "article,comment,image":
-        return ['all'] + filters.split(',')
-    return filters.split(',')
+    filters = data.request.form.get("filters")
+    if not filters:
+        return ['all'] + SEARCHABLE_TYPES.keys()
+    filters = filters.split(',')
+    if set(filters) == set(SEARCHABLE_TYPES.keys()):
+        return ['all'] + filters
+    return filters
 
 
 class SidebarForm(form.SchemaForm):
@@ -135,13 +139,17 @@ class SidebarForm(form.SchemaForm):
     label = _(u"Select appropriate tags")
     description = _(u"Tags selection form")
 
-    def buildGetArgs(self):
+    def buildGetArgs(self, home=False):
         """
         Build GET arguments from the sidebar selections.
 
         :returns: GET arguments to append to an URL
         :rtype:   String
         """
+        if home:
+            return ('?view_type=' +
+                    self.request.form.get("form.widgets.view_type")[0])
+
         st = ""
         name = 'form.widgets.all_tags'
         if name in self.request.form:
@@ -173,11 +181,20 @@ class SidebarForm(form.SchemaForm):
         :rtype:   String
         """
         base_url = self.context.portal_url()
+        get_args = ''
         url = self.request.URL.replace(base_url, '').strip('/').split('/')[0]
         if url == 'home':
-            url = 'tags'
+            if ('form.buttons.text' in self.request.form or
+                    'form.buttons.drag' in self.request.form):
+                get_args = self.buildGetArgs(home=True)
+            else:
+                url = 'tags'
+                get_args = self.buildGetArgs()
+        else:
+            get_args = self.buildGetArgs()
         url = base_url + '/' + url
-        return url
+
+        return url + get_args
 
     @button.buttonAndHandler(_(u'Filter'))
     def handleFilter(self, action):
@@ -194,9 +211,8 @@ class SidebarForm(form.SchemaForm):
             self.status = self.formErrorsMessage
             return
 
-        get_args = self.buildGetArgs()
         url = self.buildURL()
-        self.request.response.redirect(url + get_args)
+        self.request.response.redirect(url)
 
     @button.buttonAndHandler(_(u'Text'))
     def handleText(self, action):
@@ -213,9 +229,8 @@ class SidebarForm(form.SchemaForm):
             self.status = self.formErrorsMessage
             return
 
-        get_args = self.buildGetArgs()
         url = self.buildURL()
-        self.request.response.redirect(url + get_args)
+        self.request.response.redirect(url)
 
     @button.buttonAndHandler(_(u'Drag'))
     def handleDrag(self, action):
@@ -232,9 +247,8 @@ class SidebarForm(form.SchemaForm):
             self.status = self.formErrorsMessage
             return
 
-        get_args = self.buildGetArgs()
         url = self.buildURL()
-        self.request.response.redirect(url + get_args)
+        self.request.response.redirect(url)
 
 
 class ISidebarPortlet(IPortletDataProvider):

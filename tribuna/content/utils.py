@@ -18,77 +18,14 @@ LIMIT = 15
 
 def get_articles(form):
     """
-    Gets all the articles that matches the selected filters in session
+    Get articles that match the filters in form.
 
-    :param    session: Current session
-    :type     session: Session object
+    :param    form: Selected filters
+    :type     form: Dictionary
 
-    :returns: first item is list of 'intersection' results, while
-        second item is a list of 'union' results
-    :rtype:   tuple
+    :returns: Related articles in intersection (first) and union (second)
+    :rtype:   Tuple of two Lists
     """
-    def return_defaults():
-        """
-        Method for returning articles that get selected when no filters are
-        present
-
-        :returns: first item is list of 'intersection' results, while
-            second item is a list of 'union' results
-        :rtype:   tuple
-        """
-        return ([], [])
-        pass
-        # query = [i[1] for i in tags_published_highlighted()]
-        # all_content = catalog(
-        #     portal_type=portal_type,
-        #     locked_on_home=True,
-        #     review_state=review_state,
-        #     sort_on=sort_on,
-        #     sort_order=sort_order,
-        #     sort_limit=LIMIT,
-        #     Subject={'query': query, 'operator': operator}
-        # )[:LIMIT]
-
-        # currentLen = len(all_content)
-
-        # if currentLen < LIMIT:
-        #     all_content += catalog(
-        #         portal_type=portal_type,
-        #         locked_on_home=False,
-        #         review_state=review_state,
-        #         sort_on=sort_on,
-        #         sort_order=sort_order,
-        #         sort_limit=(LIMIT - currentLen),
-        #         Subject={'query': query, 'operator': operator}
-        #     )[:(LIMIT - currentLen)]
-
-        # all_content = [content for content in all_content]
-        # all_content.sort(
-        #     key=lambda x: count_same(x.Subject, query), reverse=True)
-        # all_content = all_content[:LIMIT]
-
-        # intersection_count = 0
-        # num_all_tags = len(query)
-        # for i in all_content:
-        #     if count_same(i.Subject, query) == num_all_tags:
-        #         intersection_count += 1
-        #     else:
-        #         break
-
-        # all_content = [content.getObject() for content in all_content]
-        # session["search-view"] = {}
-        # session["search-view"]['active'] = False
-        # session["default"] = True
-        # return (
-        #     all_content[:intersection_count],
-        #     all_content[intersection_count:]
-        # )
-
-    catalog = api.portal.get_tool(name='portal_catalog')
-
-    review_state = "published"
-    operator = "or"
-    sort_order = "descending"
 
     query = ""
     try:
@@ -96,18 +33,27 @@ def get_articles(form):
     except AttributeError:
         pass
 
-    tags_dict = tags_published_dict()
+    if not query:
+        return get_articles_home(form)
 
+    tags_dict = tags_published_dict()
     query = [tags_dict.get(i) for i in query]
+
+    review_state = "published"
+    operator = "or"
+    sort_order = "descending"
+
+    filters = form.get("filters")
+    portal_type = []
+    if filters:
+        portal_type = [SEARCHABLE_TYPES.get(i) for i in filters.split(',')
+                       if SEARCHABLE_TYPES.get(i)]
+    else:
+        portal_type = SEARCHABLE_TYPES.values()
 
     sort_on = SORT_ON_TYPES.get(form.get("sort_on")) or 'Date'
 
-    filters = form.get("filters", "article,comment,image")
-    portal_type = [SEARCHABLE_TYPES.get(i) for i in filters.split(',')
-                   if SEARCHABLE_TYPES.get(i)]
-
-    if not query:
-        return return_defaults()
+    catalog = api.portal.get_tool(name='portal_catalog')
 
     all_content = catalog(
         portal_type=portal_type,
@@ -116,6 +62,75 @@ def get_articles(form):
         sort_order=sort_order,
         Subject={'query': query, 'operator': operator},
     )
+
+    all_content = [content for content in all_content]
+    all_content.sort(
+        key=lambda x: count_same(x.Subject, query), reverse=True)
+    all_content = all_content[:LIMIT]
+
+    intersection_count = 0
+    num_all_tags = len(query)
+    for i in all_content:
+        if count_same(i.Subject, query) == num_all_tags:
+            intersection_count += 1
+        else:
+            break
+
+    all_content = [content.getObject() for content in all_content]
+
+    return (all_content[:intersection_count], all_content[intersection_count:])
+
+
+def get_articles_home(form):
+    """
+    Get all articles from highlighted tags. Called from home (with no filters)
+    and from tags when no tags are selected (with filters).
+
+    :param    form: Selected filters
+    :type     form: Dictionary
+
+    :returns: Related articles
+    :rtype:   List
+    """
+    review_state = "published"
+    operator = "or"
+    sort_order = "descending"
+
+    filters = form.get("filters")
+    portal_type = []
+    if filters:
+        portal_type = [SEARCHABLE_TYPES.get(i) for i in filters.split(',')
+                       if SEARCHABLE_TYPES.get(i)]
+    else:
+        portal_type = SEARCHABLE_TYPES.values()
+
+    sort_on = SORT_ON_TYPES.get(form.get("sort_on")) or 'Date'
+    query = [i[1] for i in tags_published_highlighted()]
+
+    catalog = api.portal.get_tool(name='portal_catalog')
+
+    all_content = catalog(
+        portal_type=portal_type,
+        locked_on_home=True,
+        review_state=review_state,
+        sort_on=sort_on,
+        sort_order=sort_order,
+        sort_limit=LIMIT,
+        Subject={'query': query, 'operator': operator}
+    )[:LIMIT]
+
+    currentLen = len(all_content)
+
+    if currentLen < LIMIT:
+        all_content += catalog(
+            portal_type=portal_type,
+            locked_on_home=False,
+            review_state=review_state,
+            sort_on=sort_on,
+            sort_order=sort_order,
+            sort_limit=(LIMIT - currentLen),
+            Subject={'query': query, 'operator': operator}
+        )[:(LIMIT - currentLen)]
 
     all_content = [content for content in all_content]
     all_content.sort(
@@ -216,6 +231,22 @@ def tags_published_dict():
     return dict(tags_published())
 
 
+def tags_string_to_list(s):
+    """
+    Convert a string of tag IDs to a list of tag titles.
+
+    :param    s: String of tag IDs
+    :type     s: String
+
+    :returns: List of tag titles
+    :rtype:   List
+    """
+    if not s:
+        return []
+    tags_dict = tags_published_dict()
+    return [tags_dict.get(i) for i in s.split(',')]
+
+
 class TagsListHighlighted(object):
     """Return a vocabulary of highlighted tags"""
     grok.implements(IContextSourceBinder)
@@ -276,17 +307,6 @@ class UtilsView(grok.View):
         :rtype:   String
         """
         return self.context.translate(_(string))
-
-    def get_selected_tags(self):
-        """
-        Get a list of selected tags from the session.
-
-        :returns: Selected tags
-        :rtype:   list
-        """
-        session = self.context.session_data_manager.getSessionData(create=True)
-        data = session.get('portlet_data', None)
-        return data and data.get('tags', []) or []
 
     def render(self):
         return ''
