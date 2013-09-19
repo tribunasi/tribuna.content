@@ -135,163 +135,32 @@ def get_articles(form):
     return (all_content[:intersection_count], all_content[intersection_count:])
 
 
-def get_articles_old(session):
-    """
-    Gets all the articles that matches the selected filters in session
-
-    :param    session: Current session
-    :type     session: Session object
-
-    :returns: first item is list of 'intersection' results, while
-        second item is a list of 'union' results
-    :rtype:   tuple
-    """
-    def return_defaults():
-        """
-        Method for returning articles that get selected when no filters are
-        present
-
-        :returns: first item is list of 'intersection' results, while
-            second item is a list of 'union' results
-        :rtype:   tuple
-        """
-        query = [i[1] for i in tags_published_highlighted()]
-        all_content = catalog(
-            portal_type=portal_type,
-            locked_on_home=True,
-            review_state=review_state,
-            sort_on=sort_on,
-            sort_order=sort_order,
-            sort_limit=LIMIT,
-            Subject={'query': query, 'operator': operator}
-        )[:LIMIT]
-
-        currentLen = len(all_content)
-
-        if currentLen < LIMIT:
-            all_content += catalog(
-                portal_type=portal_type,
-                locked_on_home=False,
-                review_state=review_state,
-                sort_on=sort_on,
-                sort_order=sort_order,
-                sort_limit=(LIMIT - currentLen),
-                Subject={'query': query, 'operator': operator}
-            )[:(LIMIT - currentLen)]
-
-        all_content = [content for content in all_content]
-        all_content.sort(
-            key=lambda x: count_same(x.Subject, query), reverse=True)
-        all_content = all_content[:LIMIT]
-
-        intersection_count = 0
-        num_all_tags = len(query)
-        for i in all_content:
-            if count_same(i.Subject, query) == num_all_tags:
-                intersection_count += 1
-            else:
-                break
-
-        all_content = [content.getObject() for content in all_content]
-        session["search-view"] = {}
-        session["search-view"]['active'] = False
-        session["default"] = True
-        return (
-            all_content[:intersection_count],
-            all_content[intersection_count:]
-        )
-
-    catalog = api.portal.get_tool(name='portal_catalog')
-
-    portal_type = []
-
-    review_state = "published"
-    sort_on = "Date"
-    query = None
-    operator = "or"
-    sort_order = "descending"
-
-    if 'search-view' in session.keys() and session['search-view']['active']:
-        results = catalog(
-
-            SearchableText=session['search-view']['query'],
-            portal_type={
-                "query": [
-                    "tribuna.content.article",
-                    "Discussion Item",
-                    "tribuna.content.image"
-                    ],
-                "operator": "or"
-                },
-            review_state="published",
-            )
-        return ([content.getObject() for content in results], [])
-    if 'portlet_data' not in session.keys():
-        return return_defaults()
-
-    session["default"] = False
-
-    # portal_type
-    if session['portlet_data']['content_filters']:
-        portal_type = []
-        for content_filter in session['portlet_data']['content_filters']:
-            portal_type.append(SEARCHABLE_TYPES.get(content_filter))
-
-    # sort_on
-    tmp = session['portlet_data']['sort_on']
-    if tmp == 'latest':
-        sort_on = 'Date'
-        sort_order = 'descending'
-    elif tmp == 'alphabetical':
-        sort_on = 'sortable_title'
-        sort_order = 'descending'
-    elif tmp == 'comments':
-        sort_on = 'total_comments'
-        sort_order = 'descending'
-
-    if(session['portlet_data']['tags'] == [] and
-       session['portlet_data']['all_tags'] == []):
-        return return_defaults()
-
-    all_content = []
-    session['portlet_data']['tags'] = \
-        list(set(session['portlet_data']['tags'] +
-                 session['portlet_data']['all_tags']))
-
-    query = session['portlet_data']['tags']
-
-    all_content = catalog(
-        portal_type=portal_type,
-        review_state=review_state,
-        sort_on=sort_on,
-        sort_order=sort_order,
-        Subject={'query': query, 'operator': operator},
-    )
-
-    all_content = [content for content in all_content]
-    all_content.sort(
-        key=lambda x: count_same(x.Subject, query), reverse=True)
-    all_content = all_content[:LIMIT]
-
-    intersection_count = 0
-    num_all_tags = len(query)
-    for i in all_content:
-        if count_same(i.Subject, query) == num_all_tags:
-            intersection_count += 1
-        else:
-            break
-
-    all_content = [content.getObject() for content in all_content]
-    session["search-view"]['active'] = False
-
-    return (all_content[:intersection_count], all_content[intersection_count:])
-
-
 def count_same(li1, li2):
+    """
+    Count how many common elements two lists have.
+
+    :param    li1: First list
+    :type     li1: List
+    :param    li2: Second list
+    :type     li2: List
+
+    :returns: Number of common elements
+    :rtype:   Integer
+    """
     return len(set(li1).intersection(set(li2)))
 
 
 def our_unicode(s):
+    """
+    If not yet unicode, change it to unicode. Made because using the unicode()
+    function on a string that is already unicode results in an error.
+
+    :param    s: String to be changed to unicode
+    :type     s: String
+
+    :returns: Unicode string
+    :rtype:   String
+    """
     if not isinstance(s, unicode):
         return unicode(s, 'utf8')
     return s
@@ -300,6 +169,13 @@ def our_unicode(s):
 # XXX
 # FIX
 def tags_published_highlighted():
+    """
+    Return IDs and titles of published and pending tags that are marked as
+    highlighted.
+
+    :returns: Highlighted tags
+    :rtype:   List of Tuples
+    """
     with api.env.adopt_user('tags_user'):
         catalog = api.portal.get_tool(name='portal_catalog')
         tags = tuple((i.id, unicode(i.Title, 'utf8')) for i in catalog(
@@ -314,6 +190,12 @@ def tags_published_highlighted():
 # XXX
 # FIX
 def tags_published():
+    """
+    Return IDs and titles of published and pending tags.
+
+    :returns: Tags
+    :rtype:   List of Tuples
+    """
     with api.env.adopt_user('tags_user'):
         catalog = api.portal.get_tool(name='portal_catalog')
         tags = tuple((i.id, unicode(i.Title, 'utf8')) for i in catalog(
@@ -325,52 +207,13 @@ def tags_published():
 
 
 def tags_published_dict():
+    """
+    Return a dictionary of published tags. Keys are IDs, values are titles.
+
+    :returns: Dictionary with ID-title relations of published tags
+    :rtype:   Dictionary
+    """
     return dict(tags_published())
-
-
-def set_default_view_type(session):
-    """
-    Set the default view_type to drag
-
-    :param    session: current session
-    :type     session: Session object
-    """
-    session.set('view_type', 'drag')
-
-
-def set_default_filters(session):
-    """
-    Set default filters - no tags, sort on latest and all filters enabled
-
-    :param    session: current session
-    :type     session: Session object
-    """
-
-    session.set('portlet_data', {
-        'all_tags': [],
-        'tags': [],
-        'sort_on': 'latest',
-        'content_filters': ['article', 'comment', 'image']
-    })
-
-
-def reset_session(session, default):
-    """
-    Fill the session with default data if it's empty of specifically asks
-    for it
-
-    :param    session: Current session
-    :type     session: Session object
-    :param    default: True or False depending on if we selected default view
-    :type     default: boolean
-    """
-    if default:
-        for key in session.keys():
-            del session[key]
-    if default or 'portlet_data' not in session.keys():
-        set_default_filters(session)
-    if default or 'view_type' not in session.keys():
-        set_default_view_type(session)
 
 
 class TagsListHighlighted(object):
@@ -382,7 +225,7 @@ class TagsListHighlighted(object):
 
     def __call__(self, context):
         """
-        Get simple vocabulary
+        Get simple vocabulary.
 
         :param    context: Current context
         :type     context: Context object
@@ -404,7 +247,7 @@ class TagsList(object):
 
     def __call__(self, context):
         """
-        Get simple vocabulary
+        Get simple vocabulary.
 
         :param    context: Current context
         :type     context: Context object
@@ -424,13 +267,13 @@ class UtilsView(grok.View):
 
     def translate(self, string):
         """
-        Method for internaly translating string
+        Internally translate a string.
 
         :param    string: String that we want to translate
-        :type     string: str
+        :type     string: String
 
-        :returns: translated string
-        :rtype:   str
+        :returns: Translated string
+        :rtype:   String
         """
         return self.context.translate(_(string))
 

@@ -10,11 +10,9 @@ from plone.app.search.browser import quote_chars
 from Products.Five.browser import BrowserView
 from zope.interface import Interface
 from zope.publisher.interfaces import IPublishTraverse
-from zExceptions import NotFound
 
 from tribuna.content import _
 from tribuna.content.utils import get_articles
-from tribuna.content.utils import reset_session
 from tribuna.content.utils import tags_published_dict
 
 
@@ -173,7 +171,6 @@ class TagsView(grok.View):
         :param    request: Current HTTP request
         :type     request: Request object
         """
-
         self.context = context
         self.request = request
         super(TagsView, self).__init__(context, request)
@@ -190,7 +187,7 @@ class TagsView(grok.View):
         :param    request: Current request
         :type     request: Request object
         :param    name:    Name of current article/comment/image
-        :type     name:    str
+        :type     name:    Str
 
         :returns: View of the current object shown in main page
         :rtype:   View object
@@ -207,7 +204,7 @@ class TagsView(grok.View):
         Check if text view (this is the basic view) is selected.
 
         :returns: returns True or False, depending on text view being selected
-        :rtype:   boolean
+        :rtype:   Boolean
         """
         # Get HTTP_USER_AGENT from HTTP request object
         ua = get_user_agent(self.request)
@@ -219,10 +216,10 @@ class TagsView(grok.View):
 
     def _get_articles(self):
         """
-        Get all articles for our tags view
+        Get all articles for our tags view.
 
         :returns: Dictionary of all articles that are shown on home view
-        :rtype:   dict
+        :rtype:   Dict
         """
         articles_all = ([], [])
 
@@ -250,10 +247,10 @@ class TagsView(grok.View):
 
     def only_one_tag(self):
         """
-        Method to see if there is only one tag selected
+        Check if there is only one tag selected.
 
-        :returns: True if one tag is selected, false otherwise
-        :rtype:   boolean
+        :returns: True if one tag is selected, False otherwise
+        :rtype:   Boolean
         """
         tags = self.request.form.get("tags")
         if tags:
@@ -265,10 +262,10 @@ class TagsView(grok.View):
 
     def tag_text_and_image(self):
         """
-        Method for getting description of our tag
+        Get description and image of our tag.
 
-        :returns: Description of our tag
-        :rtype:   string
+        :returns: Description and image of our tag
+        :rtype:   Dict
         """
         title = tags_published_dict().get(self.request.form.get("tags"))
         with api.env.adopt_user('tags_user'):
@@ -297,10 +294,10 @@ class TagsView(grok.View):
 
     def show_intersection(self):
         """
-        Method for checking if we want to show the intersection
+        Check if we show the intersection.
 
         :returns: True if we are showing intersection, False otherwise
-        :rtype:   boolean
+        :rtype:   Boolean
         """
         if (self.only_one_tag() or
                 self.articles["intersection"] == []):
@@ -309,12 +306,11 @@ class TagsView(grok.View):
 
     def show_union(self):
         """
-        Method for checking if we want to show the union
+        Check if we show the union.
 
         :returns: True if we are showing union, False otherwise
-        :rtype:   boolean
+        :rtype:   Boolean
         """
-
         if (self.only_one_tag() or
                 self.articles["union"] == []):
             return False
@@ -322,7 +318,7 @@ class TagsView(grok.View):
 
     def shorten_text(self, text):
         """
-        Method for shortening text to 140 characters
+        Shorten text to 140 characters
 
         :param    text: Text that we are shortening
         :type     text: str
@@ -336,7 +332,7 @@ class TagsView(grok.View):
 
     def entry_page_edit(self):
         """
-        Method for getting url of edit view of entry page
+        Get URL of entry page edit view.
 
         :returns: URL of edit view
         :rtype:   str
@@ -348,10 +344,10 @@ class TagsView(grok.View):
 
     def tags_selected(self):
         """
-        Method for checking if any tags are selected
+        Check if any tags are selected.
 
         :returns: True if tags are selected, False otherwise
-        :rtype:   boolean
+        :rtype:   Boolean
         """
         tags = self.request.form.get("tags")
         if tags:

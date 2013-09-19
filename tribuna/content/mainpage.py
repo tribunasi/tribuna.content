@@ -72,7 +72,7 @@ class MainPageView(grok.View):
         Return all articles that match the criteria.
 
         :returns: All articles that match
-        :rtype:   list
+        :rtype:   List
         """
         if not self.article_id:
             return []
@@ -102,6 +102,12 @@ class MainPageView(grok.View):
         self.request.set('disable_border', 1)
 
     def get_close_url(self):
+        """
+        Return URL for close button.
+
+        :returns: URL for close button
+        :rtype:   String
+        """
         unwanted = ['tags', 'comment', 'id']
 
         getArgs = ''

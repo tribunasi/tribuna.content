@@ -136,6 +136,12 @@ class SidebarForm(form.SchemaForm):
     description = _(u"Tags selection form")
 
     def buildGetArgs(self):
+        """
+        Build GET arguments from the sidebar selections.
+
+        :returns: GET arguments to append to an URL
+        :rtype:   String
+        """
         st = ""
         name = 'form.widgets.all_tags'
         if name in self.request.form:
@@ -160,6 +166,12 @@ class SidebarForm(form.SchemaForm):
         return st
 
     def buildURL(self):
+        """
+        If we're on home view, change to tags view, otherwise leave same.
+
+        :returns: Base URL
+        :rtype:   String
+        """
         base_url = self.context.portal_url()
         url = self.request.URL.replace(base_url, '').strip('/').split('/')[0]
         if url == 'home':
