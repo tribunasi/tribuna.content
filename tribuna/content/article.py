@@ -48,14 +48,14 @@ class View(grok.View):
     grok.require('zope2.View')
 
     def update(self):
-        """Redirect to @@articles view.
+        """Redirect to articles view.
 
         XXX: this might be problematic, since sometimes we might want to
         get to the article itself.
         """
         portal = api.portal.get()
         return self.request.response.redirect(
-            '{0}/@@articles/{1}'.format(
+            '{0}/articles/{1}'.format(
                 portal.absolute_url(), self.context.id
             )
         )

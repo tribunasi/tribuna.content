@@ -104,3 +104,55 @@ class CommentView(grok.View):
     grok.context(IComment)
     grok.require('zope2.View')
     grok.name('comment-view')
+
+    # def __init__(self, context, request):
+    #     unwanted = ['comment', 'id']
+
+    #     getArgs = ''
+    #     for name in request.form:
+    #         if name not in unwanted:
+    #             getArgs += '&' + name + '=' + request.form[name]
+
+    #     if getArgs:
+    #         getArgs = '?' + getArgs[1:]
+
+    #     self.article_url = api.portal.get().absolute_url()
+
+    #     # First parent: Comment
+    #     # Second parent: Discussion
+    #     # Third parent: Article on which we commented
+
+    #     self.article_url += '/articles/{0}{1}#{2}'.format(
+    #         self.__parent__.__parent__.__parent__.id,
+    #         getArgs,
+    #         request.form.get('id')
+    #     )
+
+    #     self.context = context
+    #     self.request = request
+    #     super(CommentView, self).__init__(context, request)
+
+    def get_article_url(self):
+        unwanted = ['type', 'comment', 'id']
+
+        getArgs = ''
+        for name in self.request.form:
+            if name not in unwanted:
+                getArgs += '&' + name + '=' + self.request.form[name]
+
+        if getArgs:
+            getArgs = '?' + getArgs[1:]
+
+        article_url = self.context.portal_url()
+
+        # First parent: Comment
+        # Second parent: Discussion
+        # Third parent: Article on which we commented
+
+        article_url += '/articles/{0}{1}#{2}'.format(
+            self.__parent__.__parent__.__parent__.id,
+            getArgs,
+            self.request.form.get('id')
+        )
+
+        return article_url

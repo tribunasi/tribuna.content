@@ -160,7 +160,7 @@ class SidebarForm(form.SchemaForm):
         return st
 
     def buildURL(self):
-        base_url = api.portal.get().absolute_url()
+        base_url = self.context.portal_url()
         url = self.request.URL.replace(base_url, '').strip('/').split('/')[0]
         if url == 'home':
             url = 'tags'

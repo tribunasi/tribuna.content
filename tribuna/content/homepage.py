@@ -72,43 +72,7 @@ class HomePageView(grok.View):
 
         self.context = context
         self.request = request
-        self.session = self.context.session_data_manager.getSessionData(
-            create=True)
-        self.articles = self._get_articles()
         super(HomePageView, self).__init__(context, request)
-
-    def set_default_view_type(self, session):
-        """
-        Set session to default view type
-
-        :param    session: current session
-        :type     session: Session object
-        """
-
-        session.set('view_type', 'drag')
-
-    def set_default_filters(self, session):
-        """
-        Set default filters on session
-
-        :param    session: Current session
-        :type     session: Session object
-        """
-
-        session.set('portlet_data', {
-            'all_tags': [],
-            'tags': [],
-            'sort_on': 'latest',
-            'content_filters': ['article', 'comment', 'image']
-        })
-
-    def check_if_default(self):
-        """
-        Checks if session is set to default
-        """
-
-        get_default = self.request.get('default')
-        reset_session(self.session, get_default)
 
     def is_text_view(self):
         """
@@ -121,87 +85,40 @@ class HomePageView(grok.View):
         ua = get_user_agent(self.request)
         if ua and detect_mobile_browser(ua):
             # Redirect the visitor from a web site to a mobile site
-            True
-        elif 'view_type' in self.session.keys():
-            if self.session['view_type'] == 'drag':
-                return False
-        return True
+            return True
+
+        return self.request.form.get("view_type", "drag") == "text"
 
     def _get_articles(self):
         """
-        Get all articles for our home view
+        Get all articles for our tags view
 
         :returns: Dictionary of all articles that are shown on home view
         :rtype:   dict
         """
-        # XXX: The viewlet takes care of that, we should either move everything
-        # here or leave everything there
-        self.check_if_default()
-        articles_all = get_articles(self.session)
-        return {
+        articles_all = ([], [])
+
+        # XXX: Temporary workaround for not getting articles twice.
+        if('form.buttons.filter' not in self.request.form and
+           'form.buttons.text' not in self.request.form and
+           'form.buttons.drag' not in self.request.form):
+            # Get the articles
+            articles_all = get_articles(self.request.form)
+
+            # Get the GET arguments
+            self.getArgs = ''
+            for name in self.request.form:
+                self.getArgs += '&' + name + '=' + self.request.form[name]
+
+            if self.getArgs:
+                self.getArgs = '?' + self.getArgs[1:]
+
+        self.articles = {
             'intersection': articles_all[0],
             'union': articles_all[1],
             'all': articles_all[0] + articles_all[1]
         }
-
-    def only_one_tag(self):
-        """
-        Method to see if there is only one tag selected
-
-        :returns: True if one tag is selected, false otherwise
-        :rtype:   boolean
-        """
-        if 'portlet_data' in self.session.keys():
-            return len(self.session['portlet_data']['tags']) == 1
-        return False
-
-    def tag_text(self):
-        """
-        Method for getting description of our tag
-
-        :returns: Description of our tag
-        :rtype:   string
-        """
-        title = self.session['portlet_data']['tags'][0]
-        with api.env.adopt_user('tags_user'):
-            catalog = api.portal.get_tool(name='portal_catalog')
-            tag = catalog(
-                Title=title,
-                portal_type='tribuna.content.tag',
-            )[0].getObject()
-        if not tag.text:
-            return _(u"Description not added yet!")
-        return tag.text
-
-    def tag_picture(self):
-        """
-        Method for getting picture of our tag
-
-        :returns: Url of picture of our tag
-        :rtype:   str
-        """
-        title = self.session['portlet_data']['tags'][0]
-        with api.env.adopt_user('tags_user'):
-            catalog = api.portal.get_tool(name='portal_catalog')
-            tag = catalog(
-                Title=title,
-                portal_type='tribuna.content.tag',
-            )[0].getObject()
-        if not hasattr(tag, 'image') or not tag.image:
-            return None
-        return str(tag.absolute_url()) + "/@@images/image"
-
-    def is_search_view(self):
-        """
-        Method that checks if we are in search view
-
-        :returns: True if we are in search view, False otherwise
-        :rtype:   boolean
-        """
-        if ("search-view" in self.session.keys() and
-                self.session["search-view"]["active"]):
-            return True
-        return False
+        return self.articles
 
     def show_intersection(self):
         """
@@ -210,9 +127,7 @@ class HomePageView(grok.View):
         :returns: True if we are showing intersection, False otherwise
         :rtype:   boolean
         """
-        if (self.only_one_tag() or
-            self.articles["intersection"] == [] or
-                self.is_search_view()):
+        if self.articles["intersection"] == []:
             return False
         return True
 
@@ -223,9 +138,8 @@ class HomePageView(grok.View):
         :returns: True if we are showing union, False otherwise
         :rtype:   boolean
         """
-        if (self.only_one_tag() or
-            self.articles["union"] == [] or
-                self.is_search_view()):
+
+        if self.articles["union"] == []:
             return False
         return True
 
@@ -242,31 +156,6 @@ class HomePageView(grok.View):
         if len(text) > 140:
             return text[:140] + ' ...'
         return text
-
-    def entry_page_edit(self):
-        """
-        Method for getting url of edit view of entry page
-
-        :returns: URL of edit view
-        :rtype:   str
-        """
-        portal = api.portal.get()
-        entry_pages = portal["entry-pages"]
-        default_page = entry_pages[entry_pages.getDefaultPage()]
-        return str(default_page.absolute_url()) + "/edit"
-
-    def tags_selected(self):
-        """
-        Method for checking if any tags are selected
-
-        :returns: True if tags are selected, False otherwise
-        :rtype:   boolean
-        """
-        if 'portlet_data' in self.session.keys() and \
-            'tags' in self.session['portlet_data'] and \
-                len(self.session['portlet_data']['tags']) > 0:
-            return True
-        return False
 
 
 class TagsView(grok.View):
@@ -287,15 +176,16 @@ class TagsView(grok.View):
 
         self.context = context
         self.request = request
-        self.session = self.context.session_data_manager.getSessionData(
-            create=True)
         super(TagsView, self).__init__(context, request)
 
     def publishTraverse(self, request, name):
         """
         Custom traverse method which enables us to have urls in format
-        ../@@tags/some-article instead of
-        ../@@tags?article=some-article.
+        ../@@tags/some-tag,other-tag instead of
+        ../@@tags?tags=some-tag,other-tag.
+
+        Works by returning the 'tags' view with "some-tag,other-tag" added to
+        request.form['tags'].
 
         :param    request: Current request
         :type     request: Request object
@@ -305,8 +195,6 @@ class TagsView(grok.View):
         :returns: View of the current object shown in main page
         :rtype:   View object
         """
-        # Need this hack so resolving url for an uuid works (e.g. article
-        # images use this view to get the real url)
         self.request.form['tags'] = name
         return api.content.get_view(
             context=self.context,
@@ -337,6 +225,8 @@ class TagsView(grok.View):
         :rtype:   dict
         """
         articles_all = ([], [])
+
+        # XXX: Temporary workaround for not getting articles twice.
         if('form.buttons.filter' not in self.request.form and
            'form.buttons.text' not in self.request.form and
            'form.buttons.drag' not in self.request.form):
@@ -365,7 +255,6 @@ class TagsView(grok.View):
         :returns: True if one tag is selected, false otherwise
         :rtype:   boolean
         """
-        import pdb; pdb.set_trace()
         tags = self.request.form.get("tags")
         if tags:
             tags = tags.split(',')
@@ -381,7 +270,6 @@ class TagsView(grok.View):
         :returns: Description of our tag
         :rtype:   string
         """
-        import pdb; pdb.set_trace()
         title = tags_published_dict().get(self.request.form.get("tags"))
         with api.env.adopt_user('tags_user'):
             catalog = api.portal.get_tool(name='portal_catalog')
@@ -407,37 +295,6 @@ class TagsView(grok.View):
             'image': image,
         }
 
-
-    def tag_picture(self):
-        """
-        Method for getting picture of our tag
-
-        :returns: Url of picture of our tag
-        :rtype:   str
-        """
-        title = self.session['portlet_data']['tags'][0]
-        with api.env.adopt_user('tags_user'):
-            catalog = api.portal.get_tool(name='portal_catalog')
-            tag = catalog(
-                Title=title,
-                portal_type='tribuna.content.tag',
-            )[0].getObject()
-        if not hasattr(tag, 'image') or not tag.image:
-            return None
-        return str(tag.absolute_url()) + "/@@images/image"
-
-    def is_search_view(self):
-        """
-        Method that checks if we are in search view
-
-        :returns: True if we are in search view, False otherwise
-        :rtype:   boolean
-        """
-        if ("search-view" in self.session.keys() and
-                self.session["search-view"]["active"]):
-            return True
-        return False
-
     def show_intersection(self):
         """
         Method for checking if we want to show the intersection
@@ -445,11 +302,8 @@ class TagsView(grok.View):
         :returns: True if we are showing intersection, False otherwise
         :rtype:   boolean
         """
-
-        # XXX: V tagsview.pt se pojavlja znotraj repeata. Fix!
         if (self.only_one_tag() or
-            self.articles["intersection"] == [] or
-                self.is_search_view()):
+                self.articles["intersection"] == []):
             return False
         return True
 
@@ -461,10 +315,8 @@ class TagsView(grok.View):
         :rtype:   boolean
         """
 
-        # XXX: Verjetno isto kot zgoraj!
         if (self.only_one_tag() or
-            self.articles["union"] == [] or
-                self.is_search_view()):
+                self.articles["union"] == []):
             return False
         return True
 
@@ -501,8 +353,7 @@ class TagsView(grok.View):
         :returns: True if tags are selected, False otherwise
         :rtype:   boolean
         """
-        if 'portlet_data' in self.session.keys() and \
-            'tags' in self.session['portlet_data'] and \
-                len(self.session['portlet_data']['tags']) > 0:
+        tags = self.request.form.get("tags")
+        if tags:
             return True
         return False

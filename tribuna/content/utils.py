@@ -36,6 +36,7 @@ def get_articles(form):
             second item is a list of 'union' results
         :rtype:   tuple
         """
+        return ([], [])
         pass
         # query = [i[1] for i in tags_published_highlighted()]
         # all_content = catalog(
@@ -336,6 +337,7 @@ def set_default_view_type(session):
     """
     session.set('view_type', 'drag')
 
+
 def set_default_filters(session):
     """
     Set default filters - no tags, sort on latest and all filters enabled
@@ -350,6 +352,7 @@ def set_default_filters(session):
         'sort_on': 'latest',
         'content_filters': ['article', 'comment', 'image']
     })
+
 
 def reset_session(session, default):
     """
