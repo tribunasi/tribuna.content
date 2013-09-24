@@ -64,6 +64,7 @@
         permission="zope2.View"
         for="*"
         layer="tribuna.content.interfaces.ITribunaContentLayer"
+        template="browser/templates/tribuna_search.pt"
         />
 
 </configure>

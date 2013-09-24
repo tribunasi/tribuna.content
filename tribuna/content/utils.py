@@ -150,6 +150,85 @@ def get_articles_home(form):
     return (all_content[:intersection_count], all_content[intersection_count:])
 
 
+def get_articles_search(form, ignore_filters=False):
+
+    searchableText = form.get("query")
+    # XXX: Do we want to do it like this? Or just search for everything on
+    # empty/missing query? It's more or less the same, but not exactly :).
+    if not searchableText:
+        return get_articles_home(form)
+    searchableText += '*'
+
+    query = ''
+    review_state = "published"
+    operator = "or"
+    sort_order = "descending"
+    portal_type = SEARCHABLE_TYPES.values()
+    sort_on = 'Date'
+
+    if not ignore_filters:
+        try:
+            query = form.get("tags").split(',')
+        except AttributeError:
+            pass
+
+        if query:
+            tags_dict = tags_published_dict()
+            query = [tags_dict.get(i) for i in query]
+        else:
+            query = []
+
+
+        filters = form.get("filters")
+        portal_type = []
+        if filters:
+            portal_type = [SEARCHABLE_TYPES.get(i) for i in filters.split(',')
+                           if SEARCHABLE_TYPES.get(i)]
+        else:
+            portal_type = SEARCHABLE_TYPES.values()
+
+        sort_on = SORT_ON_TYPES.get(form.get("sort_on")) or 'Date'
+
+    catalog = api.portal.get_tool(name='portal_catalog')
+
+    if query:
+        all_content = catalog(
+            SearchableText=searchableText,
+            portal_type=portal_type,
+            review_state=review_state,
+            sort_on=sort_on,
+            sort_order=sort_order,
+            Subject={'query': query, 'operator': operator},
+        )
+    else:
+        all_content = catalog(
+            SearchableText=searchableText,
+            portal_type=portal_type,
+            review_state=review_state,
+            sort_on=sort_on,
+            sort_order=sort_order,
+        )
+
+
+    # all_content = [content for content in all_content]
+    # all_content.sort(
+    #     key=lambda x: count_same(x.Subject, query), reverse=True)
+    all_content = all_content[:LIMIT]
+
+    intersection_count = 0
+    # num_all_tags = len(query)
+    # for i in all_content:
+    #     if count_same(i.Subject, query) == num_all_tags:
+    #         intersection_count += 1
+    #     else:
+    #         break
+
+    all_content = [content.getObject() for content in all_content]
+
+    return (all_content[:intersection_count], all_content[intersection_count:])
+
+
+
 def count_same(li1, li2):
     """
     Count how many common elements two lists have.

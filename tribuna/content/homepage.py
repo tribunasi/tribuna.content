@@ -14,6 +14,7 @@ from zope.publisher.interfaces import IPublishTraverse
 from tribuna.content import _
 from tribuna.content.utils import get_articles
 from tribuna.content.utils import get_articles_home
+from tribuna.content.utils import get_articles_search
 from tribuna.content.utils import tags_published_dict
 
 
@@ -40,18 +41,92 @@ class SearchView(BrowserView):
     This overrides the default Plone @@search view.
     """
 
-    def __call__(self):
+    def is_text_view(self):
         """
-        Makes the search and redirects to correct URL
+        Check if text view (this is the basic view) is selected.
+
+        :returns: returns True or False, depending on text view being selected
+        :rtype:   boolean
         """
-        query = quote_chars(self.request.form.get('SearchableText', ''))
-        if query:
-            query = query + '*'
-        sdm = self.context.session_data_manager
-        session = sdm.getSessionData(create=True)
-        search_articles(query, session)
-        url = api.portal.get().absolute_url()
-        self.request.response.redirect("{0}/home".format(url))
+        # Get HTTP_USER_AGENT from HTTP request object
+        ua = get_user_agent(self.request)
+        if ua and detect_mobile_browser(ua):
+            # Redirect the visitor from a web site to a mobile site
+            return True
+
+        return self.request.form.get("view_type", "drag") == "text"
+
+    def _get_articles(self):
+        """
+        Get all articles for our tags view
+
+        :returns: Dictionary of all articles that are shown on home view
+        :rtype:   dict
+        """
+        articles_all = ([], [])
+
+        # XXX: Temporary workaround for not getting articles twice.
+        # Get the articles
+        articles_all = get_articles_search(self.request.form)
+
+        self.getArgs = ''
+
+        self.articles = {
+            'intersection': articles_all[0],
+            'union': articles_all[1],
+            'all': articles_all[0] + articles_all[1]
+        }
+        return self.articles
+
+    def shorten_text(self, text):
+        """
+        Method for shortening text to 140 characters
+
+        :param    text: Text that we are shortening
+        :type     text: str
+
+        :returns: Shortened text
+        :rtype:   str
+        """
+        if len(text) > 140:
+            return text[:140] + ' ...'
+        return text
+
+    def show_intersection(self):
+        """
+        Method for checking if we want to show the intersection
+
+        :returns: True if we are showing intersection, False otherwise
+        :rtype:   boolean
+        """
+        if self.articles["intersection"] == []:
+            return False
+        return True
+
+    def show_union(self):
+        """
+        Method for checking if we want to show the union
+
+        :returns: True if we are showing union, False otherwise
+        :rtype:   boolean
+        """
+
+        if self.articles["union"] == []:
+            return False
+        return True
+
+    # def __call__(self):
+    #     """
+    #     Makes the search and redirects to correct URL
+    #     """
+    #     query = quote_chars(self.request.form.get('SearchableText', ''))
+    #     if query:
+    #         query = query + '*'
+    #     sdm = self.context.session_data_manager
+    #     session = sdm.getSessionData(create=True)
+    #     search_articles(query, session)
+    #     url = api.portal.get().absolute_url()
+    #     self.request.response.redirect("{0}/home".format(url))
 
 
 class HomePageView(grok.View):
