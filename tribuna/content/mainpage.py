@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 """Views for the main page."""
 
 from five import grok
@@ -108,10 +105,10 @@ class MainPageView(grok.View):
         :returns: URL for close button
         :rtype:   String
         """
-        unwanted = ['tags', 'comment', 'id']
+        unwanted = ['tags', 'comment', 'id', 'came_from']
 
         getArgs = ''
-        tags = self.request.form.get("tags")
+        tags = self.request.form.get("tags", '')
 
         if tags:
             for name in self.request.form:
@@ -120,6 +117,18 @@ class MainPageView(grok.View):
 
             if getArgs:
                 getArgs = '?' + getArgs[1:]
+
+        came_from = self.request.form.get('came_from')
+        if came_from == 'home':
+            view_type = self.request.form.get('view_type')
+            if view_type:
+                view_type = '?view_type=' + view_type
+            url = "{0}/home{1}".format(
+                self.context.portal_url(),
+                view_type,
+            )
+
+            return url
 
         url = "{0}/tags/{1}{2}".format(
             self.context.portal_url(),

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Views for the home page."""
 
 from five import grok
@@ -183,7 +181,10 @@ class HomePageView(grok.View):
         # Get the articles
         articles_all = get_articles_home({})
 
-        self.getArgs = ''
+        self.getArgs = '?came_from=home'
+        view_type = self.request.form.get('view_type', '')
+        if view_type:
+            self.getArgs += '&view_type=' + view_type
 
         self.articles = {
             'intersection': articles_all[0],
@@ -199,6 +200,7 @@ class HomePageView(grok.View):
         :returns: True if we are showing intersection, False otherwise
         :rtype:   boolean
         """
+        import pdb; pdb.set_trace()
         if self.articles["intersection"] == []:
             return False
         return True

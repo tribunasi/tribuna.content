@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Various utilites."""
 
 from five import grok

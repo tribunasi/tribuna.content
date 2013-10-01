@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ## Script (Python) "livesearch_reply"
 ##bind container=container
 ##bind context=context
