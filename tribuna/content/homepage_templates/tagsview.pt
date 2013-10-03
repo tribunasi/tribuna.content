@@ -57,7 +57,22 @@
       </form>
   </div>
 
-  <tal:block tal:define="articles view/_get_articles">
+  <tal:block tal:define="has_one_tag view/only_one_tag;
+                         hasOneTagClassAddition python: has_one_tag and '-one' or '';
+                         articles view/_get_articles">
+
+    <tal:block tal:condition="has_one_tag">
+      <tal:block tal:define="text_image view/tag_text_and_image">
+        <div id="tag-picture">
+          <img tal:condition="text_image/image"  src="${text_image/image}"/>
+          <div tal:condition="text_image/image" id="scroll"/>
+        </div>
+        <div id="tag-description-div">
+          <h2 i18n:translate="">Description</h2>
+          <p class="tag-description-text" tal:content="structure text_image/text" />
+        </div>
+      </tal:block>
+    </tal:block>
 
     <div id="homepage-div"
          tal:define="articles_num python: len(articles['all'])">
@@ -76,16 +91,19 @@
           <tal:block i18n:translate="">results</tal:block>
         </span>
 
-        <div class="articles-intersection">
+        <div class="articles-intersection"
+             tal:define="show_intersection view/show_intersection">
+          <h3 i18n:translate=""
+              tal:condition="python: show_intersection and view.tags_selected()">Intersection</h3>
           <tal:block repeat="article python: articles['intersection']">
             <tal:block tal:define="isArticle python: article.portal_type == 'tribuna.content.article';
                                    isComment python: article.portal_type == 'Discussion Item';
                                    isImage python: article.portal_type == 'tribuna.content.image';
                                    typeClassAddition python: isArticle and 'article' or 'comment';
                                    varUID python: isComment and article.getId() or article.UID();
-                                   padding python: ''" >
+                                   padding python: 'left-padding' if (show_intersection and view.tags_selected()) else ''" >
               <div id="${varUID}"
-                   class="ui-widget-content text-view text-view-${typeClassAddition} ${padding}">
+                   class="ui-widget-content text-view text-view-${typeClassAddition}${hasOneTagClassAddition} ${padding}">
                 <div id="gallery-link">
                   <a tal:condition="isArticle"
                      class="article-header"
@@ -119,16 +137,18 @@
           </tal:block>
         </div>
 
-        <div class="articles-union">
+        <div class="articles-union"
+             tal:define="show_union view/show_union">
+          <h3 i18n:translate="" tal:condition="python: show_union and view.tags_selected()">Union</h3>
           <tal:block repeat="article python: articles['union']">
             <tal:block tal:define="isArticle python: article.portal_type == 'tribuna.content.article';
                                    isComment python: article.portal_type == 'Discussion Item';
                                    isImage python: article.portal_type == 'tribuna.content.image';
                                    typeClassAddition python: isArticle and 'article' or 'comment';
                                    varUID python: isComment and article.getId() or article.UID();
-                                   padding python: ''">
+                                   padding python: 'left-padding' if (show_union and view.tags_selected()) else '' " >
               <div id="${varUID}"
-                   class="ui-widget-content text-view text-view-${typeClassAddition} ${padding}">
+                   class="ui-widget-content text-view text-view-${typeClassAddition}${hasOneTagClassAddition} ${padding}">
                 <div id="gallery-link">
                   <a tal:condition="isArticle"
                      class="article-header"

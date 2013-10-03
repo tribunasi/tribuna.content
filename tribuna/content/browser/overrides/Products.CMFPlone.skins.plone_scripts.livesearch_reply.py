@@ -9,7 +9,7 @@
 ##
 
 """A customization of Plone script to change the item URL, so we redirect
-to @@articles/some-article-id instead of the article default view.
+to articles/some-article-id instead of the article default view.
 
 XXX: this customization won't be needed if we do a custom traverser for
 articles.
@@ -142,7 +142,7 @@ else:
         icon = plone_view.getIcon(result)
         # XXX: default item URL
         # itemUrl = result.getURL()
-        itemUrl = "{0}/@@articles/{1}".format(
+        itemUrl = "{0}/articles/{1}".format(
             context.absolute_url(), str(result.id))
         if result.portal_type in useViewAction:
             itemUrl += '/view'

@@ -68,7 +68,7 @@
           <a class="twitter-share" href="#"
                       onclick="
                         window.open(
-                          'http://twitter.com/share?text=${obj_title}&url=${context/@@plone_portal_state/navigation_root_url}/@@articles/${reply/getId}',
+                          'http://twitter.com/share?text=${obj_title}&url=${context/@@plone_portal_state/navigation_root_url}/articles/${reply/getId}',
                           'twitter-share-dialog',
                           'width=626,height=436');
                         return false;">
@@ -77,7 +77,7 @@
           <a class="facebook-share" href="#"
                       onclick="
                         window.open(
-                          'http://www.facebook.com/sharer.php?s=100&p[title]=${obj_title}&p[summary]=${obj_description}&p[url]=${context/@@plone_portal_state/navigation_root_url}/@@articles/${reply/getId}&p[images][0]=${obj_url}/@@images/image/preview',
+                          'http://www.facebook.com/sharer.php?s=100&p[title]=${obj_title}&p[summary]=${obj_description}&p[url]=${context/@@plone_portal_state/navigation_root_url}/articles/${reply/getId}&p[images][0]=${obj_url}/@@images/image/preview',
                           'facebook-share-dialog',
                           'width=626,height=436');
                         return false;">

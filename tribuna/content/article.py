@@ -10,6 +10,7 @@ from zope import schema
 
 from tribuna.content import _
 from tribuna.annotator.utils import get_annotations
+from tribuna.content.utils import tags_string_to_list
 
 
 class IArticle(form.Schema, ITribunaAnnotator):
@@ -52,22 +53,24 @@ class View(grok.View):
     grok.require('zope2.View')
 
     def update(self):
-        """Redirect to @@articles view.
+        """Redirect to articles view.
 
         XXX: this might be problematic, since sometimes we might want to
         get to the article itself.
         """
         portal = api.portal.get()
         return self.request.response.redirect(
-            '{0}/@@articles/{1}'.format(
+            '{0}/articles/{1}'.format(
                 portal.absolute_url(), self.context.id
             )
         )
 
+    def get_selected_tags(self):
+        return tags_string_to_list(self.request.form.get('tags'))
+
     def _setup_annotations(self):
         # if self.annotations:
         #     return self.annotations
-
         # path = '/'.join(self.context.getPhysicalPath())
         # return get_annotations(path)
         try:
@@ -88,34 +91,33 @@ class View(grok.View):
             self.annotation_tags = tuple(set(tup))
             return self.annotation_tags
 
-    def _get_selected_tags(self):
+    def _get_selected_annotation_tags(self):
         try:
-            return self.selected_tags
+            return self.selected_annotation_tags
         except AttributeError:
             # XXX: NATAN: should be this, but we need to merge with homepage-split
             # to get it to work nicely
-            # selected_tags = self.request.form.get("annotation_tags")
-            selected_tags = set('AnTest1,Blabla,Bleble,AnTest2,AnTest3'.split(','))
+            selected_annotation_tags = self.request.form.get("annotation_tags").split(',')
             actual_tags = ()
             self._get_annotation_tags()
-            for i in selected_tags:
+            for i in selected_annotation_tags:
                 if i in self.annotation_tags:
                     actual_tags += (i,)
 
             actual_tags = set(actual_tags)
-            self.selected_tags = actual_tags
+            self.selected_annotation_tags = actual_tags
 
     def is_tag_selected(self):
-        self._get_selected_tags()
-        if self.selected_tags:
+        self._get_selected_annotation_tags()
+        if self.selected_annotation_tags:
             return True
         return False
 
     def get_text(self):
-        self._get_selected_tags()
+        self._get_selected_annotation_tags()
         selected_annotations = tuple()
         for i in self.annotations:
-            if len(set(i['tags']).intersection(self.selected_tags)) > 0:
+            if len(set(i['tags']).intersection(self.selected_annotation_tags)) > 0:
                 selected_annotations += (i,)
 
         quotes = [i['quote'] for i in selected_annotations]

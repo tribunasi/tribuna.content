@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 """Portlet for filterting/searching the content."""
@@ -16,11 +15,12 @@ from zope import schema
 from zope.interface import implements
 from zope.schema.vocabulary import SimpleVocabulary
 from zope.schema.vocabulary import SimpleTerm
+from Products.PythonScripts.standard import url_unquote
 
 from tribuna.content import _
-from tribuna.content.utils import get_articles
 from tribuna.content.utils import TagsList
 from tribuna.content.utils import TagsListHighlighted
+from tribuna.content.config import SEARCHABLE_TYPES
 
 # SimpleTerm(value (actual value), token (request), title (shown in browser))
 # tags, sort_on, content_filters, operator
@@ -53,6 +53,14 @@ class ISidebarForm(form.Schema):
         ]),
     )
 
+    view_type = schema.Choice(
+        title=_(u"View type"),
+        vocabulary=SimpleVocabulary([
+            SimpleTerm('drag', 'drag', _(u'Drag')),
+            SimpleTerm('text', 'text', _(u'Text')),
+        ]),
+    )
+
     form.widget(content_filters=CheckBoxFieldWidget)
     content_filters = schema.List(
         title=_(u"Content filters"),
@@ -68,52 +76,58 @@ class ISidebarForm(form.Schema):
 
 @form.default_value(field=ISidebarForm['tags'])
 def default_tags(data):
-    sdm = data.context.session_data_manager
-    session = sdm.getSessionData(create=True)
-    if "portlet_data" in session.keys():
-        return session["portlet_data"]["tags"]
-    else:
-        return []
+    base_url = api.portal.get().absolute_url()
+    tags = ''
+    try:
+        tags = data.request.URL.replace(base_url, '').strip('/').split('/')[1]
+    except:
+        pass
+
+    tags = url_unquote(tags)
+
+    if tags:
+        return tags.split(',')
+    return []
 
 
 @form.default_value(field=ISidebarForm['all_tags'])
 def default_all_tags(data):
-    sdm = data.context.session_data_manager
-    session = sdm.getSessionData(create=True)
-    if "portlet_data" in session.keys():
-        return session["portlet_data"]["tags"]
-    else:
-        return []
+    base_url = api.portal.get().absolute_url()
+    tags = ''
+    try:
+        tags = data.request.URL.replace(base_url, '').strip('/').split('/')[1]
+    except:
+        pass
+
+    tags = url_unquote(tags)
+    if tags:
+        return tags.split(',')
+    return []
 
 
 @form.default_value(field=ISidebarForm['sort_on'])
 def default_sort_on(data):
-    sdm = data.context.session_data_manager
-    session = sdm.getSessionData(create=True)
-    if "portlet_data" in session.keys():
-        return session["portlet_data"]["sort_on"]
-    else:
-        return "latest"
+    return data.request.form.get("sort_on", "latest")
+
+
+@form.default_value(field=ISidebarForm['view_type'])
+def default_view_type(data):
+    return data.request.form.get("view_type", "drag")
 
 
 @form.default_value(field=ISidebarForm['content_filters'])
 def default_content_filters(data):
-    sdm = data.context.session_data_manager
-    session = sdm.getSessionData(create=True)
-    if "portlet_data" in session.keys():
-        if 'all' in session['portlet_data']['content_filters']:
-            session['portlet_data']['content_filters'].remove('all')
-        all_filters = ['article', 'comment', 'image']
-        if session['portlet_data']['content_filters'] == all_filters:
-            return session["portlet_data"]["content_filters"] + ['all']
-        return session["portlet_data"]["content_filters"]
-    else:
-        return []
+    filters = data.request.form.get("filters")
+    if not filters:
+        return ['all'] + SEARCHABLE_TYPES.keys()
+    filters = filters.split(',')
+    if set(filters) == set(SEARCHABLE_TYPES.keys()):
+        return ['all'] + filters
+    return filters
 
 
 class SidebarForm(form.SchemaForm):
     """ Defining form handler for sidebar portlet
-
     """
     grok.name('my-form')
     grok.require('zope2.View')
@@ -125,54 +139,116 @@ class SidebarForm(form.SchemaForm):
     label = _(u"Select appropriate tags")
     description = _(u"Tags selection form")
 
-    @button.buttonAndHandler(_(u'Filter'))
-    def handleApply(self, action):
+    def buildGetArgs(self, home=False):
         """
-        Method for setting selected filters in session and setting correct
-        articles
+        Build GET arguments from the sidebar selections.
+
+        :returns: GET arguments to append to an URL
+        :rtype:   String
+        """
+        if home:
+            return ('?view_type=' +
+                    self.request.form.get("form.widgets.view_type")[0])
+
+        st = ""
+        name = 'form.widgets.all_tags'
+        if name in self.request.form:
+            st += '/' + ','.join(self.request.form[name])
+
+        name = 'form.widgets.content_filters'
+        st += '&filters='
+        if name in self.request.form:
+            st += ','.join((i for i in self.request.form[name]
+                            if i != 'all'))
+        else:
+            st += "None"
+
+        for subname in ['sort_on', 'view_type']:
+            name = 'form.widgets.' + subname
+            if name in self.request.form:
+                st += '&' + subname + '=' + ','.join(self.request.form[name])
+
+        first_letter = st.find('&')
+        if first_letter != -1:
+            st = st[:first_letter] + '?' + st[first_letter + 1:]
+        return st
+
+    def buildURL(self):
+        """
+        If we're on home view, change to tags view, otherwise leave same.
+
+        :returns: Base URL
+        :rtype:   String
+        """
+        base_url = self.context.portal_url()
+        get_args = ''
+        url = self.request.URL.replace(base_url, '').strip('/').split('/')[0]
+        if url == 'home':
+            if ('form.buttons.text' in self.request.form or
+                    'form.buttons.drag' in self.request.form):
+                get_args = self.buildGetArgs(home=True)
+            else:
+                url = 'tags'
+                get_args = self.buildGetArgs()
+        else:
+            get_args = self.buildGetArgs()
+        url = base_url + '/' + url
+
+        return url + get_args
+
+    @button.buttonAndHandler(_(u'Filter'))
+    def handleFilter(self, action):
+        """
+        Builds an URL with GET arguments gotten from self.request.form and
+        redirects there.
 
         :param    action: action selected on form
         :type     action: str
         """
+
         data, errors = self.extractData()
         if errors:
             self.status = self.formErrorsMessage
             return
 
-        sdm = self.context.session_data_manager
-        session = sdm.getSessionData(create=True)
-        session.set("portlet_data", data)
-        session["search-view"] = {}
-        session["search-view"]['active'] = False
-        get_articles(session)
-        url = api.portal.get().absolute_url()
-        self.request.response.redirect("{0}/home".format(url))
+        url = self.buildURL()
+        self.request.response.redirect(url)
 
     @button.buttonAndHandler(_(u'Text'))
-    def handleApply(self, action):
+    def handleText(self, action):
         """
-        Method for setting text view
+        Builds an URL with GET arguments gotten from self.request.form and
+        redirects there. Also changes view_type to 'text' (in JS).
 
         :param    action: action selected on form
         :type     action: str
         """
-        sdm = self.context.session_data_manager
-        session = sdm.getSessionData(create=True)
-        session.set('view_type', 'text')
-        self.request.response.redirect(self.request.getURL())
+
+        data, errors = self.extractData()
+        if errors:
+            self.status = self.formErrorsMessage
+            return
+
+        url = self.buildURL()
+        self.request.response.redirect(url)
 
     @button.buttonAndHandler(_(u'Drag'))
-    def handleApply(self, action):
+    def handleDrag(self, action):
         """
-        Method for setting drag view
+        Builds an URL with GET arguments gotten from self.request.form and
+        redirects there. Also changes view_type to 'drag' (in JS).
 
         :param    action: action selected on form
         :type     action: str
         """
-        sdm = self.context.session_data_manager
-        session = sdm.getSessionData(create=True)
-        session.set('view_type', 'drag')
-        self.request.response.redirect(self.request.getURL())
+
+        data, errors = self.extractData()
+        if errors:
+            self.status = self.formErrorsMessage
+            return
+
+        url = self.buildURL()
+        self.request.response.redirect(url)
 
 
 class ISidebarPortlet(IPortletDataProvider):

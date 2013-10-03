@@ -141,7 +141,7 @@ class Tags(object):
                 title=title,
                 description="",
                 highlight_in_navigation=False,
-                container=site['tags'])
+                container=site['tags-folder'])
             api.content.transition(obj=obj, transition='submit')
 
 

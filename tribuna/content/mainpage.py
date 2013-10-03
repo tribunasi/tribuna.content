@@ -17,11 +17,30 @@ class MainPageView(grok.View):
 
     article_id = None
 
+    def __init__(self, context, request):
+        """
+        Initializes the homepage view
+
+        :param    context: Current site context
+        :type     context: Context object
+        :param    request: Current HTTP request
+        :type     request: Request object
+        """
+
+        self.context = context
+        self.request = request
+
+        self.getArgs = ''
+        for name in self.request.form:
+            self.getArgs += '&' + name + '=' + self.request.form[name]
+
+        super(MainPageView, self).__init__(context, request)
+
     def publishTraverse(self, request, name):
         """
         Custom traverse method which enables us to have urls in format
-        ../@@articles/some-article instead of
-        ../@@articles?article=some-article.
+        ../articles/some-article instead of
+        ../articles?article=some-article.
 
         :param    request: Current request
         :type     request: Request object
@@ -50,14 +69,13 @@ class MainPageView(grok.View):
         Return all articles that match the criteria.
 
         :returns: All articles that match
-        :rtype:   list
+        :rtype:   List
         """
         if not self.article_id:
             return []
-        sdm = self.context.session_data_manager
-        session = sdm.getSessionData(create=True)
-        articles = get_articles(session)
+        articles = get_articles(self.request.form)
         all_articles = articles[0] + articles[1]
+
         if self.article_id in [i.id for i in all_articles]:
             return all_articles
         else:
@@ -70,7 +88,7 @@ class MainPageView(grok.View):
 
         # redirect to homepage if no article id was provided
         path = self.request.getURL().strip('/').split('/')[-1]
-        if path == '@@articles':
+        if path == 'articles':
             portal = api.portal.get()
             self.request.response.redirect('{0}/home'.format(
                 portal.absolute_url()))
@@ -79,6 +97,46 @@ class MainPageView(grok.View):
         self.request.set('disable_plone.rightcolumn', 1)
         self.request.set('disable_plone.leftcolumn', 1)
         self.request.set('disable_border', 1)
+
+    def get_close_url(self):
+        """
+        Return URL for close button.
+
+        :returns: URL for close button
+        :rtype:   String
+        """
+        unwanted = ['tags', 'comment', 'id', 'came_from']
+
+        getArgs = ''
+        tags = self.request.form.get("tags", '')
+
+        if tags:
+            for name in self.request.form:
+                if name not in unwanted:
+                    getArgs += '&' + name + '=' + self.request.form[name]
+
+            if getArgs:
+                getArgs = '?' + getArgs[1:]
+
+        came_from = self.request.form.get('came_from')
+        if came_from == 'home':
+            view_type = self.request.form.get('view_type')
+            if view_type:
+                view_type = '?view_type=' + view_type
+            url = "{0}/home{1}".format(
+                self.context.portal_url(),
+                view_type,
+            )
+
+            return url
+
+        url = "{0}/tags/{1}{2}".format(
+            self.context.portal_url(),
+            tags,
+            getArgs
+        )
+
+        return url
 
 
 class GetArticle(grok.View):
@@ -120,6 +178,7 @@ class GetArticle(grok.View):
             article.portal_type == 'Discussion Item' and 'comment-view' or
             (article.portal_type == 'tribuna.content.image' and 'image-view') or 'view'
         )
+
         view = api.content.get_view(
             context=article, request=self.request, name=view_name)
         return view._render_template()

@@ -12,11 +12,11 @@
         <b class="caret"></b>
       </a>
       <ul class="dropdown-menu" id="add-menu">
-        <li><a href="${portal_url}/articles/++add++tribuna.content.article"
+        <li><a href="${portal_url}/articles-folder/++add++tribuna.content.article"
                i18n:translate="">Article</a></li>
-        <li><a href="${portal_url}/tags/++add++tribuna.content.tag"
+        <li><a href="${portal_url}/tags-folder/++add++tribuna.content.tag"
                i18n:translate="">Tag</a></li>
-        <li><a href="${portal_url}/images/++add++tribuna.content.image"
+        <li><a href="${portal_url}/images-folder/++add++tribuna.content.image"
                i18n:translate="">Image</a></li>
       </ul>
     </li>
@@ -30,11 +30,11 @@
       <ul class="dropdown-menu" id="edit-menu">
         <li><a href="${view/default_page_url}/edit" i18n:translate="">
             Entry page</a></li>
-        <li><a href="${portal_url}/articles"
+        <li><a href="${portal_url}/articles-folder"
                i18n:translate="">Articles</a></li>
-        <li><a href="${portal_url}/tags"
+        <li><a href="${portal_url}/tags-folder"
                i18n:translate="">Tags</a></li>
-        <li><a href="${portal_url}/images"
+        <li><a href="${portal_url}/images-folder"
                i18n:translate="">Images</a></li>
       </ul>
     </li>
