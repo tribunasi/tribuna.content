@@ -9,6 +9,7 @@ from tribuna.annotator.interfaces import ITribunaAnnotator
 from zope import schema
 
 from tribuna.content import _
+from tribuna.annotator.utils import get_annotations
 
 
 class IArticle(form.Schema, ITribunaAnnotator):
@@ -62,6 +63,64 @@ class View(grok.View):
                 portal.absolute_url(), self.context.id
             )
         )
+
+    def _setup_annotations(self):
+        # if self.annotations:
+        #     return self.annotations
+
+        # path = '/'.join(self.context.getPhysicalPath())
+        # return get_annotations(path)
+        try:
+            self.annotations
+        except AttributeError:
+            path = '/'.join(self.context.getPhysicalPath())
+            self.annotations = get_annotations(path)
+
+    def _get_annotation_tags(self):
+        try:
+            return self.annotation_tags
+        except AttributeError:
+            self._setup_annotations()
+            tags_generator = (annot['tags'] for annot in self.annotations)
+            tup = tuple()
+            for i in tags_generator:
+                tup += i
+            self.annotation_tags = tuple(set(tup))
+            return self.annotation_tags
+
+    def _get_selected_tags(self):
+        try:
+            return self.selected_tags
+        except AttributeError:
+            # XXX: NATAN: should be this, but we need to merge with homepage-split
+            # to get it to work nicely
+            # selected_tags = self.request.form.get("annotation_tags")
+            selected_tags = set('AnTest1,Blabla,Bleble,AnTest2,AnTest3'.split(','))
+            actual_tags = ()
+            self._get_annotation_tags()
+            for i in selected_tags:
+                if i in self.annotation_tags:
+                    actual_tags += (i,)
+
+            actual_tags = set(actual_tags)
+            self.selected_tags = actual_tags
+
+    def is_tag_selected(self):
+        self._get_selected_tags()
+        if self.selected_tags:
+            return True
+        return False
+
+    def get_text(self):
+        self._get_selected_tags()
+        selected_annotations = tuple()
+        for i in self.annotations:
+            if len(set(i['tags']).intersection(self.selected_tags)) > 0:
+                selected_annotations += (i,)
+
+        quotes = [i['quote'] for i in selected_annotations]
+
+        return quotes
 
 
 class BaseView(grok.View):

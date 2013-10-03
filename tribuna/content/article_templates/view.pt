@@ -44,7 +44,11 @@
             <input class="activate-comments"
                    id="activate-comments-${context/UID}" type="checkbox"
                    data-uid="${context/UID}" /></label>
-        </form>
+          <label>
+            <span i18n:translate="">annotations</span>
+            <input class="activate-annotations" type="checkbox"/>
+          </label>
+      </form>
       <div class="article-image"
                tal:condition="context/picture">
                 <img tal:define="scale context/@@images"
@@ -63,6 +67,11 @@
             <span i18n:translate="">by</span>
             <span tal:content="context/article_author">The Ipsum Master</span>
           </h3>
+
+          <div class="annotation-tags">
+              <a tal:repeat="tag view/_get_annotation_tags" class="annotation-tags-item" href="#">${tag}</a>
+          </div>
+
         </div>
 
       </div>
@@ -71,7 +80,14 @@
           <p class="description" tal:content="context/Description">
             Etiam vehicula mauris ac tortor convallis id mollis urna
           </p>
-          <p tal:content="structure context/text"></p>
+          <tal:block tal:condition="view/is_tag_selected">
+            <div tal:repeat="quote view/get_text" class="annotation-selected-quote-block">
+              <p tal:content="structure quote" class="annotation-selected-quote-text"></p>
+            </div>
+          </tal:block>
+          <tal:block tal:condition="not: view/is_tag_selected">
+            <p tal:content="structure context/text"></p>
+          </tal:block>
           <div id="article-info">
             <span tal:define="DateTime python:modules['DateTime'].DateTime;"
                   tal:replace="python:context.toLocalizedTime(context.modification_date)" />
