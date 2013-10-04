@@ -6,6 +6,8 @@ from zope.interface import Interface
 from zope.publisher.interfaces import IPublishTraverse
 from zExceptions import NotFound
 
+from tribuna.content.config import SEARCHABLE_TYPES
+from tribuna.content.config import TYPE_TO_VIEW
 from tribuna.content.utils import get_articles
 
 
@@ -19,7 +21,7 @@ class MainPageView(grok.View):
 
     def __init__(self, context, request):
         """
-        Initializes the homepage view
+        Initializes the mainpage view
 
         :param    context: Current site context
         :type     context: Context object
@@ -105,6 +107,7 @@ class MainPageView(grok.View):
         :returns: URL for close button
         :rtype:   String
         """
+
         unwanted = ['tags', 'comment', 'id', 'came_from']
 
         getArgs = ''
@@ -120,7 +123,7 @@ class MainPageView(grok.View):
 
         came_from = self.request.form.get('came_from')
         if came_from == 'home':
-            view_type = self.request.form.get('view_type')
+            view_type = self.request.form.get('view_type', '')
             if view_type:
                 view_type = '?view_type=' + view_type
             url = "{0}/home{1}".format(
@@ -159,12 +162,7 @@ class GetArticle(grok.View):
         if not article_id:
             return ""
         catalog = api.portal.get_tool(name='portal_catalog')
-        if article_type == "comment":
-            article_type = "Discussion Item"
-        elif article_type == "article":
-            article_type = "tribuna.content.article"
-        else:
-            article_type = "tribuna.content.image"
+        article_type = SEARCHABLE_TYPES.get(article_type, '')
         article = catalog(id=article_id, portal_type=article_type)
         if not article:
             return ""
@@ -174,11 +172,7 @@ class GetArticle(grok.View):
         # comments, but there is something weid going on if I name it 'view'
         # for comments - we get some view, not the one that we have
         # defined. [jcerjak]
-        view_name = (
-            article.portal_type == 'Discussion Item' and 'comment-view' or
-            (article.portal_type == 'tribuna.content.image' and 'image-view') or 'view'
-        )
-
+        view_name = TYPE_TO_VIEW.get(article.portal_type, '')
         view = api.content.get_view(
             context=article, request=self.request, name=view_name)
         return view._render_template()

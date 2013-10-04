@@ -11,6 +11,7 @@ from zope import schema
 from tribuna.content import _
 from tribuna.annotator.utils import get_annotations
 from tribuna.content.utils import tags_string_to_list
+from tribuna.content.utils import tags_published_dict
 
 
 class IArticle(form.Schema, ITribunaAnnotator):
@@ -52,6 +53,29 @@ class View(grok.View):
     grok.context(IArticle)
     grok.require('zope2.View')
 
+    def __init__(self, context, request):
+        """
+        Initializes the article view
+
+        :param    context: Current site context
+        :type     context: Context object
+        :param    request: Current HTTP request
+        :type     request: Request object
+        """
+
+        self.context = context
+        self.request = request
+
+        self.getArgs = ''
+        for name in self.request.form:
+            if name not in ["annotation_tags", 'type', 'id']:
+                self.getArgs += '&' + name + '=' + self.request.form[name]
+
+        if self.getArgs:
+                self.getArgs = '?' + self.getArgs[1:]
+
+        super(View, self).__init__(context, request)
+
     def update(self):
         """Redirect to articles view.
 
@@ -88,16 +112,24 @@ class View(grok.View):
             tup = tuple()
             for i in tags_generator:
                 tup += i
-            self.annotation_tags = tuple(set(tup))
+            self.annotation_tags = tuple(sorted(set(tup), key=str.lower))
             return self.annotation_tags
 
     def _get_selected_annotation_tags(self):
         try:
             return self.selected_annotation_tags
         except AttributeError:
-            # XXX: NATAN: should be this, but we need to merge with homepage-split
-            # to get it to work nicely
-            selected_annotation_tags = self.request.form.get("annotation_tags").split(',')
+            selected_annotation_tags = self.request.form.get("annotation_tags")
+
+            if not selected_annotation_tags:
+                self.selected_annotation_tags = []
+                return self.selected_annotation_tags
+
+            selected_annotation_tags = selected_annotation_tags.split(',')
+            tags_dict = tags_published_dict()
+            selected_annotation_tags = tuple((tags_dict.get(i) for
+                                              i in selected_annotation_tags))
+
             actual_tags = ()
             self._get_annotation_tags()
             for i in selected_annotation_tags:
@@ -106,6 +138,7 @@ class View(grok.View):
 
             actual_tags = set(actual_tags)
             self.selected_annotation_tags = actual_tags
+            return self.selected_annotation_tags
 
     def is_tag_selected(self):
         self._get_selected_annotation_tags()
@@ -117,12 +150,45 @@ class View(grok.View):
         self._get_selected_annotation_tags()
         selected_annotations = tuple()
         for i in self.annotations:
-            if len(set(i['tags']).intersection(self.selected_annotation_tags)) > 0:
+            if(len(set(i['tags']).intersection(self.selected_annotation_tags))
+               > 0):
                 selected_annotations += (i,)
 
         quotes = [i['quote'] for i in selected_annotations]
 
         return quotes
+
+    def get_annotation_tag_url(self, tag_title):
+        catalog = api.portal.get_tool(name='portal_catalog')
+        tag_id = catalog(
+            Title=tag_title,
+            portal_type='tribuna.content.tag'
+        )[0].id
+        args = self.getArgs
+        url_annotation_tags = self.request.form.get("annotation_tags", '')
+        if url_annotation_tags:
+            url_annotation_tags = url_annotation_tags.split(',')
+            if tag_id in url_annotation_tags:
+                url_annotation_tags.remove(tag_id)
+            else:
+                url_annotation_tags.append(tag_id)
+        else:
+            url_annotation_tags = [tag_id]
+
+        # If we didn't just delete the last one
+        if url_annotation_tags:
+            if args:
+                args += '&annotation_tags=' + ','.join(url_annotation_tags)
+            else:
+                args += '?annotation_tags=' + ','.join(url_annotation_tags)
+
+        return self.context.portal_url() + '/articles/' + self.context.id + args
+
+    def is_annotation_tag_selected(self, tag_title):
+        try:
+            return tag_title in self.selected_annotation_tags
+        except AttributeError:
+            return tag_title in self._get_selected_annotation_tags()
 
 
 class BaseView(grok.View):

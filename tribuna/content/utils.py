@@ -176,7 +176,6 @@ def get_articles_search(form, ignore_filters=False):
         else:
             query = []
 
-
         filters = form.get("filters")
         portal_type = []
         if filters:
@@ -207,7 +206,6 @@ def get_articles_search(form, ignore_filters=False):
             sort_order=sort_order,
         )
 
-
     # all_content = [content for content in all_content]
     # all_content.sort(
     #     key=lambda x: count_same(x.Subject, query), reverse=True)
@@ -224,7 +222,6 @@ def get_articles_search(form, ignore_filters=False):
     all_content = [content.getObject() for content in all_content]
 
     return (all_content[:intersection_count], all_content[intersection_count:])
-
 
 
 def count_same(li1, li2):
@@ -298,13 +295,19 @@ def tags_published():
     return tags
 
 
-def tags_published_dict():
+def tags_published_dict(reverse=False):
     """
-    Return a dictionary of published tags. Keys are IDs, values are titles.
+    Return a dictionary of published tags. Keys are IDs, values are titles, can
+    be reversed.
+
+    :param    reverse: Reverse the keys and values
+    :type     reverse: Boolean
 
     :returns: Dictionary with ID-title relations of published tags
     :rtype:   Dictionary
     """
+    if reverse:
+        return dict((i[1], i[0]) for i in tags_published())
     return dict(tags_published())
 
 
@@ -326,6 +329,31 @@ def tags_string_to_list(s):
 
 class TagsListHighlighted(object):
     """Return a vocabulary of highlighted tags"""
+    grok.implements(IContextSourceBinder)
+
+    def __init__(self):
+        pass
+
+    def __call__(self, context):
+        """
+        Get simple vocabulary.
+
+        :param    context: Current context
+        :type     context: Context object
+
+        :returns: vocabulary of highlighted tags
+        :rtype:   SimpleVocabulary
+        """
+        items = tags_published_highlighted()
+        terms = [SimpleVocabulary.createTerm(i[1], i[0], i[1]) for i in items]
+        return SimpleVocabulary(terms)
+
+
+class TagsListHighlightedSidebar(object):
+    """
+    Return a vocabulary of highlighted tags. Here we set the second parameter
+    to the ID, because using Titles in GET requests might cause problems.
+    """
     grok.implements(IContextSourceBinder)
 
     def __init__(self):

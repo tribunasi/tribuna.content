@@ -68,7 +68,11 @@
           </h3>
 
           <div class="annotation-tags">
-              <a tal:repeat="tag view/_get_annotation_tags" class="annotation-tags-item" href="#">${tag}</a>
+            <tal:block tal:repeat="tag view/_get_annotation_tags">
+              <a tal:define="tagClass python: view.is_annotation_tag_selected(tag) and 'annotation-tags-item selected' or 'annotation-tags-item'"
+                 class="${tagClass}"
+                 tal:attributes="href python: view.get_annotation_tag_url(tag)">${tag}</a>
+            </tal:block>
           </div>
 
         </div>

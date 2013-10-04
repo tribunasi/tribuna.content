@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Tag content type."""
 
@@ -99,6 +97,7 @@ class View(grok.View):
         :rtype:   list
         """
         catalog = api.portal.get_tool(name='portal_catalog')
-        all_articles = catalog(portal_type="tribuna.content.article")
+        all_articles = catalog(portal_type="tribuna.content.article",
+                               Subject=[self.context.title])
         return [article for article in all_articles
                 if article.review_state == 'published']

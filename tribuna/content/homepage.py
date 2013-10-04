@@ -200,7 +200,6 @@ class HomePageView(grok.View):
         :returns: True if we are showing intersection, False otherwise
         :rtype:   boolean
         """
-        import pdb; pdb.set_trace()
         if self.articles["intersection"] == []:
             return False
         return True

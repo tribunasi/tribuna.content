@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 
 """Portlet for filterting/searching the content."""
 
@@ -19,7 +18,7 @@ from Products.PythonScripts.standard import url_unquote
 
 from tribuna.content import _
 from tribuna.content.utils import TagsList
-from tribuna.content.utils import TagsListHighlighted
+from tribuna.content.utils import TagsListHighlightedSidebar
 from tribuna.content.config import SEARCHABLE_TYPES
 
 # SimpleTerm(value (actual value), token (request), title (shown in browser))
@@ -32,7 +31,7 @@ class ISidebarForm(form.Schema):
     form.widget(tags=CheckBoxFieldWidget)
     tags = schema.List(
         title=_(u"Tags"),
-        value_type=schema.Choice(source=TagsListHighlighted()),
+        value_type=schema.Choice(source=TagsListHighlightedSidebar()),
         required=False,
         default=[],
     )
@@ -69,6 +68,7 @@ class ISidebarForm(form.Schema):
             SimpleTerm('article', 'article', _(u'Article')),
             SimpleTerm('comment', 'comment', _(u'Comment')),
             SimpleTerm('image', 'image', _(u'Image')),
+            SimpleTerm('annotation', 'annotation', _(u'Annotation')),
         ])),
         required=False,
     )
