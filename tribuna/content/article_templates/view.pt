@@ -50,9 +50,9 @@
       </form>
       <div class="article-image"
                tal:condition="context/picture">
-                <img tal:define="scale context/@@images"
-           tal:replace="structure python: scale.scale('picture', width=1000, height=1000).tag()" />
-            <!-- <img tal:replace="structure context/@@images/picture" /> -->
+                <!-- <img tal:define="scale context/@@images"
+           tal:replace="structure python: scale.scale('picture', width=1000, height=1000).tag()" /> -->
+            <img tal:replace="structure context/@@images/picture" />
           </div>
 
 
@@ -74,7 +74,8 @@
             <tal:block tal:repeat="tag view/_get_annotation_tags">
               <a tal:define="tagClass python: view.is_annotation_tag_selected(tag) and 'annotation-tags-item selected' or 'annotation-tags-item'"
                  class="${tagClass}"
-                 tal:attributes="href python: view.get_annotation_tag_url(tag)">${tag}</a>
+                 tal:attributes="data-url python: view.get_annotation_tag_url(tag)"
+                 data-uid="${context/UID}">${tag}</a>
             </tal:block>
           </div>
 
@@ -99,7 +100,7 @@
           </tal:block>
           <div id="article-info">
             <span tal:define="DateTime python:modules['DateTime'].DateTime;"
-                  tal:replace="python:context.toLocalizedTime(context.modification_date)" />
+                  tal:replace="python: context.toLocalizedTime(context.modification_date)" />
           </div>
       <div id="article-tags-info">
           <p class="articleTag" tal:content="python: ', '.join(context.subject)" />

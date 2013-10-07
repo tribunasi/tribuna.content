@@ -182,7 +182,10 @@ class View(grok.View):
             else:
                 args += '?annotation_tags=' + ','.join(url_annotation_tags)
 
-        return self.context.portal_url() + '/articles/' + self.context.id + args
+        args += "&id=" + self.context.id
+        args += "&type=article"
+
+        return api.portal.get().absolute_url() + '/get-article' + args
 
     def is_annotation_tag_selected(self, tag_title):
         try:

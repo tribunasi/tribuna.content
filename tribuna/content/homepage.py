@@ -1,10 +1,10 @@
 """Views for the home page."""
 
+from Acquisition import aq_base
 from five import grok
 from mobile.sniffer.detect import detect_mobile_browser
 from mobile.sniffer.utilities import get_user_agent
 from plone import api
-from plone.app.search.browser import quote_chars
 from Products.Five.browser import BrowserView
 from zope.interface import Interface
 from zope.publisher.interfaces import IPublishTraverse
@@ -350,6 +350,9 @@ class TagsView(grok.View):
                 portal_type='tribuna.content.tag',
             )[0].getObject()
 
+        absolute_url = tag.absolute_url()
+        tag = aq_base(tag)
+
         text = ""
         if not tag.text:
             text = _(u"Description not added yet!")
@@ -357,10 +360,8 @@ class TagsView(grok.View):
             text = tag.text
 
         image = None
-        if not hasattr(tag, 'image') or not tag.image:
-            image = None
-        else:
-            image = str(tag.absolute_url()) + "/@@images/image"
+        if hasattr(tag, 'image') and tag.image:
+            image = str(absolute_url) + "/@@images/image"
 
         return {
             'text': text,
