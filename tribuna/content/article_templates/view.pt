@@ -67,6 +67,9 @@
             <span tal:content="context/article_author">The Ipsum Master</span>
           </h3>
 
+          <div class="annotation-tags-header" i18n:translate="">
+            Internal tags:
+          </div>
           <div class="annotation-tags">
             <tal:block tal:repeat="tag view/_get_annotation_tags">
               <a tal:define="tagClass python: view.is_annotation_tag_selected(tag) and 'annotation-tags-item selected' or 'annotation-tags-item'"
@@ -84,9 +87,12 @@
             Etiam vehicula mauris ac tortor convallis id mollis urna
           </p>
           <tal:block tal:condition="view/is_tag_selected">
-            <div tal:repeat="quote view/get_text" class="annotation-selected-quote-block">
-              <p tal:content="structure quote" class="annotation-selected-quote-text"></p>
-            </div>
+            <tal:block tal:repeat="quote view/get_text">
+              <div class="annotation-selected-quote-block">
+                <p tal:content="structure quote" class="annotation-selected-quote-text"></p>
+              </div>
+              <div tal:condition="not: repeat/quote/end" class="annotation-selected-quote-divider" />
+            </tal:block>
           </tal:block>
           <tal:block tal:condition="not: view/is_tag_selected">
             <p tal:content="structure context/text"></p>
