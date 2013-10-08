@@ -59,6 +59,10 @@ class NavbarViewlet(base.ViewletBase):
     def default_page_url(self):
         portal = api.portal.get()
         entry_pages = portal["entry-pages"]
+        _default_page = entry_pages.getDefaultPage()
+        if not _default_page:
+            return portal.absolute_url()
+
         default_page = entry_pages[entry_pages.getDefaultPage()]
 
         return default_page.absolute_url()
