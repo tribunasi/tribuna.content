@@ -68,19 +68,53 @@
           <div tal:condition="text_image/image" id="scroll"/>
         </div>
         <div id="tag-description-div">
-          <h2 i18n:translate="">Description</h2>
-          <p class="tag-description-text" tal:content="structure text_image/text" />
+          <p class="tag-description-text" tal:content="structure text_image/text" tal:condition="text_image/text" />
+          <tal:block tal:condition="not: text_image/text">
+            <h2>Kočijaž in njegov pes</h2>
+            <p>Nekoč je v koči živel kočijaž.<br />
+            Imel je psa, ki mu je vsak dan prinesel časopis.<br />
+            Rekel je: “Pes, ti si pa res fajn.” In pes je pomahal z repom.<br />
+            Nekega dne pa je pes dejal: “Hov, hov, hov.” In kočijaž je bil žalosten.<br />
+            Zapregel je konje v svojo kočijo in šel na izlet po okoliških krajih, kjer je bilo lepo, kar ga je spravilo v dobro voljo.<br />
+            Ko je prišel nazaj, je psu prinesel časopis, napravil mu je limonado in ga pobožal po glavi.<br />
+            Pes je bil vesel, zato je naslednji dan prinesel dva časopisa.<br />
+            Vendar pa je kočijaž potreboval le enega, zato je rekel hvala.<br />
+            <br />
+            Nauk zgodbe: koncepta oznake še ni.<br /></p>
+
+
+          </tal:block>
         </div>
       </tal:block>
     </tal:block>
 
     <div id="homepage-div"
          tal:define="articles_num python: len(articles['all'])">
-      <h2 id="empty-results"
-          tal:condition="python: not articles['all'] or articles_num == 0"
-          i18n:translate="">
-        No results!
-      </h2>
+      <div id="empty-results"
+          tal:condition="python: not articles['all'] or articles_num == 0">
+
+          <h2>Pravljica o pravljici</h2>
+          <p>Nekoč je živela pravljica, ki se ni začela z “Nekoč je …”<br />
+          Vse ostale pravljice so se začele z nekoč je, ta pa se ni, zato je bila prav posebna pravljica.<br />
+          Ostalim pravljicam se je zdela čudna in zato so se do nje obnašale čudno in niso želele sloneti na polici skupaj z njo.<br />
+          Tako je imela v knjižnici polico samo zase.<br />
+          Vsi otroci, ki so prišli v knjižnico so jo takoj opazili, saj je bila na polici sama in ni bila skrita med množico drugih. Vzeli so jo domov in ugotovili, da se ne začne z nekoč je, kot vse ostale dolgočasne pravljice.<br />
+          Postala je zelo priljubljena in skoraj ni minil dan, da si je ne bi kdo sposodil.<br />
+          Vse ostale pravljice so zato postale ljubosumne. Tudi one so želele, da jih kdo prebira, zato so se poskušale na različne načine olepšati.<br />
+          Nekatere so podaljšale besede.<br />
+          <br />
+          Nekatere so svoje slike naredile bolj pisane.<br />
+          Nekatere so se odebelile.<br />
+          Nekatere so se stanjšale.<br />
+          Nekatere so dobile lepe nove naslovnice.<br />
+          Sedaj je bilo na polici v knjižnici veliko prav posebnih pravljic. Otrokom je bilo to všeč in vse so radi brali. Pravljica, ki se ni začela z nekoč je, ni bila več sama na polici.<br />
+          Izmed vseh pravljic le ena ni spremenila videza. Ostalim se je zdela čudna, zato so se do nje obnašale čudno in niso želele sloneti na polici skupaj z njo.<br />
+          Tako je imela v knjižnici polico samo zase.<br />
+          Ko je v knjižnico prišla neka deklica, jo je takoj opazila in jo vzela domov.<br />
+          Doma na postelji jo je odprla in začela brati: “Nekoč je ...”.<br />
+          <br />
+          Nauk zgodbe: Nekoč je nekdo označil neko vsebino z izbrano oznako. Nato je nekdo zbrisal to vsebino in vsebina je rekla “aaa”. Tako je ostala zgolj oznaka spaka prazna sraka, brez odgovarjajoče vsebine.<br /></p>
+      </div>
 
       <tal:block tal:condition="python: view.is_text_view() and articles['all'] or articles_num == 0">
 

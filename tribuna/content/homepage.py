@@ -354,9 +354,7 @@ class TagsView(grok.View):
         tag = aq_base(tag)
 
         text = ""
-        if not tag.text:
-            text = _(u"Description not added yet!")
-        else:
+        if tag.text:
             text = tag.text
 
         image = None

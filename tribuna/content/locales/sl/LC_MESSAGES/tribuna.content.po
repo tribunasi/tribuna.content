@@ -300,7 +300,7 @@ msgstr "Prikazana bo na članku."
 #: ./article_templates/view.pt:77
 #: ./homepage_templates/homepageview.pt:137
 msgid "article"
-msgstr "članek"
+msgstr "tekst"
 
 #: ./article_templates/baseview.pt:35
 #: ./article_templates/view.pt:47

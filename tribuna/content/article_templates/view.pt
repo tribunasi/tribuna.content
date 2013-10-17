@@ -63,7 +63,6 @@
           <h3 tal:content="context/subtitle"
               tal:condition="context/subtitle">ipsum</h3>
           <h3 tal:condition="context/article_author">
-            <span i18n:translate="">by</span>
             <span tal:content="context/article_author">The Ipsum Master</span>
           </h3>
 
