@@ -73,6 +73,9 @@ class ISidebarForm(form.Schema):
         required=False,
     )
 
+    query = schema.TextLine(title=_(u"Query"), default=u"", required=False)
+    clicked_tag = schema.Bool(default=False)
+
 
 @form.default_value(field=ISidebarForm['tags'])
 def default_tags(data):
@@ -124,6 +127,17 @@ def default_content_filters(data):
     if set(filters) == set(SEARCHABLE_TYPES.keys()):
         return ['all'] + filters
     return filters
+
+
+@form.default_value(field=ISidebarForm['query'])
+def default_query(data):
+    return data.request.form.get("query", "")
+
+
+@form.default_value(field=ISidebarForm['clicked_tag'])
+def default_clicked_tag(data):
+    # return data.request.form.get("clicked_tag", False)
+    return False
 
 
 class SidebarForm(form.SchemaForm):
@@ -182,6 +196,7 @@ class SidebarForm(form.SchemaForm):
         """
         base_url = self.context.portal_url()
         get_args = ''
+        import pdb; pdb.set_trace()
         url = self.request.URL.replace(base_url, '').strip('/').split('/')[0]
         if url == 'home':
             if ('form.buttons.text' in self.request.form or

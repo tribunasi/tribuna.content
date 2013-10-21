@@ -8,6 +8,7 @@ from plone import api
 from Products.Five.browser import BrowserView
 from zope.interface import Interface
 from zope.publisher.interfaces import IPublishTraverse
+from plone.app.search.browser import quote_chars
 
 from tribuna.content import _
 from tribuna.content.utils import get_articles
@@ -113,18 +114,20 @@ class SearchView(BrowserView):
             return False
         return True
 
-    # def __call__(self):
-    #     """
-    #     Makes the search and redirects to correct URL
-    #     """
-    #     query = quote_chars(self.request.form.get('SearchableText', ''))
-    #     if query:
-    #         query = query + '*'
-    #     sdm = self.context.session_data_manager
-    #     session = sdm.getSessionData(create=True)
-    #     search_articles(query, session)
-    #     url = api.portal.get().absolute_url()
-    #     self.request.response.redirect("{0}/home".format(url))
+    def __call__(self):
+        """
+        Makes the search and redirects to correct URL
+        """
+        pass
+        # import pdb; pdb.set_trace()
+        # query = quote_chars(self.request.form.get('SearchableText', ''))
+        # if query:
+        #     query = query + '*'
+        # sdm = self.context.session_data_manager
+        # session = sdm.getSessionData(create=True)
+        # search_articles(query, session)
+        # url = api.portal.get().absolute_url()
+        # self.request.response.redirect("{0}/home".format(url))
 
 
 class HomePageView(grok.View):
