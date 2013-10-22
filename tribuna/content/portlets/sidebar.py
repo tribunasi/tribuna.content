@@ -196,7 +196,6 @@ class SidebarForm(form.SchemaForm):
         """
         base_url = self.context.portal_url()
         get_args = ''
-        import pdb; pdb.set_trace()
         url = self.request.URL.replace(base_url, '').strip('/').split('/')[0]
         if url == 'home':
             if ('form.buttons.text' in self.request.form or

@@ -114,11 +114,11 @@ class SearchView(BrowserView):
             return False
         return True
 
-    def __call__(self):
-        """
-        Makes the search and redirects to correct URL
-        """
-        pass
+    # def __call__(self):
+    #     """
+    #     Makes the search and redirects to correct URL
+    #     """
+    #     pass
         # import pdb; pdb.set_trace()
         # query = quote_chars(self.request.form.get('SearchableText', ''))
         # if query:
