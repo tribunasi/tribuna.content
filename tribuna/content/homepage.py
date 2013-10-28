@@ -66,9 +66,19 @@ class SearchView(BrowserView):
 
         # XXX: Temporary workaround for not getting articles twice.
         # Get the articles
-        articles_all = get_articles_search(self.request.form)
+        use_filters = self.request.form.get('use_filters') == 'selected'
+        articles_all = get_articles_search(
+            self.request.form,
+            use_filters=use_filters
+        )
 
-        self.getArgs = ''
+        # Get the GET arguments
+        self.getArgs = '?came_from=search'
+        for name in self.request.form:
+            tmpArgs = self.request.form[name]
+            if isinstance(tmpArgs, list):
+                tmpArgs = ','.join(tmpArgs)
+            self.getArgs += '&' + name + '=' + tmpArgs
 
         self.articles = {
             'intersection': articles_all[0],

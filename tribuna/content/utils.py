@@ -148,11 +148,13 @@ def get_articles_home(form):
     return (all_content[:intersection_count], all_content[intersection_count:])
 
 
-def get_articles_search(form, ignore_filters=False):
+def get_articles_search(form, use_filters=False):
 
     searchableText = form.get("query")
     # XXX: Do we want to do it like this? Or just search for everything on
     # empty/missing query? It's more or less the same, but not exactly :).
+    # This shouldn't happen anymore now, as an empty query goes back to the
+    # tags view.
     if not searchableText:
         return get_articles_home(form)
     searchableText += '*'
@@ -164,7 +166,7 @@ def get_articles_search(form, ignore_filters=False):
     portal_type = SEARCHABLE_TYPES.values()
     sort_on = 'Date'
 
-    if not ignore_filters:
+    if use_filters:
         try:
             query = form.get("tags").split(',')
         except AttributeError:

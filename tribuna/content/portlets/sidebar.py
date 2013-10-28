@@ -1,4 +1,3 @@
-
 """Portlet for filterting/searching the content."""
 
 from five import grok
@@ -75,18 +74,24 @@ class ISidebarForm(form.Schema):
 
     query = schema.TextLine(title=_(u"Query"), default=u"", required=False)
     clicked_tag = schema.Bool(default=False)
+    use_filters = schema.Bool(default=True)
 
 
 @form.default_value(field=ISidebarForm['tags'])
 def default_tags(data):
-    base_url = api.portal.get().absolute_url()
-    tags = ''
-    try:
-        tags = data.request.URL.replace(base_url, '').strip('/').split('/')[1]
-    except:
-        pass
+    query = data.request.form.get('query')
+    if query:
+        tags = url_unquote(data.request.form.get('tags'))
+    else:
+        base_url = api.portal.get().absolute_url()
+        tags = ''
+        try:
+            tags = data.request.URL.replace(base_url, '').strip('/').split('/'
+                                                                           )[1]
+        except:
+            pass
 
-    tags = url_unquote(tags)
+        tags = url_unquote(tags)
 
     if tags:
         return tags.split(',')
@@ -95,14 +100,20 @@ def default_tags(data):
 
 @form.default_value(field=ISidebarForm['all_tags'])
 def default_all_tags(data):
-    base_url = api.portal.get().absolute_url()
-    tags = ''
-    try:
-        tags = data.request.URL.replace(base_url, '').strip('/').split('/')[1]
-    except:
-        pass
+    query = data.request.form.get('query')
+    if query:
+        tags = url_unquote(data.request.form.get('tags'))
+    else:
+        base_url = api.portal.get().absolute_url()
+        tags = ''
+        try:
+            tags = data.request.URL.replace(base_url, '').strip('/').split('/'
+                                                                           )[1]
+        except:
+            pass
 
-    tags = url_unquote(tags)
+        tags = url_unquote(tags)
+
     if tags:
         return tags.split(',')
     return []
@@ -131,13 +142,17 @@ def default_content_filters(data):
 
 @form.default_value(field=ISidebarForm['query'])
 def default_query(data):
-    return data.request.form.get("query", "")
+    return data.request.form.get("query", "").strip('"')
 
 
 @form.default_value(field=ISidebarForm['clicked_tag'])
 def default_clicked_tag(data):
-    # return data.request.form.get("clicked_tag", False)
     return False
+
+
+@form.default_value(field=ISidebarForm['use_filters'])
+def default_use_filters(data):
+    return data.request.form.get('use_filters') == 'selected'
 
 
 class SidebarForm(form.SchemaForm):
@@ -153,35 +168,50 @@ class SidebarForm(form.SchemaForm):
     label = _(u"Select appropriate tags")
     description = _(u"Tags selection form")
 
-    def buildGetArgs(self, home=False):
+    def buildGetArgs(self, home=False, search=False):
         """
         Build GET arguments from the sidebar selections.
 
         :returns: GET arguments to append to an URL
         :rtype:   String
         """
+        other_names = ['sort_on', 'view_type']
+
         if home:
             return ('?view_type=' +
                     self.request.form.get("form.widgets.view_type")[0])
 
+        # Append tags, depending on if we're searching or not
         st = ""
         name = 'form.widgets.all_tags'
-        if name in self.request.form:
-            st += '/' + ','.join(self.request.form[name])
+        if not search:
+            if name in self.request.form:
+                st += '/' + ','.join(self.request.form[name])
+        else:
+            if name in self.request.form:
+                st += '&tags=' + ','.join(self.request.form[name])
+            st += '&query="{0}"'.format(
+                self.request.form.get('form.widgets.query')
+            )
+            other_names.append('use_filters')
 
+        # Append all filters except none
         name = 'form.widgets.content_filters'
         st += '&filters='
         if name in self.request.form:
             st += ','.join((i for i in self.request.form[name]
                             if i != 'all'))
+        # If we have no filters, make sure we save that too
         else:
             st += "None"
 
-        for subname in ['sort_on', 'view_type']:
+        # Append sort_on and view_type
+        for subname in other_names:
             name = 'form.widgets.' + subname
             if name in self.request.form:
                 st += '&' + subname + '=' + ','.join(self.request.form[name])
 
+        # Change the first GET parameter from &name=value to ?name=value
         first_letter = st.find('&')
         if first_letter != -1:
             st = st[:first_letter] + '?' + st[first_letter + 1:]
@@ -189,7 +219,9 @@ class SidebarForm(form.SchemaForm):
 
     def buildURL(self):
         """
-        If we're on home view, change to tags view, otherwise leave same.
+        If we're on home view, change to tags view.
+        If we have a query, change to search view.
+        Otherwise leave same.
 
         :returns: Base URL
         :rtype:   String
@@ -197,15 +229,33 @@ class SidebarForm(form.SchemaForm):
         base_url = self.context.portal_url()
         get_args = ''
         url = self.request.URL.replace(base_url, '').strip('/').split('/')[0]
-        if url == 'home':
-            if ('form.buttons.text' in self.request.form or
-                    'form.buttons.drag' in self.request.form):
-                get_args = self.buildGetArgs(home=True)
+        query = self.request.form.get('form.widgets.query')
+        clicked_tag = self.request.form.get('form.widgets.clicked_tag')
+
+        # If we have a query, search on it ...
+        if query:
+            # ... unless we clicked a tag, then we want to go back to tags view
+            if clicked_tag:
+                url = 'tags'
+                get_args = self.buildGetArgs()
+            else:
+                url = 'search'
+                get_args = self.buildGetArgs(search=True)
+        # If we do not have a query, either stay at home or go to tags
+        else:
+            if url == 'home':
+                # If we're at home view and only clicked text/drag view, stay
+                # on home, otherwise go to tags
+                if ('form.buttons.text' in self.request.form or
+                        'form.buttons.drag' in self.request.form):
+                    get_args = self.buildGetArgs(home=True)
+                else:
+                    url = 'tags'
+                    get_args = self.buildGetArgs()
+            # If we do not have a query and aren't on home, go to tags
             else:
                 url = 'tags'
                 get_args = self.buildGetArgs()
-        else:
-            get_args = self.buildGetArgs()
         url = base_url + '/' + url
 
         return url + get_args

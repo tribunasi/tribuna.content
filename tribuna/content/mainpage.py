@@ -9,6 +9,8 @@ from zExceptions import NotFound
 from tribuna.content.config import SEARCHABLE_TYPES
 from tribuna.content.config import TYPE_TO_VIEW
 from tribuna.content.utils import get_articles
+from tribuna.content.utils import get_articles_home
+from tribuna.content.utils import get_articles_search
 
 
 class MainPageView(grok.View):
@@ -75,7 +77,21 @@ class MainPageView(grok.View):
         """
         if not self.article_id:
             return []
-        articles = get_articles(self.request.form)
+
+        came_from = self.request.form.get('came_from')
+        articles = [(), ()]
+
+        if came_from == 'home':
+            articles = get_articles_home(self.request.form)
+        elif came_from == 'search':
+            use_filters = self.request.form.get('use_filters') == 'selected'
+            articles = get_articles_search(
+                self.request.form,
+                use_filters=use_filters
+            )
+        else:
+            articles = get_articles(self.request.form)
+
         all_articles = articles[0] + articles[1]
 
         if self.article_id in [i.id for i in all_articles]:
@@ -110,17 +126,6 @@ class MainPageView(grok.View):
 
         unwanted = ['tags', 'comment', 'id', 'came_from']
 
-        getArgs = ''
-        tags = self.request.form.get("tags", '')
-
-        if tags:
-            for name in self.request.form:
-                if name not in unwanted:
-                    getArgs += '&' + name + '=' + self.request.form[name]
-
-            if getArgs:
-                getArgs = '?' + getArgs[1:]
-
         came_from = self.request.form.get('came_from')
         if came_from == 'home':
             view_type = self.request.form.get('view_type', '')
@@ -129,6 +134,29 @@ class MainPageView(grok.View):
             url = "{0}/home{1}".format(
                 self.context.portal_url(),
                 view_type,
+            )
+
+            return url
+
+        getArgs = ''
+        for name in self.request.form:
+            if name not in unwanted:
+                getArgs += '&' + name + '=' + self.request.form[name]
+
+        if getArgs:
+            getArgs = '?' + getArgs[1:]
+
+        tags = self.request.form.get("tags", '')
+
+        if came_from == 'search':
+            if getArgs:
+                getArgs += '&tags=' + tags
+            else:
+                getArgs = '?tags=' + tags
+
+            url = "{0}/search{1}".format(
+                self.context.portal_url(),
+                getArgs
             )
 
             return url
