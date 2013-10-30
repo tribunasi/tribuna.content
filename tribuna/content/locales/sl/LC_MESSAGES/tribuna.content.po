@@ -1,64 +1,69 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tribuna\n"
-"POT-Creation-Date: 2013-08-21 18:43+0000\n"
-"PO-Revision-Date: 2013-08-21 20:49+0100\n"
-"Last-Translator: Jure Cerjak <jcerjak@termitnjak.si>\n"
+"POT-Creation-Date: 2013-10-30 13:46+0000\n"
+"PO-Revision-Date: 2013-10-30 14:46+0100\n"
+"Last-Translator: Natan Zabkar <natan.zabkar@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "Language-Code: en\n"
 "Language-Name: English\n"
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: DOMAIN\n"
+"X-Generator: Poedit 1.5.4\n"
 
 #: ./browser/templates/navbar.pt:11
 msgid "Add new..."
-msgstr "Dodaj nov..."
+msgstr "Dodaj nov ..."
 
-#: ./portlets/sidebar.py:60
+#: ./portlets/sidebar.py:66
 msgid "All"
 msgstr "Vse"
 
-#: ./portlets/sidebar.py:42
+#: ./portlets/sidebar.py:40
 msgid "All tags"
-msgstr "Vsi tagi"
+msgstr "Vse oznake"
 
 #: ./profiles/default/types/tribuna.content.article.xml
 msgid "An article"
-msgstr "Članek"
+msgstr "Tekst"
+
+#: ./portlets/sidebar.py:70
+msgid "Annotation"
+msgstr "Počrtava"
 
 #: ./browser/templates/navbar.pt:15
-#: ./portlets/sidebar.py:61
+#: ./portlets/sidebar.py:67
 #: ./profiles/default/types/tribuna.content.article.xml
 msgid "Article"
-msgstr "Članek"
+msgstr "Tekst"
 
-#: ./article.py:36
+#: ./article.py:31
 msgid "Article author"
 msgstr "Avtor"
 
-#: ./article.py:41
+#: ./article.py:36
 msgid "Article description"
-msgstr "Opis članka"
+msgstr "Opis teksta"
 
-#: ./article.py:31
+#: ./article.py:26
 msgid "Article subtitle"
-msgstr "Podnaslov članka"
+msgstr "Podnaslov teksta"
 
 #: ./browser/templates/navbar.pt:33
-#: ./homepage_templates/homepageview.pt:98
-#: ./tag_templates/view.pt:24
+#: ./browser/templates/tribuna_search.pt:80
+#: ./homepage_templates/homepageview.pt:92
 msgid "Articles"
-msgstr "Članki"
+msgstr "Teksti"
 
 #: ./entrypage.py:83
 msgid "Author"
 msgstr "Avtor"
 
-#: ./behaviors/behaviors.py:65
+#: ./behaviors/behaviors.py:62
 msgid "Categories"
 msgstr "Kategorije"
 
@@ -70,11 +75,11 @@ msgstr "Zamenjaj"
 msgid "Change entry page"
 msgstr "Zamenjaj naslovko"
 
-#: ./portlets/sidebar.py:62
+#: ./portlets/sidebar.py:68
 msgid "Comment"
 msgstr "Komentar"
 
-#: ./portlets/sidebar.py:58
+#: ./portlets/sidebar.py:64
 msgid "Content filters"
 msgstr "Filtriranje vsebine"
 
@@ -82,19 +87,11 @@ msgstr "Filtriranje vsebine"
 msgid "Cover everything"
 msgstr "Prekrij celotno stran"
 
-#: ./homepage_templates/homepageview.pt:84
-msgid "Description"
-msgstr "Uvod"
-
-#: ./homepage.py:121
-msgid "Description not added yet!"
-msgstr "Opis še ni bil dodan."
-
 #: ./entrypage.py:101
 msgid "Display image"
 msgstr "Prikaži sliko"
 
-#: ./portlets/sidebar.py:151
+#: ./portlets/sidebar.py:57
 msgid "Drag"
 msgstr "Slikovni pogled"
 
@@ -108,7 +105,7 @@ msgstr "Uredi"
 msgid "Entry page"
 msgstr "Vstopna stran"
 
-#: ./portlets/sidebar.py:128
+#: ./portlets/sidebar.py:263
 msgid "Filter"
 msgstr "Filter"
 
@@ -120,17 +117,17 @@ msgstr "Font"
 msgid "Go to Home Page"
 msgstr "Na domačo stran"
 
-#: ./tag.py:25
+#: ./tag.py:23
 msgid "Highlight tag in navigation?"
-msgstr "Poudari tag v navigaciji?"
+msgstr "Poudari oznako v navigaciji?"
 
 #: ./browser/templates/navbar.pt:6
 msgid "Home"
 msgstr "Domov"
 
-#: ./article.py:46
+#: ./article.py:41
 #: ./browser/templates/navbar.pt:19
-#: ./portlets/sidebar.py:63
+#: ./portlets/sidebar.py:69
 msgid "Image"
 msgstr "Slika"
 
@@ -142,23 +139,27 @@ msgstr "Image tip za stran Tribuna"
 msgid "Images"
 msgstr "Slike"
 
-#: ./homepage_templates/homepageview.pt:106
+#: ./article_templates/view.pt:69
+msgid "Internal tags:"
+msgstr "Notranje oznake:"
+
+#: ./homepage_templates/tagsview.pt:131
 msgid "Intersection"
 msgstr "Presek"
 
-#: ./behaviors/behaviors.py:155
+#: ./behaviors/behaviors.py:152
 msgid "Is article locked on first page?"
-msgstr "Članek zaklenjen na prvi strani?"
+msgstr "Tekst zaklenjen na prvi strani?"
 
-#: ./portlets/sidebar.py:51
+#: ./portlets/sidebar.py:49
 msgid "Latest"
 msgstr "Najnovejši"
 
-#: ./overrides/plone.app.discussion.browser.comments.pt:37
+#: ./browser/overrides/plone.app.discussion.browser.comments.pt:38
 msgid "Latest first"
 msgstr "Novejši najprej"
 
-#: ./behaviors/behaviors.py:34
+#: ./behaviors/behaviors.py:31
 msgid "Lead Image"
 msgstr "Slika (predogled)"
 
@@ -166,21 +167,17 @@ msgstr "Slika (predogled)"
 msgid "Log in"
 msgstr "Prijava"
 
-#: ./article.py:27
+#: ./article.py:22
 #: ./entrypage.py:69
-#: ./image.py:13
+#: ./image.py:16
 msgid "Name"
 msgstr "Naslov"
-
-#: ./homepage_templates/homepageview.pt:90
-msgid "No results!"
-msgstr "Ni rezultatov!"
 
 #: ./entrypage.py:42
 msgid "No title"
 msgstr "Brez naslova"
 
-#: ./portlets/sidebar.py:52
+#: ./portlets/sidebar.py:50
 msgid "Nr. of comments"
 msgstr "Število komentarjev"
 
@@ -188,7 +185,7 @@ msgstr "Število komentarjev"
 msgid "Old pages"
 msgstr "Prejšnje naslovnice"
 
-#: ./overrides/plone.app.discussion.browser.comments.pt:38
+#: ./browser/overrides/plone.app.discussion.browser.comments.pt:39
 msgid "Oldest first"
 msgstr "Starejši najprej"
 
@@ -204,15 +201,21 @@ msgstr "Originalna velikost"
 msgid "Picture"
 msgstr "Slika"
 
-#: ./homepage_templates/homepageview.pt:61
-msgid "Search.."
-msgstr "iskalnik.."
+#: ./portlets/sidebar.py:75
+msgid "Query"
+msgstr "Poizvedba"
 
-#: ./portlets/sidebar.py:125
+#: ./browser/templates/tribuna_search.pt:47
+#: ./homepage_templates/homepageview.pt:47
+#: ./homepage_templates/tagsview.pt:47
+msgid "Search ..."
+msgstr "Išči ..."
+
+#: ./portlets/sidebar.py:168
 msgid "Select appropriate tags"
-msgstr "Izberite primerne tag-e"
+msgstr "Izberite primerne oznake"
 
-#: ./entrypage.py:278
+#: ./entrypage.py:289
 msgid "Select entry page"
 msgstr "Izberi naslovnico"
 
@@ -220,7 +223,7 @@ msgstr "Izberi naslovnico"
 msgid "Select new page"
 msgstr "Izberi novo stran"
 
-#: ./entrypage.py:263
+#: ./entrypage.py:274
 msgid "Select one of the old pages"
 msgstr "Izberi prejšnjo naslovnico"
 
@@ -232,36 +235,36 @@ msgstr "Nastavi kot privzeto"
 msgid "Set this page as default entry page and disable editing."
 msgstr "Nastavi to stran kot privzeto vstopno stran in onemogoči urejanje."
 
-#: ./portlets/sidebar.py:166
+#: ./portlets/sidebar.py:325
 msgid "Sidebar navigation"
 msgstr "Stranska navigacija"
 
-#: ./portlets/sidebar.py:169
+#: ./portlets/sidebar.py:328
 msgid "Sidebar portlet"
 msgstr "Portlet"
 
 #: ./browser/templates/navbar.pt:17
 #: ./profiles/default/types/tribuna.content.tag.xml
 msgid "Tag"
-msgstr "Tag"
+msgstr "Oznaka"
 
-#: ./behaviors/behaviors.py:59
+#: ./behaviors/behaviors.py:56
 #: ./browser/templates/navbar.pt:35
-#: ./portlets/sidebar.py:34
+#: ./portlets/sidebar.py:32
 msgid "Tags"
-msgstr "Tag-i"
+msgstr "Oznake"
 
-#: ./portlets/sidebar.py:126
+#: ./portlets/sidebar.py:169
 msgid "Tags selection form"
-msgstr "Izbira tag-ov"
+msgstr "Izbira oznak"
 
 #: ./entrypage.py:73
 #: ./entrypage_templates/view.pt:47
-#: ./portlets/sidebar.py:144
+#: ./portlets/sidebar.py:58
 msgid "Text"
 msgstr "Tekst"
 
-#: ./overrides/plone.app.discussion.browser.comments.pt:36
+#: ./browser/overrides/plone.app.discussion.browser.comments.pt:37
 msgid "Threaded"
 msgstr "Gnezdeno"
 
@@ -277,11 +280,11 @@ msgstr "Naslov"
 msgid "Tribuna Image"
 msgstr "Tribuna slika"
 
-#: ./portlets/sidebar.py:49
+#: ./portlets/sidebar.py:47
 msgid "Type of sorting"
 msgstr "Tip sortiranja"
 
-#: ./homepage_templates/homepageview.pt:151
+#: ./homepage_templates/tagsview.pt:185
 msgid "Union"
 msgstr "Unija"
 
@@ -289,31 +292,46 @@ msgstr "Unija"
 msgid "Upload an image"
 msgstr "Naloži sliko"
 
-#: ./portlets/sidebar.py:167
+#: ./portlets/sidebar.py:326
 msgid "Use this portlet for tag navigation."
-msgstr "Portlet za navigacijo in filtriranje s pomočjo tag-ov"
+msgstr "Portlet za navigacijo in filtriranje s pomočjo oznak"
 
-#: ./article.py:47
+#: ./portlets/sidebar.py:55
+msgid "View type"
+msgstr "Tip pogleda"
+
+#: ./article.py:42
 msgid "Will be displayed on the article view."
-msgstr "Prikazana bo na članku."
+msgstr "Prikazana bo na tekstu."
 
-#: ./article_templates/view.pt:77
-#: ./homepage_templates/homepageview.pt:137
+#: ./browser/templates/tribuna_search.pt:131
+#: ./homepage_templates/homepageview.pt:143
+#: ./homepage_templates/tagsview.pt:176
+msgid "annotation"
+msgstr "počrtava"
+
+#: ./article_templates/view.pt:47
+msgid "annotations"
+msgstr "počrtave"
+
+#: ./article_templates/view.pt:107
+#: ./browser/templates/tribuna_search.pt:122
+#: ./homepage_templates/homepageview.pt:134
 msgid "article"
 msgstr "tekst"
 
 #: ./article_templates/baseview.pt:35
-#: ./article_templates/view.pt:47
 msgid "by"
 msgstr "piše"
 
-#: ./comment_templates/commentview.pt:56
-#: ./homepage_templates/homepageview.pt:140
+#: ./browser/templates/tribuna_search.pt:125
+#: ./comment_templates/commentview.pt:54
+#: ./homepage_templates/homepageview.pt:137
 msgid "comment"
 msgstr "komentar"
 
 #: ./article_templates/baseview.pt:46
-#: ./article_templates/view.pt:58
+#: ./article_templates/view.pt:42
 msgid "comments"
 msgstr "komentarji"
 
@@ -329,8 +347,9 @@ msgstr "domov"
 msgid "i forgot my password"
 msgstr "pozabil sem geslo"
 
-#: ./homepage_templates/homepageview.pt:143
-#: ./image_templates/imageview.pt:54
+#: ./browser/templates/tribuna_search.pt:128
+#: ./homepage_templates/homepageview.pt:140
+#: ./homepage_templates/tagsview.pt:173
 msgid "image"
 msgstr "slika"
 
@@ -354,9 +373,9 @@ msgstr "Prikaži vse"
 msgid "legend_livesearch"
 msgstr "Iskanje..."
 
-#: ./comment_templates/commentview.pt:40
+#: ./comment_templates/commentview.pt:38
 msgid "link to the article"
-msgstr "povezava do članka"
+msgstr "povezava do teksta"
 
 #: ./browser/overrides/Products.CMFPlone.skins.plone_login.login_form.cpt:128
 msgid "login name"
@@ -370,12 +389,14 @@ msgstr "geslo"
 msgid "registration"
 msgstr "registracija"
 
-#: ./homepage_templates/homepageview.pt:102
+#: ./browser/templates/tribuna_search.pt:84
+#: ./homepage_templates/homepageview.pt:96
+#: ./homepage_templates/tagsview.pt:126
 msgid "results"
 msgstr "rezultatov"
 
 #: ./article_templates/baseview.pt:41
-#: ./article_templates/view.pt:53
+#: ./article_templates/view.pt:37
 msgid "text"
 msgstr "tekst"
 

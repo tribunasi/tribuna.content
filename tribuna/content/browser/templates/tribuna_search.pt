@@ -67,8 +67,7 @@
     <div id="homepage-div"
          tal:define="articles_num python: len(articles['all'])">
       <div id="empty-results"
-          tal:condition="python: not articles['all'] or articles_num == 0"
-          i18n:translate="">
+          tal:condition="python: not articles['all'] or articles_num == 0">
         <h2>Deklica Zmrzalka</h2>
         <p>Nekoč je živela deklica, ki je imela zelo mrzle roke, zato je dobila službo v sirarni.</p>
 
@@ -84,19 +83,18 @@
           <tal:block tal:content="articles_num">num</tal:block>
           <tal:block i18n:translate="">results</tal:block>
         </span>
-
-        <div class="articles-intersection"
-             tal:define="show_intersection view/show_intersection">
-          <h3 i18n:translate="">Intersection</h3>
+        <div class="articles-intersection">
           <tal:block repeat="article python: articles['intersection']">
             <tal:block tal:define="isArticle python: article.portal_type == 'tribuna.content.article';
                                    isComment python: article.portal_type == 'Discussion Item';
                                    isImage python: article.portal_type == 'tribuna.content.image';
-                                   typeClassAddition python: isArticle and 'article' or 'comment';
+                                   isAnnotation python: article.portal_type == 'tribuna.annotator.annotation';
+                                   typeClassAddition python: (isArticle and 'article') or (isComment and 'comment') or (isImage and 'image') or (isAnnotation and 'annotation');
                                    varUID python: isComment and article.getId() or article.UID();
                                    padding python: ''" >
               <div id="${varUID}"
                    class="ui-widget-content text-view text-view-${typeClassAddition} ${padding}">
+                ${article}
                 <div id="gallery-link">
                   <a tal:condition="isArticle"
                      class="article-header"
@@ -111,6 +109,10 @@
                      class="comment-header"
                      href="${context/absolute_url}/articles/${article/id}${view/getArgs}"
                      tal:content="structure python: view.shorten_text(article.text)" />
+                   <a tal:condition="isAnnotation"
+                     class="annotation-header"
+                     href="${context/absolute_url}/articles/${article/id}${view/getArgs}"
+                     tal:content="structure python: view.shorten_text(article.quote)" />
                 </div>
                 <p class="article-body" tal:condition="isArticle">
                   <a tal:content="article/description"
@@ -125,19 +127,21 @@
                 <p tal:condition="isImage" class="content-type">
                   <span class="red" i18n:translate="">image</span>
                 </p>
+                <p tal:condition="isAnnotation" class="content-type">
+                  <span class="red" i18n:translate="">annotation</span>
+                </p>
               </div>
             </tal:block>
           </tal:block>
         </div>
 
-        <div class="articles-union"
-             tal:define="show_union view/show_union">
-          <h3 i18n:translate="">Union</h3>
+        <div class="articles-union">
           <tal:block repeat="article python: articles['union']">
             <tal:block tal:define="isArticle python: article.portal_type == 'tribuna.content.article';
                                    isComment python: article.portal_type == 'Discussion Item';
                                    isImage python: article.portal_type == 'tribuna.content.image';
-                                   typeClassAddition python: isArticle and 'article' or 'comment';
+                                   isAnnotation python: article.portal_type == 'tribuna.annotator.annotation';
+                                   typeClassAddition python: (isArticle and 'article') or (isComment and 'comment') or (isImage and 'image') or (isAnnotation and 'annotation');
                                    varUID python: isComment and article.getId() or article.UID();
                                    padding python: ''">
               <div id="${varUID}"
@@ -156,6 +160,10 @@
                      class="comment-header"
                      href="${context/absolute_url}/articles/${article/id}${view/getArgs}"
                      tal:content="structure python: view.shorten_text(article.text)" />
+                  <a tal:condition="isAnnotation"
+                     class="annotation-header"
+                     href="${context/absolute_url}/articles/${article/id}${view/getArgs}"
+                     tal:content="structure python: view.shorten_text(article.quote)" />
                 </div>
                 <p class="article-body" tal:condition="isArticle">
                   <a tal:content="article/description"
@@ -170,6 +178,9 @@
                  <p tal:condition="isImage" class="content-type">
                   <span class="red" i18n:translate="">image</span>
                 </p>
+                <p tal:condition="isAnnotation" class="content-type">
+                  <span class="red" i18n:translate="">annotation</span>
+                </p>
               </div>
             </tal:block>
           </tal:block>
@@ -181,7 +192,9 @@
           <tal:block tal:define="isArticle python: article.portal_type == 'tribuna.content.article';
                                  isComment python: article.portal_type == 'Discussion Item';
                                  isImage python: article.portal_type == 'tribuna.content.image';
-                                 typeClassAddition python: isArticle and 'article' or (isImage and 'article') or 'comment';
+                                 isAnnotation python: article.portal_type == 'tribuna.annotator.annotation';
+                                 typeClassAddition python: (isArticle and 'article') or (isComment and 'comment') or (isImage and 'image') or (isAnnotation and 'annotation');
+                                 articleWithImage python: (isArticle and not article.image) and 'article-no-image' or '';
                                  articleWithImage python: (isArticle and not article.image) and 'article-no-image' or '';
                                  varUID python: isComment and article.getId() or article.UID()">
             <div id="${varUID}" class="ui-widget-content drag-view-${typeClassAddition} ${articleWithImage}">
@@ -215,6 +228,10 @@
                      class="drag-comment-header"
                      href="${context/absolute_url}/articles/${article/id}${view/getArgs}"
                      tal:content="structure python: view.shorten_text(article.text)" />
+                  <a tal:condition="isAnnotation"
+                     class="drag-annotation-header"
+                     href="${context/absolute_url}/articles/${article/id}${view/getArgs}"
+                     tal:content="structure python: view.shorten_text(article.quote)" />
                 </div>
                 <div id="drag-view-type">
                   <p tal:condition="isArticle" class="content-type">
@@ -230,8 +247,21 @@
                     <span tal:define="DateTime python:modules['DateTime'].DateTime;"
                           tal:replace="python:article.toLocalizedTime(article.modification_date)" />
                   </div>
+                  <div tal:condition="isAnnotation" id="drag-annotation-info">
+                    <span tal:define="creator article/Creator;
+                                 mtool article/@@plone_tools/membership;
+                                 author python:mtool.getMemberInfo(creator)"
+                           tal:content="python:author and author['fullname'] or creator">
+                      Author name
+                    </span>
+                    <span tal:define="DateTime python:modules['DateTime'].DateTime;"
+                          tal:replace="python:article.toLocalizedTime(article.modification_date)" />
+                  </div>
                   <p tal:condition="isComment" class="content-type">
                     <span class="red" i18n:translate="">comment</span>
+                  </p>
+                  <p tal:condition="isAnnotation" class="content-type">
+                    <span class="red" i18n:translate="">annotation</span>
                   </p>
                   <p tal:condition="isImage" class="content-type">
                   <span class="red" i18n:translate="">image</span>
