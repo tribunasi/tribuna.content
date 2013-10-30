@@ -177,13 +177,14 @@ class View(grok.View):
 
         # If we didn't just delete the last one
         if url_annotation_tags:
-            if args:
-                args += '&annotation_tags=' + ','.join(url_annotation_tags)
-            else:
-                args += '?annotation_tags=' + ','.join(url_annotation_tags)
+            args += '&annotation_tags=' + ','.join(url_annotation_tags)
 
         args += "&id=" + self.context.id
         args += "&type=article"
+
+        first_letter = args.find('&')
+        if first_letter != -1:
+            args = args[:first_letter] + '?' + args[first_letter + 1:]
 
         return api.portal.get().absolute_url() + '/get-article' + args
 

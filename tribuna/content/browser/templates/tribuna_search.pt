@@ -55,17 +55,26 @@
           <input id="search-button" name="search-button" class="submit-widget button-field" value="Search" type="submit" />
         </div>
       </form>
+      <br>
+      <label for="search-use-filters" id="search-use-filters-label">Išči znotraj izbranih filtrov</label>
+      <input id="search-use-filters" name="use-filters" type="checkbox" />
   </div>
+
+  <div id="search-view" style="display:none"></div>
 
   <tal:block tal:define="articles view/_get_articles">
 
     <div id="homepage-div"
          tal:define="articles_num python: len(articles['all'])">
-      <h2 id="empty-results"
+      <div id="empty-results"
           tal:condition="python: not articles['all'] or articles_num == 0"
           i18n:translate="">
-        No results!
-      </h2>
+        <h2>Deklica Zmrzalka</h2>
+        <p>Nekoč je živela deklica, ki je imela zelo mrzle roke, zato je dobila službo v sirarni.</p>
+
+        <p>Nauk zgodbe: iskanje ni obrodilo sadov.<br>
+        Nauk nauka zgodbe: bodisi ste slabo iskali bodisi ustvarjalci strani ne dohajajo vaše vedoželjnosti.</p>
+      </div>
 
       <tal:block tal:condition="python: view.is_text_view() and articles['all'] or articles_num == 0">
 

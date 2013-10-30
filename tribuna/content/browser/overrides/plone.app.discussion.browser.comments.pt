@@ -31,15 +31,16 @@
     </fieldset>
   </div>
   <div id="latest"
-       i18n:domain="tribuna.content">
+       i18n:domain="tribuna.content"
+       tal:condition="has_replies">
       <select>
       <option i18n:translate="" id="threaded">Threaded</option>
       <option i18n:translate="" id="latest" tal:attributes="selected python: 'latest' in request.form.keys()">Latest first</option>
       <option i18n:translate="" id="oldest" tal:attributes="selected python: 'oldest' in request.form.keys()">Oldest first</option>
   </select>
-</div>
+  </div>
   <div id="discussion"   class="discussion"
-         tal:condition="has_replies">
+       tal:condition="has_replies">
 
 
     <tal:getreplies tal:repeat="reply_dict python: sorted(list(replies),key=lambda x: x['comment'].modification_date, reverse=True) if 'latest' in request.form.keys() else (sorted(list(replies),key=lambda x: x['comment'].modification_date, reverse=False) if 'oldest' in request.form.keys() else list(replies))">
