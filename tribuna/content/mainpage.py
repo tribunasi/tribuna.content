@@ -2,9 +2,10 @@
 
 from five import grok
 from plone import api
+from Products.PythonScripts.standard import url_quote
+from zExceptions import NotFound
 from zope.interface import Interface
 from zope.publisher.interfaces import IPublishTraverse
-from zExceptions import NotFound
 
 from tribuna.content.config import SEARCHABLE_TYPES
 from tribuna.content.config import TYPE_TO_VIEW
@@ -36,7 +37,10 @@ class MainPageView(grok.View):
 
         self.getArgs = ''
         for name in self.request.form:
-            self.getArgs += '&' + name + '=' + self.request.form[name]
+            if name == 'query':
+                self.getArgs += '&' + name + '=' + url_quote(self.request.form[name])
+            else:
+                self.getArgs += '&' + name + '=' + self.request.form[name]
 
         super(MainPageView, self).__init__(context, request)
 
