@@ -5,6 +5,7 @@ from plone import api
 from plone.dexterity.content import Container
 from plone.directives import form
 from plone.namedfile.field import NamedBlobImage
+from Products.PythonScripts.standard import url_quote
 from tribuna.annotator.interfaces import ITribunaAnnotator
 from zope import schema
 
@@ -69,7 +70,11 @@ class View(grok.View):
         self.getArgs = ''
         for name in self.request.form:
             if name not in ["annotation_tags", 'type', 'id']:
-                self.getArgs += '&' + name + '=' + self.request.form[name]
+                if name == 'query':
+                    self.getArgs += ('&' + name + '=' +
+                                     url_quote(self.request.form[name]))
+                else:
+                    self.getArgs += '&' + name + '=' + self.request.form[name]
 
         if self.getArgs:
                 self.getArgs = '?' + self.getArgs[1:]
@@ -165,6 +170,10 @@ class View(grok.View):
             portal_type='tribuna.content.tag'
         )[0].id
         args = self.getArgs
+        args_exist = False
+        if args:
+            args_exist = True
+
         url_annotation_tags = self.request.form.get("annotation_tags", '')
         if url_annotation_tags:
             url_annotation_tags = url_annotation_tags.split(',')
@@ -182,9 +191,10 @@ class View(grok.View):
         args += "&id=" + self.context.id
         args += "&type=article"
 
-        first_letter = args.find('&')
-        if first_letter != -1:
-            args = args[:first_letter] + '?' + args[first_letter + 1:]
+        if not args_exist:
+            first_letter = args.find('&')
+            if first_letter != -1:
+                args = args[:first_letter] + '?' + args[first_letter + 1:]
 
         return api.portal.get().absolute_url() + '/get-article' + args
 

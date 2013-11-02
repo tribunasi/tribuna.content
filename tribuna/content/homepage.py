@@ -6,11 +6,10 @@ from mobile.sniffer.detect import detect_mobile_browser
 from mobile.sniffer.utilities import get_user_agent
 from plone import api
 from Products.Five.browser import BrowserView
+from Products.PythonScripts.standard import url_quote
 from zope.interface import Interface
 from zope.publisher.interfaces import IPublishTraverse
-from plone.app.search.browser import quote_chars
 
-from tribuna.content import _
 from tribuna.content.utils import get_articles
 from tribuna.content.utils import get_articles_home
 from tribuna.content.utils import get_articles_search
@@ -75,10 +74,14 @@ class SearchView(BrowserView):
         # Get the GET arguments
         self.getArgs = '?came_from=search'
         for name in self.request.form:
-            tmpArgs = self.request.form[name]
-            if isinstance(tmpArgs, list):
-                tmpArgs = ','.join(tmpArgs)
-            self.getArgs += '&' + name + '=' + tmpArgs
+            if name == 'query':
+                self.getArgs += ('&' + name + '=' +
+                                 url_quote(self.request.form[name]))
+            else:
+                tmpArgs = self.request.form[name]
+                if isinstance(tmpArgs, list):
+                    tmpArgs = ','.join(tmpArgs)
+                self.getArgs += '&' + name + '=' + tmpArgs
 
         self.articles = {
             'intersection': articles_all[0],
@@ -321,7 +324,11 @@ class TagsView(grok.View):
             # Get the GET arguments
             self.getArgs = ''
             for name in self.request.form:
-                self.getArgs += '&' + name + '=' + self.request.form[name]
+                if name == 'query':
+                    self.getArgs += ('&' + name + '=' +
+                                 url_quote(self.request.form[name]))
+                else:
+                    self.getArgs += '&' + name + '=' + self.request.form[name]
 
             if self.getArgs:
                 self.getArgs = '?' + self.getArgs[1:]

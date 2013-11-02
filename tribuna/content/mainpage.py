@@ -38,7 +38,8 @@ class MainPageView(grok.View):
         self.getArgs = ''
         for name in self.request.form:
             if name == 'query':
-                self.getArgs += '&' + name + '=' + url_quote(self.request.form[name])
+                self.getArgs += ('&' + name + '=' +
+                                 url_quote(self.request.form[name]))
             else:
                 self.getArgs += '&' + name + '=' + self.request.form[name]
 
