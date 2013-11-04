@@ -154,10 +154,11 @@ class MainPageView(grok.View):
         tags = self.request.form.get("tags", '')
 
         if came_from == 'search':
-            if getArgs:
-                getArgs += '&tags=' + tags
-            else:
-                getArgs = '?tags=' + tags
+            if tags:
+                if getArgs:
+                    getArgs += '&tags=' + tags
+                else:
+                    getArgs = '?tags=' + tags
 
             url = "{0}/search{1}".format(
                 self.context.portal_url(),
