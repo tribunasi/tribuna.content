@@ -84,14 +84,6 @@
   </div>
   <div tal:replace="structure provider:plone.belowcontentbody" />
 
-  <script>
-    $(function() {
-        $( "#change-form, #change-form-multiple" ).accordion({
-            collapsible: true,
-            active: false
-        });
-     });
-  </script>
 </tal:main-macro>
 </metal:main>
 

@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 from five import grok
 from plone import api
 from plone.app.discussion.comment import Comment
@@ -11,6 +8,7 @@ from zope.interface import implements
 from zope.lifecycleevent.interfaces import IObjectCreatedEvent
 
 from tribuna.content.utils import our_unicode
+from tribuna.content.utils import tags_string_to_list
 
 
 class TribunaComment(Comment):
@@ -28,6 +26,15 @@ TribunaCommentFactory = Factory(Comment)
 
 @indexer(IComment)
 def subject(object):
+    """
+    Returns subject of our object
+
+    :param    object: current comment
+    :type     object: TribunaComment
+
+    :returns: Subject of our object
+    :rtype:   str
+    """
     return object.subject
 
 
@@ -86,7 +93,7 @@ def add_tags(comment, event):
                 title=title,
                 description="",
                 highlight_in_navigation=False,
-                container=site['tags'])
+                container=site['tags-folder'])
             api.content.transition(obj=obj, transition='submit')
 
 
@@ -95,3 +102,36 @@ class CommentView(grok.View):
     grok.context(IComment)
     grok.require('zope2.View')
     grok.name('comment-view')
+
+    def get_article_url(self):
+        """
+        Get URL of the article this comment belongs to.
+
+        :returns: URL of the article
+        :rtype:   String
+        """
+        unwanted = ['type', 'comment', 'id']
+
+        getArgs = ''
+        for name in self.request.form:
+            if name not in unwanted:
+                getArgs += '&' + name + '=' + self.request.form[name]
+
+        if getArgs:
+            getArgs = '?' + getArgs[1:]
+
+        article_url = self.context.portal_url()
+
+        # First parent: Comment
+        # Second parent: Discussion
+        # Third parent: Article on which we commented
+        article_url += '/articles/{0}{1}#{2}'.format(
+            self.__parent__.__parent__.__parent__.id,
+            getArgs,
+            self.request.form.get('id')
+        )
+
+        return article_url
+
+    def get_selected_tags(self):
+        return tags_string_to_list(self.request.form.get('tags'))

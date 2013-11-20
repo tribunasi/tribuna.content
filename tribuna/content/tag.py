@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Tag content type."""
 
@@ -34,11 +32,27 @@ def highlight_in_navigation_indexer(obj):
 
 @grok.subscribe(ITag, IObjectModifiedEvent)
 def object_edited(context, event):
+    """
+    Method that sets subject when object is modified
+
+    :param    context: Current context
+    :type     context: Context object
+    :param    event:   Event that gets called when object is modified
+    :type     event:   IEvent
+    """
     context.subject = (context.title, )
 
 
 @grok.subscribe(ITag, IObjectAddedEvent)
 def object_added(context, event):
+    """
+    Method that sets subject when object is created
+
+    :param    context: Current context
+    :type     context: Context object
+    :param    event:   Event that gets called when object is created
+    :type     event:   IEvent
+    """
     context.subject = (context.title, )
 
 
@@ -76,10 +90,14 @@ class View(grok.View):
     grok.require('zope2.View')
 
     def articles(self):
-        """Return a catalog search result of articles that have the selected
-        tag.
+        """
+        Method for getting all articles that belong to this tag
+
+        :returns: Articles of this tag
+        :rtype:   list
         """
         catalog = api.portal.get_tool(name='portal_catalog')
-        all_articles = catalog(portal_type="tribuna.content.article")
+        all_articles = catalog(portal_type="tribuna.content.article",
+                               Subject=[self.context.title])
         return [article for article in all_articles
                 if article.review_state == 'published']

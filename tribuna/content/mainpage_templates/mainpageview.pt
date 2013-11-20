@@ -25,10 +25,11 @@
                 data-carousel-index="${repeat/article/index}"
                 tal:define="is_article python: article.portal_type == 'tribuna.content.article';
                             is_image python: article.portal_type == 'tribuna.content.image';
-                            article_title python: (is_article or is_image) and article.title or article.text;
+                            is_annotation python: article.portal_type == 'tribuna.annotator.annotation';
+                            article_title python: ((is_article or is_image) and article.title) or (is_annotation and article.quote) or article.text;
                             title python: ploneview.cropText(article_title, length=45, ellipsis='...');
-                            type python: is_article and 'article' or (is_image and 'image') or 'comment'"
-                data-url="${context/portal_url}/get-article?id=${article/getId}&type=${type}">
+                            type python: (is_article and 'article') or (is_image and 'image') or (is_annotation and 'annotation') or 'comment'"
+                data-url="${context/portal_url}/get-article?id=${article/getId}&type=${type}${view/getArgs}">
               <div class="item-inner">
                 <div tal:content="structure title">Title</div>
                 <div class="red"
@@ -56,7 +57,7 @@
   </div>
 
   <div id="close-articles">
-    <a href="${context/portal_url}/home">
+    <a href="${view/get_close_url}">
       <img src="++theme++tribuna.diazotheme/img/x-sign.png" style="width: 15px; height:15px" />
     </a>
   </div>

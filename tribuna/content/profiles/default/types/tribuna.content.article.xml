@@ -9,13 +9,16 @@
  <property name="allow_discussion">True</property>
  <property name="global_allow">True</property>
  <property name="filter_content_types">True</property>
- <property name="allowed_content_types" />
+ <property name="allowed_content_types">
+   <element value="tribuna.annotator.annotation" />
+   <element value="Folder" />
+ </property>
 
  <!-- schema interface -->
  <property name="schema">tribuna.content.article.IArticle</property>
 
  <!-- class used for content items -->
- <property name="klass">plone.dexterity.content.Item</property>
+ <property name="klass">tribuna.content.article.Article</property>
 
  <!-- add permission -->
  <property name="add_permission">cmf.AddPortalContent</property>

@@ -57,7 +57,37 @@
       </form>
   </div>
 
-  <tal:block tal:define="articles view/_get_articles">
+  <tal:block tal:define="has_one_tag view/only_one_tag;
+                         hasOneTagClassAddition python: has_one_tag and '-one' or '';
+                         articles view/_get_articles">
+
+    <tal:block tal:condition="has_one_tag">
+      <tal:block tal:define="text_image view/tag_text_and_image">
+        <div id="tag-picture">
+          <img tal:condition="text_image/image"  src="${text_image/image}"/>
+          <div tal:condition="text_image/image" id="scroll"/>
+        </div>
+        <div id="tag-description-div">
+          <p class="tag-description-text"
+             tal:condition="text_image/text"
+             tal:content="structure text_image/text"></p>
+          <div class="tag-description-text"
+             tal:condition="not: text_image/text">
+            <h2>Kočijaž in njegov pes</h2>
+            <p>Nekoč je v koči živel kočijaž.<br />
+            Imel je psa, ki mu je vsak dan prinesel časopis.<br />
+            Rekel je: “Pes, ti si pa res fajn.” In pes je pomahal z repom.<br />
+            Nekega dne pa je pes dejal: “Hov, hov, hov.” In kočijaž je bil žalosten.<br />
+            Zapregel je konje v svojo kočijo in šel na izlet po okoliških krajih, kjer je bilo lepo, kar ga je spravilo v dobro voljo.<br />
+            Ko je prišel nazaj, je psu prinesel časopis, napravil mu je limonado in ga pobožal po glavi.<br />
+            Pes je bil vesel, zato je naslednji dan prinesel dva časopisa.<br />
+            Vendar pa je kočijaž potreboval le enega, zato je rekel hvala.</p>
+
+            <p>Nauk zgodbe: koncepta oznake še ni.</p>
+           </div>
+        </div>
+      </tal:block>
+    </tal:block>
 
     <div id="homepage-div"
          tal:define="articles_num python: len(articles['all'])">
@@ -95,7 +125,11 @@
           <tal:block tal:content="articles_num">num</tal:block>
           <tal:block i18n:translate="">results</tal:block>
         </span>
-        <div class="articles-intersection">
+
+        <div class="articles-intersection"
+             tal:define="show_intersection view/show_intersection">
+          <h3 i18n:translate=""
+              tal:condition="python: show_intersection and view.tags_selected()">Intersection</h3>
           <tal:block repeat="article python: articles['intersection']">
             <tal:block tal:define="isArticle python: article.portal_type == 'tribuna.content.article';
                                    isComment python: article.portal_type == 'Discussion Item';
@@ -103,10 +137,9 @@
                                    isAnnotation python: article.portal_type == 'tribuna.annotator.annotation';
                                    typeClassAddition python: (isArticle and 'article') or (isComment and 'comment') or (isImage and 'image') or (isAnnotation and 'annotation');
                                    varUID python: isComment and article.getId() or article.UID();
-                                   padding python: ''" >
+                                   padding python: 'left-padding' if (show_intersection and view.tags_selected()) else ''" >
               <div id="${varUID}"
-                   class="ui-widget-content text-view text-view-${typeClassAddition} ${padding}">
-                ${article}
+                   class="ui-widget-content text-view text-view-${typeClassAddition}${hasOneTagClassAddition} ${padding}">
                 <div id="gallery-link">
                   <a tal:condition="isArticle"
                      class="article-header"
@@ -121,7 +154,7 @@
                      class="comment-header"
                      href="${context/absolute_url}/articles/${article/id}${view/getArgs}"
                      tal:content="structure python: view.shorten_text(article.text)" />
-                   <a tal:condition="isAnnotation"
+                  <a tal:condition="isAnnotation"
                      class="annotation-header"
                      href="${context/absolute_url}/articles/${article/id}${view/getArgs}"
                      tal:content="structure python: view.shorten_text(article.quote)" />
@@ -147,7 +180,9 @@
           </tal:block>
         </div>
 
-        <div class="articles-union">
+        <div class="articles-union"
+             tal:define="show_union view/show_union">
+          <h3 i18n:translate="" tal:condition="python: show_union and view.tags_selected()">Union</h3>
           <tal:block repeat="article python: articles['union']">
             <tal:block tal:define="isArticle python: article.portal_type == 'tribuna.content.article';
                                    isComment python: article.portal_type == 'Discussion Item';
@@ -155,9 +190,9 @@
                                    isAnnotation python: article.portal_type == 'tribuna.annotator.annotation';
                                    typeClassAddition python: (isArticle and 'article') or (isComment and 'comment') or (isImage and 'image') or (isAnnotation and 'annotation');
                                    varUID python: isComment and article.getId() or article.UID();
-                                   padding python: ''">
+                                   padding python: 'left-padding' if (show_union and view.tags_selected()) else '' " >
               <div id="${varUID}"
-                   class="ui-widget-content text-view text-view-${typeClassAddition} ${padding}">
+                   class="ui-widget-content text-view text-view-${typeClassAddition}${hasOneTagClassAddition} ${padding}">
                 <div id="gallery-link">
                   <a tal:condition="isArticle"
                      class="article-header"
@@ -206,7 +241,6 @@
                                  isImage python: article.portal_type == 'tribuna.content.image';
                                  isAnnotation python: article.portal_type == 'tribuna.annotator.annotation';
                                  typeClassAddition python: (isArticle and 'article') or (isComment and 'comment') or (isImage and 'image') or (isAnnotation and 'annotation');
-                                 articleWithImage python: (isArticle and not article.image) and 'article-no-image' or '';
                                  articleWithImage python: (isArticle and not article.image) and 'article-no-image' or '';
                                  varUID python: isComment and article.getId() or article.UID()">
             <div id="${varUID}" class="ui-widget-content drag-view-${typeClassAddition} ${articleWithImage}">
@@ -259,6 +293,9 @@
                     <span tal:define="DateTime python:modules['DateTime'].DateTime;"
                           tal:replace="python:article.toLocalizedTime(article.modification_date)" />
                   </div>
+                  <p tal:condition="isComment" class="content-type">
+                    <span class="red" i18n:translate="">comment</span>
+                  </p>
                   <div tal:condition="isAnnotation" id="drag-annotation-info">
                     <span tal:define="creator article/Creator;
                                  mtool article/@@plone_tools/membership;
@@ -269,9 +306,6 @@
                     <span tal:define="DateTime python:modules['DateTime'].DateTime;"
                           tal:replace="python:article.toLocalizedTime(article.modification_date)" />
                   </div>
-                  <p tal:condition="isComment" class="content-type">
-                    <span class="red" i18n:translate="">comment</span>
-                  </p>
                   <p tal:condition="isAnnotation" class="content-type">
                     <span class="red" i18n:translate="">annotation</span>
                   </p>

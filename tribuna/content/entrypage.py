@@ -161,7 +161,12 @@ class ChangePagePictureForm(form.SchemaForm):
 
     @button.buttonAndHandler(_(u'Change'))
     def handleApply(self, action):
-        """Method that created new entry page and selects it as new front"""
+        """
+        Method that creates new EntryPage and selects it as new default page
+
+        :param    action: Action selected in form
+        :type     action: str
+        """
 
         data, errors = self.extractData()
         if errors:
@@ -235,7 +240,13 @@ class ChangePageTextForm(form.SchemaForm):
 
     @button.buttonAndHandler(_(u'Change'))
     def handleApply(self, action):
-        """Method that creates new entry page and selects it as new front"""
+        """
+        Method that creates new EntryPage and selects it as new default page
+
+        :param    action: Action selected in form
+        :type     action: str
+        """
+
         data, errors = self.extractData()
         if errors:
             self.status = self.formErrorsMessage
@@ -276,7 +287,6 @@ class ChangePageOldForm(form.SchemaForm):
     schema = IChangePageOldForm
     ignoreContext = True
     label = _(u"Select entry page")
-    #description = _(u"New entry page form")
 
     @button.buttonAndHandler(_(u'Change'))
     def handleApply(self, action):
