@@ -94,7 +94,6 @@
                                    padding python: ''" >
               <div id="${varUID}"
                    class="ui-widget-content text-view text-view-${typeClassAddition} ${padding}">
-                ${article}
                 <div id="gallery-link">
                   <a tal:condition="isArticle"
                      class="article-header"
