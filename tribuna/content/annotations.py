@@ -7,6 +7,45 @@ from zope.lifecycleevent.interfaces import IObjectCreatedEvent
 from tribuna.annotator.utils import unrestricted_create
 from tribuna.annotator.annotation import IAnnotation
 from tribuna.content.utils import our_unicode
+from tribuna.content.utils import tags_string_to_list
+
+
+class AnnotationView(grok.View):
+    grok.context(IAnnotation)
+    grok.require('zope2.View')
+    grok.name('view')
+
+    def get_selected_tags(self):
+        return tags_string_to_list(self.request.form.get('tags'))
+
+    def get_article_url(self):
+        """
+        Get URL of the article this annotation belongs to.
+
+        :returns: URL of the article
+        :rtype:   String
+        """
+        unwanted = ['type', 'comment', 'id']
+
+        getArgs = ''
+        for name in self.request.form:
+            if name not in unwanted:
+                getArgs += '&' + name + '=' + self.request.form[name]
+
+        if getArgs:
+            getArgs = '?' + getArgs[1:]
+
+        article_url = self.context.portal_url()
+
+        # First parent: Annotation
+        # Second parent: Annotations folder
+        # Third parent: Article that we annotated
+        article_url += '/articles/{0}{1}#enableannotations'.format(
+            self.__parent__.__parent__.__parent__.id,
+            getArgs,
+        )
+
+        return article_url
 
 
 @grok.subscribe(IAnnotation, IObjectCreatedEvent)
