@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
@@ -7,7 +8,14 @@
       i18n:domain="tribuna.content">
 <body>
 
-  <metal:block fill-slot="style_slot"></metal:block>
+  <metal:block fill-slot="style_slot">
+  <link rel="stylesheet" type="text/css"
+        tal:define="navroot context/@@plone_portal_state/navigation_root_url"
+        tal:attributes="href string:${navroot}/++resource++tribuna.diazotheme/css/jquery-ui-1.10.3.custom.min.css"/>
+  <script type="text/javascript"
+          tal:define="navroot context/@@plone_portal_state/navigation_root_url"
+          tal:attributes="src string:${navroot}/++resource++tribuna.diazotheme/js/jquery-ui-1.10.3.custom.min.js">
+  </script></metal:block>
 
 <metal:main fill-slot="main">
 <tal:main-macro metal:define-macro="main">
