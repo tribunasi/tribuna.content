@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2013-10-30 13:46+0000\n"
+"POT-Creation-Date: 2013-11-27 23:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,11 +21,11 @@ msgstr ""
 msgid "Add new..."
 msgstr ""
 
-#: ./portlets/sidebar.py:66
+#: ./portlets/sidebar.py:64
 msgid "All"
 msgstr ""
 
-#: ./portlets/sidebar.py:40
+#: ./portlets/sidebar.py:38
 msgid "All tags"
 msgstr ""
 
@@ -33,29 +33,29 @@ msgstr ""
 msgid "An article"
 msgstr ""
 
-#: ./portlets/sidebar.py:70
+#: ./portlets/sidebar.py:68
 msgid "Annotation"
 msgstr ""
 
 #: ./browser/templates/navbar.pt:15
-#: ./portlets/sidebar.py:67
+#: ./portlets/sidebar.py:65
 #: ./profiles/default/types/tribuna.content.article.xml
 msgid "Article"
 msgstr ""
 
-#: ./article.py:31
+#: ./article.py:32
 msgid "Article author"
 msgstr ""
 
-#: ./article.py:36
+#: ./article.py:37
 msgid "Article description"
 msgstr ""
 
-#: ./article.py:26
+#: ./article.py:27
 msgid "Article subtitle"
 msgstr ""
 
-#: ./browser/templates/navbar.pt:33
+#: ./browser/templates/navbar.pt:35
 #: ./browser/templates/tribuna_search.pt:80
 #: ./homepage_templates/homepageview.pt:92
 msgid "Articles"
@@ -73,15 +73,15 @@ msgstr ""
 msgid "Change"
 msgstr ""
 
-#: ./entrypage_templates/view.pt:44
+#: ./entrypage_templates/view.pt:52
 msgid "Change entry page"
 msgstr ""
 
-#: ./portlets/sidebar.py:68
+#: ./portlets/sidebar.py:66
 msgid "Comment"
 msgstr ""
 
-#: ./portlets/sidebar.py:64
+#: ./portlets/sidebar.py:62
 msgid "Content filters"
 msgstr ""
 
@@ -93,21 +93,29 @@ msgstr ""
 msgid "Display image"
 msgstr ""
 
-#: ./portlets/sidebar.py:57
+#: ./portlets/sidebar.py:55
 msgid "Drag"
 msgstr ""
 
-#: ./browser/templates/navbar.pt:27
+#: ./browser/templates/navbar.pt:29
 msgid "Edit"
 msgstr ""
 
-#: ./browser/templates/navbar.pt:31
-#: ./entrypage_templates/view.pt:23
+#: ./browser/templates/navbar.pt:33
+#: ./entrypage_templates/view.pt:31
 #: ./profiles/default/types/tribuna.content.entrypage.xml
 msgid "Entry page"
 msgstr ""
 
-#: ./portlets/sidebar.py:263
+#: ./browser/templates/navbar.pt:21
+msgid "File"
+msgstr ""
+
+#: ./browser/templates/navbar.pt:41
+msgid "Files"
+msgstr ""
+
+#: ./portlets/sidebar.py:261
 msgid "Filter"
 msgstr ""
 
@@ -115,7 +123,7 @@ msgstr ""
 msgid "Font type"
 msgstr ""
 
-#: ./entrypage_templates/view.pt:83
+#: ./entrypage_templates/view.pt:91
 msgid "Go to Home Page"
 msgstr ""
 
@@ -127,9 +135,9 @@ msgstr ""
 msgid "Home"
 msgstr ""
 
-#: ./article.py:41
+#: ./article.py:42
 #: ./browser/templates/navbar.pt:19
-#: ./portlets/sidebar.py:69
+#: ./portlets/sidebar.py:67
 msgid "Image"
 msgstr ""
 
@@ -137,11 +145,11 @@ msgstr ""
 msgid "Image content for Tribuna site"
 msgstr ""
 
-#: ./browser/templates/navbar.pt:37
+#: ./browser/templates/navbar.pt:39
 msgid "Images"
 msgstr ""
 
-#: ./article_templates/view.pt:69
+#: ./article_templates/view.pt:71
 msgid "Internal tags:"
 msgstr ""
 
@@ -153,7 +161,7 @@ msgstr ""
 msgid "Is article locked on first page?"
 msgstr ""
 
-#: ./portlets/sidebar.py:49
+#: ./portlets/sidebar.py:47
 msgid "Latest"
 msgstr ""
 
@@ -169,7 +177,7 @@ msgstr ""
 msgid "Log in"
 msgstr ""
 
-#: ./article.py:22
+#: ./article.py:23
 #: ./entrypage.py:69
 #: ./image.py:16
 msgid "Name"
@@ -179,11 +187,11 @@ msgstr ""
 msgid "No title"
 msgstr ""
 
-#: ./portlets/sidebar.py:50
+#: ./portlets/sidebar.py:48
 msgid "Nr. of comments"
 msgstr ""
 
-#: ./entrypage_templates/view.pt:63
+#: ./entrypage_templates/view.pt:71
 msgid "Old pages"
 msgstr ""
 
@@ -199,11 +207,11 @@ msgstr ""
 msgid "Original size"
 msgstr ""
 
-#: ./entrypage_templates/view.pt:55
+#: ./entrypage_templates/view.pt:63
 msgid "Picture"
 msgstr ""
 
-#: ./portlets/sidebar.py:75
+#: ./portlets/sidebar.py:73
 msgid "Query"
 msgstr ""
 
@@ -213,7 +221,7 @@ msgstr ""
 msgid "Search ..."
 msgstr ""
 
-#: ./portlets/sidebar.py:168
+#: ./portlets/sidebar.py:166
 msgid "Select appropriate tags"
 msgstr ""
 
@@ -237,11 +245,11 @@ msgstr ""
 msgid "Set this page as default entry page and disable editing."
 msgstr ""
 
-#: ./portlets/sidebar.py:325
+#: ./portlets/sidebar.py:323
 msgid "Sidebar navigation"
 msgstr ""
 
-#: ./portlets/sidebar.py:328
+#: ./portlets/sidebar.py:326
 msgid "Sidebar portlet"
 msgstr ""
 
@@ -251,18 +259,18 @@ msgid "Tag"
 msgstr ""
 
 #: ./behaviors/behaviors.py:56
-#: ./browser/templates/navbar.pt:35
-#: ./portlets/sidebar.py:32
+#: ./browser/templates/navbar.pt:37
+#: ./portlets/sidebar.py:30
 msgid "Tags"
 msgstr ""
 
-#: ./portlets/sidebar.py:169
+#: ./portlets/sidebar.py:167
 msgid "Tags selection form"
 msgstr ""
 
 #: ./entrypage.py:73
-#: ./entrypage_templates/view.pt:47
-#: ./portlets/sidebar.py:58
+#: ./entrypage_templates/view.pt:55
+#: ./portlets/sidebar.py:56
 msgid "Text"
 msgstr ""
 
@@ -282,7 +290,7 @@ msgstr ""
 msgid "Tribuna Image"
 msgstr ""
 
-#: ./portlets/sidebar.py:47
+#: ./portlets/sidebar.py:45
 msgid "Type of sorting"
 msgstr ""
 
@@ -294,21 +302,21 @@ msgstr ""
 msgid "Upload an image"
 msgstr ""
 
-#: ./portlets/sidebar.py:326
+#: ./portlets/sidebar.py:324
 msgid "Use this portlet for tag navigation."
 msgstr ""
 
-#: ./portlets/sidebar.py:55
+#: ./portlets/sidebar.py:53
 msgid "View type"
 msgstr ""
 
-#: ./article.py:42
+#: ./article.py:43
 msgid "Will be displayed on the article view."
 msgstr ""
 
-#: ./browser/templates/tribuna_search.pt:131
-#: ./homepage_templates/homepageview.pt:143
-#: ./homepage_templates/tagsview.pt:176
+#: ./annotations_templates/annotationview.pt:56
+#: ./browser/templates/tribuna_search.pt:130
+#: ./homepage_templates/homepageview.pt:142
 msgid "annotation"
 msgstr ""
 
@@ -316,9 +324,9 @@ msgstr ""
 msgid "annotations"
 msgstr ""
 
-#: ./article_templates/view.pt:107
-#: ./browser/templates/tribuna_search.pt:122
-#: ./homepage_templates/homepageview.pt:134
+#: ./article_templates/view.pt:110
+#: ./browser/templates/tribuna_search.pt:121
+#: ./homepage_templates/homepageview.pt:133
 msgid "article"
 msgstr ""
 
@@ -326,9 +334,9 @@ msgstr ""
 msgid "by"
 msgstr ""
 
-#: ./browser/templates/tribuna_search.pt:125
+#: ./browser/templates/tribuna_search.pt:124
 #: ./comment_templates/commentview.pt:54
-#: ./homepage_templates/homepageview.pt:137
+#: ./homepage_templates/homepageview.pt:136
 msgid "comment"
 msgstr ""
 
@@ -349,8 +357,8 @@ msgstr ""
 msgid "i forgot my password"
 msgstr ""
 
-#: ./browser/templates/tribuna_search.pt:128
-#: ./homepage_templates/homepageview.pt:140
+#: ./browser/templates/tribuna_search.pt:127
+#: ./homepage_templates/homepageview.pt:139
 #: ./homepage_templates/tagsview.pt:173
 msgid "image"
 msgstr ""
@@ -375,6 +383,7 @@ msgstr ""
 msgid "legend_livesearch"
 msgstr ""
 
+#: ./annotations_templates/annotationview.pt:40
 #: ./comment_templates/commentview.pt:38
 msgid "link to the article"
 msgstr ""
