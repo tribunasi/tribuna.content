@@ -66,17 +66,20 @@
             <span tal:content="context/article_author">The Ipsum Master</span>
           </h3>
 
-          <div class="annotation-tags-header" i18n:translate="">
-            Internal tags:
-          </div>
-          <div class="annotation-tags">
-            <tal:block tal:repeat="tag view/_get_annotation_tags">
-              <a tal:define="tagClass python: view.is_annotation_tag_selected(tag) and 'annotation-tags-item selected' or 'annotation-tags-item'"
-                 class="${tagClass}"
-                 tal:attributes="data-url python: view.get_annotation_tag_url(tag)"
-                 data-uid="${context/UID}">${tag}</a>
-            </tal:block>
-          </div>
+          <tal:block tal:define="tags view/_get_annotation_tags"
+                     tal:condition="tags">>
+            <div class="annotation-tags-header" i18n:translate="">
+              Internal tags:
+            </div>
+            <div class="annotation-tags">
+              <tal:block tal:repeat="tag tags">
+                <a tal:define="tagClass python: view.is_annotation_tag_selected(tag) and 'annotation-tags-item selected' or 'annotation-tags-item'"
+                   class="${tagClass}"
+                   tal:attributes="data-url python: view.get_annotation_tag_url(tag)"
+                   data-uid="${context/UID}">${tag}</a>
+              </tal:block>
+            </div>
+          </tal:block>
 
         </div>
 
