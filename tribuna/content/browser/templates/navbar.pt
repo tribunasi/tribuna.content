@@ -18,6 +18,8 @@
                i18n:translate="">Tag</a></li>
         <li><a href="${portal_url}/images-folder/++add++tribuna.content.image"
                i18n:translate="">Image</a></li>
+        <li><a href="${portal_url}/file-folder/createObject?type_name=File"
+               i18n:translate="">File</a></li>
       </ul>
     </li>
   </ul>
@@ -36,6 +38,8 @@
                i18n:translate="">Tags</a></li>
         <li><a href="${portal_url}/images-folder"
                i18n:translate="">Images</a></li>
+        <li><a href="${portal_url}/files-folder"
+               i18n:translate="">Files</a></li>
       </ul>
     </li>
   </ul>
