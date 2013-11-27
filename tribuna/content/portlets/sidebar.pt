@@ -34,7 +34,7 @@
         Etiam libero neque, luctus a, eleifend nec, semper at, lorem. Sed pede. Nulla lorem metus, adipiscing ut, luctus sed, hendrerit vitae, mi.
       </p>
     </div>
-    <a href="#" id="show-all-tags">All tags</a>
+    <a href="javascript:;" id="show-all-tags">All tags</a>
     <a id="home-link"
        href="${context/@@plone_portal_state/navigation_root_url}/home"
        i18n:translate="">go home</a>
