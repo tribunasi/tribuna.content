@@ -67,7 +67,7 @@
           </h3>
 
           <tal:block tal:define="tags view/_get_annotation_tags"
-                     tal:condition="tags">>
+                     tal:condition="tags">
             <div class="annotation-tags-header" i18n:translate="">
               Internal tags:
             </div>
