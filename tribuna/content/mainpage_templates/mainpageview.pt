@@ -15,11 +15,14 @@
                 tal:define="ploneview nocall:context/@@plone;
                             utils nocall:context/@@utils">
 
-  <div id="header" class="slider-header">
+  <tal:block tal:define="articles view/articles_all">
+
+  <div id="header" class="slider-header"
+       tal:condition="articles">
     <div class="content-slider-wrapper">
       <div class="content-slider responsive">
         <ul id="article-slider" class="unstyled">
-          <tal:block tal:repeat="article view/articles_all">
+          <tal:block tal:repeat="article articles">
             <li id="slider-${article/getId}"
                 data-uid="${article/UID}"
                 data-carousel-index="${repeat/article/index}"
@@ -47,14 +50,26 @@
         <img class="navigate" src="++theme++tribuna.diazotheme/img/arrowBlackRight.png" alt="Right"/></a>
   </div>
 
-  <div id="main" data-id="${view/article_id}"></div>
+  <div id="main" data-id="${view/article_id}">
+    <div tal:condition="not: articles">
+      <div id="no-load">
+        <h2>Deklica Zmrzalka</h2>
+        <p>Nekoč je živela deklica, ki je imela zelo mrzle roke, zato je dobila službo v sirarni.</p>
 
-  <div id="article-navigation">
-    <a href="#" class="prev">
-      <img class="navigate" src="++theme++tribuna.diazotheme/img/arrowBlackLeft.png" alt="Left"/></a>
-    <a href="#" class="next">
-      <img class="navigate" src="++theme++tribuna.diazotheme/img/arrowBlackRight.png" alt="Right"/></a>
+        <p>Nauk zgodbe: iskanje ni obrodilo sadov.<br>
+        Nauk nauka zgodbe: bodisi ste slabo iskali bodisi ustvarjalci strani ne dohajajo vaše vedoželjnosti.</p>
+      </div>
+    </div>
   </div>
+
+  <tal:block tal:condition="articles">
+    <div id="article-navigation">
+      <a href="#" class="prev">
+        <img class="navigate" src="++theme++tribuna.diazotheme/img/arrowBlackLeft.png" alt="Left"/></a>
+      <a href="#" class="next">
+        <img class="navigate" src="++theme++tribuna.diazotheme/img/arrowBlackRight.png" alt="Right"/></a>
+    </div>
+  </tal:block>
 
   <div id="close-articles">
     <a href="${view/get_close_url}">
@@ -64,6 +79,7 @@
 
   <div tal:replace="structure provider:plone.belowcontentbody" />
 
+  </tal:block>
 </tal:main-macro>
 </metal:main>
 
