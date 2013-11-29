@@ -73,7 +73,7 @@
 
   <div id="close-articles">
     <a href="${view/get_close_url}">
-      <img src="++theme++tribuna.diazotheme/img/x-sign.png" style="width: 15px; height:15px" />
+      <img src="++theme++tribuna.diazotheme/img/x-sign.png" style="width: 15px; height:15px" alt="Close" />
     </a>
   </div>
 

@@ -30,7 +30,7 @@
     </div>
 
     <div id="article-comment" class="articles-article-body span6">
-      <img tal:attributes="src string:++theme++tribuna.diazotheme/img/blank.gif" />
+      <img tal:attributes="src string:++theme++tribuna.diazotheme/img/blank.gif" alt="" />
       <div class="fit-text">
         <span class="comment-text"
               tal:content="structure context/getText">Comment</span>

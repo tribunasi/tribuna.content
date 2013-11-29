@@ -115,7 +115,7 @@
                           'twitter-share-dialog',
                           'width=626,height=436');
                         return false;">
-            <img src="${context/@@plone_portal_state/navigation_root_url}/++resource++tribuna.diazotheme/img/twitter_button.png"/>
+            <img src="${context/@@plone_portal_state/navigation_root_url}/++resource++tribuna.diazotheme/img/twitter_button.png" alt="Twitter" />
           </a>
 
           <a class="facebook-share" style="display: inline-block" href="#"
@@ -125,7 +125,7 @@
                           'facebook-share-dialog',
                           'width=626,height=436');
                         return false;">
-            <img src="${context/@@plone_portal_state/navigation_root_url}/++resource++tribuna.diazotheme/img/facebook_icon.jpg" />
+            <img src="${context/@@plone_portal_state/navigation_root_url}/++resource++tribuna.diazotheme/img/facebook_icon.jpg" alt="Facebook" />
           </a>
         </div>
         <div id="comments-${context/UID}"

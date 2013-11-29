@@ -64,7 +64,8 @@
     <tal:block tal:condition="has_one_tag">
       <tal:block tal:define="text_image view/tag_text_and_image">
         <div id="tag-picture">
-          <img tal:condition="text_image/image"  src="${text_image/image}"/>
+          <img tal:condition="text_image/image" src="${text_image/image}"
+               alt="Tag image"/>
           <div tal:condition="text_image/image" id="scroll"/>
         </div>
         <div id="tag-description-div">
@@ -148,7 +149,8 @@
                   <a tal:condition="isImage"
                      class="article-header"
                      href="${context/absolute_url}/articles/${article/id}${view/getArgs}">
-                     <img tal:attributes="src string:${article/absolute_url}/@@images/image" />
+                     <img tal:attributes="src string:${article/absolute_url}/@@images/image;
+                                          alt article/title"/>
                   </a>
                   <a tal:condition="isComment"
                      class="comment-header"
@@ -201,7 +203,8 @@
                   <a tal:condition="isImage"
                      class="article-header"
                      href="${context/absolute_url}/articles/${article/id}${view/getArgs}">
-                     <img tal:attributes="src string:${article/absolute_url}/@@images/image" />
+                     <img tal:attributes="src string:${article/absolute_url}/@@images/image;
+                                          alt article/title" />
                   </a>
                   <a tal:condition="isComment"
                      class="comment-header"
@@ -245,9 +248,11 @@
                                  varUID python: isComment and article.getId() or article.UID()">
             <div id="${varUID}" class="ui-widget-content drag-view-${typeClassAddition} ${articleWithImage}">
               <img tal:condition="isArticle"
-                   tal:attributes="src string:${article/absolute_url}/@@images/image" />
+                   tal:attributes="src string:${article/absolute_url}/@@images/image;
+                                   alt article/title" />
               <img tal:condition="isImage"
-                   tal:attributes="src string:${article/absolute_url}/@@images/image" />
+                   tal:attributes="src string:${article/absolute_url}/@@images/image;
+                                   alt article/title" />
               <div id="text">
                 <div id="gallery-link">
                   <a tal:condition="python: isArticle and article.article_author"

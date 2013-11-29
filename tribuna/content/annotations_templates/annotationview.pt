@@ -30,7 +30,7 @@
     </div>
 
     <div id="article-annotation" class="articles-article-body span6">
-      <img tal:attributes="src string:++theme++tribuna.diazotheme/img/blank.gif" />
+      <img tal:attributes="src string:++theme++tribuna.diazotheme/img/blank.gif" alt="" />
       <div class="fit-text">
         <p>
           <span class="annotation-text"

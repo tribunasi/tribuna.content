@@ -73,7 +73,7 @@
                           'twitter-share-dialog',
                           'width=626,height=436');
                         return false;">
-            <img src="${context/@@plone_portal_state/navigation_root_url}/++resource++tribuna.diazotheme/img/twitter_button.png"/>
+            <img src="${context/@@plone_portal_state/navigation_root_url}/++resource++tribuna.diazotheme/img/twitter_button.png" alt="Twitter" />
           </a>
           <a class="facebook-share" href="#"
                       onclick="
@@ -82,7 +82,7 @@
                           'facebook-share-dialog',
                           'width=626,height=436');
                         return false;">
-            <img src="${context/@@plone_portal_state/navigation_root_url}/++resource++tribuna.diazotheme/img/facebook_icon.jpg" />
+            <img src="${context/@@plone_portal_state/navigation_root_url}/++resource++tribuna.diazotheme/img/facebook_icon.jpg" alt="Facebook" />
           </a>
           <button class="context reply-to-comment-button allowMultiSubmit"
                         tal:condition="python:isDiscussionAllowed and (isAnon and isAnonymousDiscussionAllowed or userHasReplyPermission)"
