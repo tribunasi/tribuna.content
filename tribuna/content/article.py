@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """The Article content type."""
 
 from five import grok
