@@ -1,11 +1,11 @@
 <div id="navbar-template"
      i18n:domain="tribuna.content"
      tal:define="portal_url view/site_url">
-  <ul id="nav" class="nav">
+  <ul id="nav-home" class="nav">
     <li><a class="brand" href="#"><img src="/++theme++tribuna.diazotheme/img/home.png" alt="Home"/></a></li>
     <li><a href="${portal_url}/home" i18n:translate="">Home</a></li>
   </ul>
-  <ul id="secondary-nav" class="nav pull-left">
+  <ul id="nav-add" class="nav pull-left">
     <li class="dropdown" data-dropdown="dropdown">
       <a class="dropdown-toggle" href="#">
         <span id="add-menuheader" i18n:translate="">Add new...</span>
@@ -23,7 +23,7 @@
       </ul>
     </li>
   </ul>
-  <ul id="secondary-nav" class="nav pull-left">
+  <ul id="nav-edit" class="nav pull-left">
     <li class="dropdown" data-dropdown="dropdown">
       <a class="dropdown-toggle" href="#">
         <span id="edit-menuheader" i18n:translate="">Edit</span>
