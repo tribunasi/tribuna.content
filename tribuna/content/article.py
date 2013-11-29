@@ -9,11 +9,11 @@ from Products.PythonScripts.standard import url_quote
 from tribuna.annotator.interfaces import ITribunaAnnotator
 from zope import schema
 
-from tribuna.content import _
 from tribuna.annotator.utils import get_annotations
-from tribuna.content.utils import tags_string_to_list
+from tribuna.content import _
+from tribuna.content.utils import our_unicode
 from tribuna.content.utils import tags_published_dict
-
+from tribuna.content.utils import tags_string_to_list
 
 class IArticle(form.Schema, ITribunaAnnotator):
     """Interface for Article content type."""
@@ -118,6 +118,11 @@ class View(grok.View):
             for i in tags_generator:
                 tup += i
             self.annotation_tags = tuple(sorted(set(tup), key=str.lower))
+
+            # make sure the tags are unicoded
+            self.annotation_tags = tuple(
+                [our_unicode(i) for i in self.annotation_tags]
+            )
             return self.annotation_tags
 
     def _get_selected_annotation_tags(self):
@@ -137,6 +142,7 @@ class View(grok.View):
 
             actual_tags = ()
             self._get_annotation_tags()
+
             for i in selected_annotation_tags:
                 if i in self.annotation_tags:
                     actual_tags += (i,)
@@ -154,9 +160,12 @@ class View(grok.View):
     def get_text(self):
         self._get_selected_annotation_tags()
         selected_annotations = tuple()
+
         for i in self.annotations:
-            if(len(set(i['tags']).intersection(self.selected_annotation_tags))
-               > 0):
+            # make sure the tags are unicoded
+            current_annotation_tags = set([our_unicode(j) for j in i['tags']])
+            if(len(current_annotation_tags.intersection(
+                    self.selected_annotation_tags)) > 0):
                 selected_annotations += (i,)
 
         quotes = [i['quote'] for i in selected_annotations]
@@ -165,10 +174,22 @@ class View(grok.View):
 
     def get_annotation_tag_url(self, tag_title):
         catalog = api.portal.get_tool(name='portal_catalog')
-        tag_id = catalog(
+
+        # tag_id = catalog(
+        #     Title=tag_title,
+        #     portal_type='tribuna.content.tag'
+        # )[0].id
+        #
+        # Workaround the catalog doesn't differentiate "same" titles with only
+        # unicode differences (e.g. "kosarka" vs "košarka") well
+
+        tag_title = our_unicode(tag_title)
+        tags = catalog(
             Title=tag_title,
             portal_type='tribuna.content.tag'
-        )[0].id
+        )
+        tag_id = [i for i in tags if our_unicode(i.Title) == tag_title][0].id
+
         args = self.getArgs
         args_exist = False
         if args:
