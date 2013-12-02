@@ -114,6 +114,16 @@ class IEntryPage(form.Schema):
         required=False,
     )
 
+def delete_old():
+    catalog = api.portal.get_tool(name='portal_catalog')
+    brains = catalog(
+        portal_type='tribuna.content.entrypage',
+        sort_on="Date",
+        sort_order="ascending"
+    )
+    if len(brains) > 20:
+        api.content.delete(obj=brains[0].getObject())
+
 
 class IChangePagePictureForm(form.Schema):
     """Form for adding new picture to entry page"""
@@ -186,6 +196,7 @@ class ChangePagePictureForm(form.SchemaForm):
             new_page.author = data.get('author') or u''
             new_page.image_type = data["image_type"]
             folder.setDefaultPage(new_page.id)
+            delete_old()
             self.request.response.redirect(api.portal.get().absolute_url())
 
 
@@ -265,6 +276,7 @@ class ChangePageTextForm(form.SchemaForm):
             new_page.author = data.get('author') or u''
             new_page.font_type = data["font_type"]
             folder.setDefaultPage(new_page.id)
+            delete_old()
             self.request.response.redirect(api.portal.get().absolute_url())
 
 
