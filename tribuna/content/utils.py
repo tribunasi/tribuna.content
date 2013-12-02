@@ -157,7 +157,9 @@ def get_articles_search(form, use_filters=False):
     # tags view.
     if not searchableText:
         return get_articles_home(form)
-    searchableText += '*'
+
+    searchableText = searchableText.strip('"')
+    searchableText = prepare_search_string(searchableText)
 
     query = ''
     review_state = "published"
@@ -208,12 +210,18 @@ def get_articles_search(form, use_filters=False):
             sort_order=sort_order,
         )
 
+
+    # XXX: If we want to split into intersection and union, uncomment the
+    # bottom two paragraphs
+
     # all_content = [content for content in all_content]
     # all_content.sort(
     #     key=lambda x: count_same(x.Subject, query), reverse=True)
+
     all_content = all_content[:LIMIT]
 
     intersection_count = 0
+
     # num_all_tags = len(query)
     # for i in all_content:
     #     if count_same(i.Subject, query) == num_all_tags:
@@ -417,3 +425,20 @@ class UtilsView(grok.View):
 
     def render(self):
         return ''
+
+def quotestring(s):
+        return '"%s"' % s
+
+def quote_bad_chars(s):
+    bad_chars = ["(", ")"]
+    for char in bad_chars:
+        s = s.replace(char, quotestring(char))
+    return s
+
+def prepare_search_string(q):
+    multispace = u'\u3000'.encode('utf-8')
+    for char in ('?', '-', '+', '*', multispace):
+        q = q.replace(char, ' ')
+    r = q.split()
+    r = " AND ".join(r)
+    return quote_bad_chars(r) + '*'

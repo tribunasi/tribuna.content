@@ -8,6 +8,8 @@ from five import grok
 #from Products import AdvancedQuery
 from zope.interface import Interface
 
+from tribuna.content.utils import prepare_search_string
+
 
 class LiveSearchView(grok.View):
     grok.context(Interface)
@@ -148,14 +150,7 @@ class LiveSearchView(grok.View):
 
         return '\n'.join(self.output).encode('utf-8')
 
-def quotestring(s):
-        return '"%s"' % s
 
-def quote_bad_chars(s):
-    bad_chars = ["(", ")"]
-    for char in bad_chars:
-        s = s.replace(char, quotestring(char))
-    return s
 
 def search_catalog_results(context, q, limit, path):
     ploneUtils = getToolByName(context, 'plone_utils')
@@ -177,12 +172,7 @@ def search_catalog_results(context, q, limit, path):
     # But we strip these and these so that the catalog does
     # not interpret them as metachars
     # See http://dev.plone.org/plone/ticket/9422 for an explanation of '\u3000'
-    multispace = u'\u3000'.encode('utf-8')
-    for char in ('?', '-', '+', '*', multispace):
-        q = q.replace(char, ' ')
-    r = q.split()
-    r = " AND ".join(r)
-    r = quote_bad_chars(r) + '*'
+    r = prepare_search_string(q)
 
     params = {
         'SearchableText': r,
