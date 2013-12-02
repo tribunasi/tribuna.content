@@ -158,6 +158,7 @@ def get_articles_search(form, use_filters=False):
     if not searchableText:
         return get_articles_home(form)
 
+    searchableText = our_unicode(searchableText)
     searchableText = searchableText.strip('"')
     # Save it for the search on Subject
     searchableSubject = searchableText
@@ -443,12 +444,14 @@ def quotestring(s):
 def quote_bad_chars(s):
     bad_chars = ["(", ")"]
     for char in bad_chars:
+        char = our_unicode(char)
         s = s.replace(char, quotestring(char))
     return s
 
 def prepare_search_string(q):
     multispace = u'\u3000'.encode('utf-8')
     for char in ('?', '-', '+', '*', multispace):
+        char = our_unicode(char)
         q = q.replace(char, ' ')
     r = q.split()
     r = " AND ".join(r)

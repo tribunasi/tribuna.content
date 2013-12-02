@@ -8,6 +8,7 @@ from five import grok
 #from Products import AdvancedQuery
 from zope.interface import Interface
 
+from tribuna.content.utils import our_unicode
 from tribuna.content.utils import prepare_search_string
 
 
@@ -172,6 +173,8 @@ def search_catalog_results(context, q, limit, path):
     # But we strip these and these so that the catalog does
     # not interpret them as metachars
     # See http://dev.plone.org/plone/ticket/9422 for an explanation of '\u3000'
+
+    q = our_unicode(q)
     r = prepare_search_string(q)
 
     params = {
