@@ -18,7 +18,7 @@
                i18n:translate="">Tag</a></li>
         <li><a href="${portal_url}/images-folder/++add++tribuna.content.image"
                i18n:translate="">Image</a></li>
-        <li><a href="${portal_url}/file-folder/createObject?type_name=File"
+        <li><a href="${portal_url}/files-folder/createObject?type_name=File"
                i18n:translate="">File</a></li>
       </ul>
     </li>
