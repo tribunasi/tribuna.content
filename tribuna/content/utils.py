@@ -159,6 +159,8 @@ def get_articles_search(form, use_filters=False):
         return get_articles_home(form)
 
     searchableText = searchableText.strip('"')
+    # Save it for the search on Subject
+    searchableSubject = searchableText
     searchableText = prepare_search_string(searchableText)
 
     query = ''
@@ -204,6 +206,15 @@ def get_articles_search(form, use_filters=False):
     else:
         all_content = catalog(
             SearchableText=searchableText,
+            portal_type=portal_type,
+            review_state=review_state,
+            sort_on=sort_on,
+            sort_order=sort_order,
+        )
+        # If we're not filtering by Subject, search by Subject too (it's not
+        # actually a search, it's just a choice, Plone limitation).
+        all_content += catalog(
+            Subject=searchableSubject,
             portal_type=portal_type,
             review_state=review_state,
             sort_on=sort_on,
