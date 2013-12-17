@@ -189,8 +189,12 @@ class View(grok.View):
             Title=tag_title,
             portal_type='tribuna.content.tag'
         )
-        tag_id = [i for i in tags if our_unicode(i.Title) == tag_title][0].id
+        tag_titles = [i for i in tags if our_unicode(i.Title) == tag_title]
 
+        if not tag_titles:
+            return
+
+        tag_id = tag_titles[0].id
         args = self.getArgs
         args_exist = False
         if args:

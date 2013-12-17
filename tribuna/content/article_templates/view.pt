@@ -73,9 +73,11 @@
             </div>
             <div class="annotation-tags">
               <tal:block tal:repeat="tag tags">
-                <a tal:define="tagClass python: view.is_annotation_tag_selected(tag) and 'annotation-tags-item selected' or 'annotation-tags-item'"
+                <a tal:define="tagClass python: view.is_annotation_tag_selected(tag) and 'annotation-tags-item selected' or 'annotation-tags-item';
+                               tag_url python: view.get_annotation_tag_url(tag);"
                    class="${tagClass}"
-                   tal:attributes="data-url python: view.get_annotation_tag_url(tag)"
+                   tal:condition="tag_url"
+                   tal:attributes="data-url tag_url"
                    data-uid="${context/UID}">${tag}</a>
               </tal:block>
             </div>
