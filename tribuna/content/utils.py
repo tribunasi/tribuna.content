@@ -222,7 +222,6 @@ def get_articles_search(form, use_filters=False):
             sort_order=sort_order,
         )
 
-
     # XXX: If we want to split into intersection and union, uncomment the
     # bottom two paragraphs
 
@@ -241,7 +240,10 @@ def get_articles_search(form, use_filters=False):
     #     else:
     #         break
 
-    all_content = [content.getObject() for content in all_content]
+    # Use a set to get rid of duplicates (duplicates can appear when the query
+    # is found both in text and in Subject), then convert back to list so we
+    # can work with it.
+    all_content = list(set(content.getObject() for content in all_content))
 
     return (all_content[:intersection_count], all_content[intersection_count:])
 

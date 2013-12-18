@@ -196,7 +196,19 @@ def search_catalog_results(context, q, limit, path):
     else:
         params2['path'] = params['path'] = path
 
-    # We join the results of both queries and get rid of duplicates
-    # with converting them to set and then back to list
-    results1 = set(catalog(**params))
-    return list(results1.union(set(catalog(**params2))))
+    # We join the results of both queries and get rid of duplicates (duplicates
+    # can appear when the query is found both in text and in Subject). The
+    # original idea was to convert them to sets, but this doesn't work as the
+    # brain items aren't equivalent. One possibility would be to get all
+    # objects (then sets would work), or we manually get rid of duplicates
+    # (based on ID's)
+    results1 = catalog(**params)
+    results2 = catalog(**params2)
+    results = []
+    result_ids = []
+    for brain in results1 + results2:
+        if brain.id not in result_ids:
+            results.append(brain)
+            result_ids.append(brain.id)
+
+    return results
