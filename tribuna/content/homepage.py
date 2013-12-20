@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Views for the home page."""
 
 from Acquisition import aq_base
@@ -41,7 +43,8 @@ class SearchView(BrowserView):
 
     def is_text_view(self):
         """
-        Check if text view (this is the basic view) is selected.
+        Check if text view (base for desktop is drag, mobile only has text) is
+        selected.
 
         :returns: returns True or False, depending on text view being selected
         :rtype:   boolean
@@ -171,7 +174,8 @@ class HomePageView(grok.View):
 
     def is_text_view(self):
         """
-        Check if text view (this is the basic view) is selected.
+        Check if text view (base for desktop is drag, mobile only has text) is
+        selected.
 
         :returns: returns True or False, depending on text view being selected
         :rtype:   boolean
@@ -292,7 +296,8 @@ class TagsView(grok.View):
 
     def is_text_view(self):
         """
-        Check if text view (this is the basic view) is selected.
+        Check if text view (base for desktop is drag, mobile only has text) is
+        selected.
 
         :returns: returns True or False, depending on text view being selected
         :rtype:   Boolean
