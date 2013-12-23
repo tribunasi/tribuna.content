@@ -17,22 +17,6 @@ from tribuna.content.utils import get_articles_search
 from tribuna.content.utils import tags_published_dict
 
 
-def search_articles(query, session):
-    """Method for getting correct search results.
-
-    :param query: Text that we search for
-    :type  query: string
-    :param session: Current session
-    :type  session: Session getObject
-    """
-    if 'search-view' not in session.keys():
-        return
-    session['search-view']["active"] = True
-    session['search-view']['query'] = query
-    if "portlet_data" in session.keys():
-        session["portlet_data"]["tags"] = []
-
-
 class SearchView(BrowserView):
     """View that handles the searching and then redirects to the home page
     to display the results.
@@ -128,21 +112,6 @@ class SearchView(BrowserView):
         if self.articles["union"] == []:
             return False
         return True
-
-    # def __call__(self):
-    #     """
-    #     Makes the search and redirects to correct URL
-    #     """
-    #     pass
-        # import pdb; pdb.set_trace()
-        # query = quote_chars(self.request.form.get('SearchableText', ''))
-        # if query:
-        #     query = query + '*'
-        # sdm = self.context.session_data_manager
-        # session = sdm.getSessionData(create=True)
-        # search_articles(query, session)
-        # url = api.portal.get().absolute_url()
-        # self.request.response.redirect("{0}/home".format(url))
 
 
 class HomePageView(grok.View):
