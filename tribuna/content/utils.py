@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 """Various utilites."""
 
 from five import grok
@@ -442,8 +441,10 @@ class UtilsView(grok.View):
     def render(self):
         return ''
 
+
 def quotestring(s):
         return '"%s"' % s
+
 
 def quote_bad_chars(s):
     bad_chars = ["(", ")"]
@@ -451,6 +452,7 @@ def quote_bad_chars(s):
         char = our_unicode(char)
         s = s.replace(char, quotestring(char))
     return s
+
 
 def prepare_search_string(q):
     multispace = u'\u3000'.encode('utf-8')

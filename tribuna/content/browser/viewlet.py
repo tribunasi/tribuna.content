@@ -1,18 +1,17 @@
 # -*- coding: utf-8 -*-
-
 """Viewlets."""
 
 from collective.z3cform.widgets.token_input_widget import TokenInputFieldWidget
 from five import grok
 from plone import api
-from Products.Five.browser import BrowserView
-from plone.app.layout.viewlets import common as base
 from plone.app.layout.globals.interfaces import IViewView
+from plone.app.layout.viewlets import common as base
+from Products.Five.browser import BrowserView
+from zope.component import getMultiAdapter
+from zope.interface import Interface
+from zope.interface import alsoProvides
 from zope.interface import implements
 from zope.viewlet.interfaces import IViewlet
-from zope.component import getMultiAdapter
-from zope.interface import alsoProvides
-from zope.interface import Interface
 from zope.viewlet.interfaces import IViewletManager
 
 from tribuna.content.homepage import HomePageView

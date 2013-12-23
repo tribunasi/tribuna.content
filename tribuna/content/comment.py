@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+"""Comments related code."""
+
 from five import grok
 from plone import api
 from plone.app.discussion.comment import Comment
@@ -13,9 +15,9 @@ from tribuna.content.utils import tags_string_to_list
 
 
 class TribunaComment(Comment):
-    """ Extending comment clas from plone.app.discussion.comment
-        so we can add subject field to our comments"""
-
+    """Extending comment class from plone.app.discussion.comment
+    so that we can add subject field to our comments.
+    """
     implements(IComment)
     subject = None
 
@@ -28,7 +30,7 @@ TribunaCommentFactory = Factory(Comment)
 @indexer(IComment)
 def subject(object):
     """
-    Returns subject of our object
+    Returns subject (aka keywords) of our object
 
     :param    object: current comment
     :type     object: TribunaComment
@@ -41,8 +43,8 @@ def subject(object):
 
 @grok.subscribe(IComment, IObjectCreatedEvent)
 def add_tags(comment, event):
-    """ Method that is called when new comment is added, constructs new
-        tags if they are needed and assign them to comment
+    """Method that is called when a new comment is added. It constructs new
+    tags if they are needed and assigns them to the comment.
 
     :param comment: newly created comment
     :type comment: TribunaComment
@@ -99,7 +101,9 @@ def add_tags(comment, event):
 
 
 class CommentView(grok.View):
-    """View for displaying a comment (loaded with AJAX from mainpage)."""
+    """View for displaying a comment, loaded with AJAX from the @@articles
+    view.
+    """
     grok.context(IComment)
     grok.require('zope2.View')
     grok.name('comment-view')

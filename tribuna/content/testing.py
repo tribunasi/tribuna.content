@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Base module for unittesting."""
+"""Testing setup."""
 
 from plone.app.testing import applyProfile
 from plone.app.testing import FunctionalTesting

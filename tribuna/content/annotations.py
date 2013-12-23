@@ -1,4 +1,5 @@
-"""Integration code for tribuna.annotator"""
+# -*- coding: utf-8 -*-
+"""Integration code for tribuna.annotator."""
 
 from five import grok
 from plone import api

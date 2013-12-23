@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 """Views for the home page."""
 
 from Acquisition import aq_base
@@ -19,7 +18,7 @@ from tribuna.content.utils import tags_published_dict
 
 
 def search_articles(query, session):
-    """Method for getting correct search results
+    """Method for getting correct search results.
 
     :param query: Text that we search for
     :type  query: string
@@ -152,8 +151,7 @@ class HomePageView(grok.View):
     grok.name('home')
 
     def __init__(self, context, request):
-        """
-        Initializes the homepage view
+        """Initialize the homepage view.
 
         :param    context: Current site context
         :type     context: Context object
@@ -173,9 +171,8 @@ class HomePageView(grok.View):
         super(HomePageView, self).__init__(context, request)
 
     def is_text_view(self):
-        """
-        Check if text view (base for desktop is drag, mobile only has text) is
-        selected.
+        """Check if text view (base for desktop is drag, mobile only has text)
+        is selected.
 
         :returns: returns True or False, depending on text view being selected
         :rtype:   boolean
@@ -258,8 +255,7 @@ class TagsView(grok.View):
     grok.name('tags')
 
     def __init__(self, context, request):
-        """
-        Initializes the homepage view
+        """Initialize the tags view.
 
         :param    context: Current site context
         :type     context: Context object
@@ -331,7 +327,7 @@ class TagsView(grok.View):
             for name in self.request.form:
                 if name == 'query':
                     self.getArgs += ('&' + name + '=' +
-                                 url_quote(self.request.form[name]))
+                                     url_quote(self.request.form[name]))
                 else:
                     self.getArgs += '&' + name + '=' + self.request.form[name]
 

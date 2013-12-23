@@ -1,11 +1,13 @@
+# -*- coding: utf-8 -*-
+"""Search views."""
+
+from five import grok
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.browser.navtree import getNavigationRoot
 from Products.CMFPlone.utils import safe_unicode
 from Products.PythonScripts.standard import url_quote_plus
 from Products.PythonScripts.standard import html_quote
-from five import grok
-#from Products import AdvancedQuery
 from zope.interface import Interface
 
 from tribuna.content.utils import our_unicode
@@ -13,6 +15,9 @@ from tribuna.content.utils import prepare_search_string
 
 
 class LiveSearchView(grok.View):
+    """Custom live search view, code mostly copied from the default live search
+    skin-based script (livesearch_reply.py).
+    """
     grok.context(Interface)
     grok.name('livesearch')
     grok.require('zope2.View')
@@ -32,7 +37,6 @@ class LiveSearchView(grok.View):
         return self.search(q, limit=limit, path=path)
 
     def search(self, q, limit=10, path=None):
-
         results = search_catalog_results(self.context, q, limit, path)
         return self.render_livesearch_box(q, path, limit, results)
 
@@ -47,7 +51,7 @@ class LiveSearchView(grok.View):
         useViewAction = []
         if siteProperties is not None:
             useViewAction = siteProperties.getProperty(
-                                'typesUseViewActionInListings', [])
+                'typesUseViewActionInListings', [])
 
         #searchterm_query = '?searchterm=%s' % url_quote_plus(q)
         pretty_title_or_id = ploneUtils.pretty_title_or_id
@@ -62,11 +66,12 @@ class LiveSearchView(grok.View):
         RESPONSE = REQUEST.RESPONSE
         RESPONSE.setHeader('Content-Type', 'text/xml;charset=utf-8')
 
-        # replace named entities with their numbered counterparts, in the xml the named
-        # ones are not correct
+        # replace named entities with their numbered counterparts, in the
+        # xml the named ones are not correct
         #   &darr;      --> &#8595;
         #   &hellip;    --> &#8230;
-        legend_livesearch = _('legend_livesearch', default='LiveSearch &#8595;')
+        legend_livesearch = _(
+            'legend_livesearch', default='LiveSearch &#8595;')
         label_no_results_found = _('label_no_results_found',
                                    default='No matching results found.')
         label_advanced_search = _('label_advanced_search',
@@ -76,21 +81,21 @@ class LiveSearchView(grok.View):
         if not results:
             self.write('''<fieldset class="livesearchContainer">''')
             self.write('''<legend id="livesearchLegend">%s</legend>'''
-                    % ts.translate(legend_livesearch, context=REQUEST))
+                       % ts.translate(legend_livesearch, context=REQUEST))
             self.write('''<div class="LSIEFix">''')
             self.write('''<div id="LSNothingFound">%s</div>'''
-                    % ts.translate(label_no_results_found, context=REQUEST))
+                       % ts.translate(label_no_results_found, context=REQUEST))
             self.write('''<div class="LSRow">''')
             self.write('<a href="%s" class="advancedsearchlink">%s</a>' %
-                    (portal_url + '/@@search',
-                    ts.translate(label_advanced_search, context=REQUEST)))
+                       (portal_url + '/@@search',
+                        ts.translate(label_advanced_search, context=REQUEST)))
             self.write('''</div>''')
             self.write('''</div>''')
             self.write('''</fieldset>''')
         else:
             self.write('''<fieldset class="livesearchContainer">''')
             self.write('''<legend id="livesearchLegend">%s</legend>'''
-                    % ts.translate(legend_livesearch, context=REQUEST))
+                       % ts.translate(legend_livesearch, context=REQUEST))
             self.write('''<div class="LSIEFix">''')
             self.write('''<ul class="LSTable">''')
             for result in results[:limit]:
@@ -114,35 +119,38 @@ class LiveSearchView(grok.View):
 
                 full_title = full_title.replace('"', '&quot;')
                 klass = 'contenttype-%s' \
-                            % ploneUtils.normalizeString(result.portal_type)
+                    % ploneUtils.normalizeString(result.portal_type)
                 self.write('''<a href="%s" title="%s" class="%s">%s</a>'''
-                        % (itemUrl, full_title, klass, display_title))
+                           % (itemUrl, full_title, klass, display_title))
                 display_description = safe_unicode(result.Description)
                 if len(display_description) > MAX_DESCRIPTION:
                     display_description = ''.join(
                         (display_description[:MAX_DESCRIPTION], '...'))
 
-                # need to quote it, to avoid injection of html containing javascript
-                # and other evil stuff
+                # need to quote it, to avoid injection of html containing
+                # javascript and other evil stuff
                 display_description = html_quote(display_description)
-                self.write('''<div class="LSDescr">%s</div>''' % (display_description))
+                self.write('''<div class="LSDescr">%s</div>''' % (
+                    display_description))
                 self.write('''</li>''')
-                full_title, display_title, display_description = None, None, None
+                full_title = None
+                display_title = None
+                display_description = None
 
             self.write('''<li class="LSRow">''')
             self.write('<a href="%s" class="advancedsearchlink">%s</a>' %
-                    (portal_url + '/@@search',
-                    ts.translate(label_advanced_search, context=REQUEST)))
+                       (portal_url + '/@@search',
+                        ts.translate(label_advanced_search, context=REQUEST)))
             self.write('''</li>''')
 
             if len(results) > limit:
                 # add a more... row
                 self.write('''<li class="LSRow">''')
                 searchquery = '@@search?SearchableText=%s&path=%s' \
-                                % (searchterms, path)
+                    % (searchterms, path)
                 self.write('<a href="%s" class="advancedsearchlink">%s</a>' % (
-                                     searchquery,
-                                     ts.translate(label_show_all, context=REQUEST)))
+                    searchquery,
+                    ts.translate(label_show_all, context=REQUEST)))
                 self.write('''</li>''')
 
             self.write('''</ul>''')
@@ -150,7 +158,6 @@ class LiveSearchView(grok.View):
             self.write('''</fieldset>''')
 
         return '\n'.join(self.output).encode('utf-8')
-
 
 
 def search_catalog_results(context, q, limit, path):

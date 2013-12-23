@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
+from five import grok
 from plone.directives import form
 from zope import schema
-from five import grok
 
 from tribuna.content import _
 from tribuna.content.utils import tags_string_to_list
@@ -18,7 +18,9 @@ class IImage(form.Schema):
 
 
 class ImageView(grok.View):
-    """View for displaying a comment (loaded with AJAX from mainpage)."""
+    """View for displaying an image, loaded with AJAX from the @@articles
+    view.
+    """
     grok.context(IImage)
     grok.require('zope2.View')
     grok.name('image-view')

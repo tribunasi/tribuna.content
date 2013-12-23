@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Views for the main page."""
 
 from five import grok
@@ -177,8 +178,8 @@ class MainPageView(grok.View):
 
 
 class GetArticle(grok.View):
-    """View for getting and rendering an article for the provided id
-    (loaded with AJAX from mainpage).
+    """View for getting and rendering an article for the provided id,
+    loaded with AJAX from the @@articles view.
     """
     grok.context(Interface)
     grok.require('zope2.View')

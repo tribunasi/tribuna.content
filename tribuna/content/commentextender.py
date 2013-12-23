@@ -1,10 +1,9 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+"""Extensions for standard Plone commenting system."""
 
 from persistent import Persistent
 from plone.app.discussion.browser.comments import CommentForm
 from plone.z3cform.fieldsets import extensible
-from tribuna.content.comment import Comment
 from z3c.form.field import Fields
 from zope import interface
 from zope import schema
@@ -12,6 +11,8 @@ from zope.annotation import factory
 from zope.component import adapts
 from zope.interface import Interface
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
+
+from tribuna.content.comment import Comment
 
 
 class ICommentExtenderFields(Interface):
@@ -46,7 +47,7 @@ class CommentExtender(extensible.FormExtender):
 
     def __init__(self, context, request, form):
         """
-        Extends Comment with additional field
+        Extends Comment with additional field.
 
         :param    context: Current context
         :type     context: Comment

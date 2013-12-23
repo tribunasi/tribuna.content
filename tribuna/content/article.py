@@ -7,14 +7,15 @@ from plone.dexterity.content import Container
 from plone.directives import form
 from plone.namedfile.field import NamedBlobImage
 from Products.PythonScripts.standard import url_quote
-from tribuna.annotator.interfaces import ITribunaAnnotator
 from zope import schema
 
+from tribuna.annotator.interfaces import ITribunaAnnotator
 from tribuna.annotator.utils import get_annotations
 from tribuna.content import _
 from tribuna.content.utils import our_unicode
 from tribuna.content.utils import tags_published_dict
 from tribuna.content.utils import tags_string_to_list
+
 
 class IArticle(form.Schema, ITribunaAnnotator):
     """Interface for Article content type."""
@@ -47,7 +48,7 @@ class IArticle(form.Schema, ITribunaAnnotator):
 
 
 class Article(Container):
-    """Article model."""
+    """Article content type."""
 
 
 class View(grok.View):
@@ -232,7 +233,9 @@ class View(grok.View):
 
 
 class BaseView(grok.View):
-    """Article view."""
+    """Basic Article view, without the fancy carosuel stuff like in @@articles
+    view. Mostly for debugging purposes.
+    """
     grok.context(IArticle)
     grok.require('zope2.View')
     grok.name('base-view')

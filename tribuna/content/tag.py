@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 """Tag content type."""
 
 from five import grok
@@ -13,7 +13,7 @@ from tribuna.content import _
 
 
 class ITag(form.Schema):
-    """Interface for Tag content type."""
+    """Interface for the Tag content type."""
 
     title = schema.TextLine(
         title=_(u"Name"),
@@ -33,7 +33,7 @@ def highlight_in_navigation_indexer(obj):
 @grok.subscribe(ITag, IObjectModifiedEvent)
 def object_edited(context, event):
     """
-    Method that sets subject when object is modified
+    Method that sets the subject when a tag is modified.
 
     :param    context: Current context
     :type     context: Context object
@@ -46,7 +46,7 @@ def object_edited(context, event):
 @grok.subscribe(ITag, IObjectAddedEvent)
 def object_added(context, event):
     """
-    Method that sets subject when object is created
+    Method that sets the subject when a tag is created.
 
     :param    context: Current context
     :type     context: Context object
@@ -91,7 +91,7 @@ class View(grok.View):
 
     def articles(self):
         """
-        Method for getting all articles that belong to this tag
+        Method for getting all articles that belong to this tag.
 
         :returns: Articles of this tag
         :rtype:   list
