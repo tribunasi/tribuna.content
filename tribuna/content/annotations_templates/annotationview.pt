@@ -6,8 +6,6 @@
       metal:use-macro="context/main_template/macros/master"
       i18n:domain="tribuna.content">
 <body>
-<metal:block fill-slot="style_slot">
-</metal:block>
 
 <metal:main fill-slot="main">
 <tal:main-macro metal:define-macro="main"
@@ -23,8 +21,6 @@
           <span tal:repeat="tag selected_tags"
                 class="selected"
                 tal:content="tag">tag</span>
-          <!--span tal:repeat="tag context/subject"
-                class="selected" tal:content="tag">tag</span-->
         </div>
       </div>
     </div>

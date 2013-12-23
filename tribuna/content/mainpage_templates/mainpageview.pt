@@ -6,16 +6,13 @@
       metal:use-macro="context/main_template/macros/master"
       i18n:domain="tribuna.content">
 <body>
-<metal:block fill-slot="style_slot">
-
-</metal:block>
 
 <metal:main fill-slot="main">
 <tal:main-macro metal:define-macro="main"
                 tal:define="ploneview nocall:context/@@plone;
                             utils nocall:context/@@utils">
 
-  <tal:block tal:define="articles view/articles_all">
+<tal:block tal:define="articles view/articles_all">
 
   <div id="header" class="slider-header"
        tal:condition="articles">
@@ -46,8 +43,8 @@
     </div>
     <a href="#" id="prev" class="prev">
       <img class="navigate" src="++theme++tribuna.diazotheme/img/arrowBlackLeft.png" alt="Left"/></a>
-      <a href="#" id="next" class="next">
-        <img class="navigate" src="++theme++tribuna.diazotheme/img/arrowBlackRight.png" alt="Right"/></a>
+    <a href="#" id="next" class="next">
+      <img class="navigate" src="++theme++tribuna.diazotheme/img/arrowBlackRight.png" alt="Right"/></a>
   </div>
 
   <div id="main" data-id="${view/article_id}">
@@ -57,7 +54,7 @@
         <p>Nekoč je živela deklica, ki je imela zelo mrzle roke, zato je dobila službo v sirarni.</p>
 
         <p>Nauk zgodbe: iskanje ni obrodilo sadov.<br>
-        Nauk nauka zgodbe: bodisi ste slabo iskali bodisi ustvarjalci strani ne dohajajo vaše vedoželjnosti.</p>
+          Nauk nauka zgodbe: bodisi ste slabo iskali bodisi ustvarjalci strani ne dohajajo vaše vedoželjnosti.</p>
       </div>
     </div>
   </div>
@@ -79,7 +76,7 @@
 
   <div tal:replace="structure provider:plone.belowcontentbody" />
 
-  </tal:block>
+</tal:block>
 </tal:main-macro>
 </metal:main>
 

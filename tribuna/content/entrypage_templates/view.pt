@@ -8,14 +8,15 @@
       i18n:domain="tribuna.content">
 <body>
 
-  <metal:block fill-slot="style_slot">
+<metal:block fill-slot="style_slot">
   <link rel="stylesheet" type="text/css"
         tal:define="navroot context/@@plone_portal_state/navigation_root_url"
         tal:attributes="href string:${navroot}/++resource++tribuna.diazotheme/css/jquery-ui-1.10.3.custom.min.css"/>
   <script type="text/javascript"
           tal:define="navroot context/@@plone_portal_state/navigation_root_url"
           tal:attributes="src string:${navroot}/++resource++tribuna.diazotheme/js/jquery-ui-1.10.3.custom.min.js">
-  </script></metal:block>
+  </script>
+</metal:block>
 
 <metal:main fill-slot="main">
 <tal:main-macro metal:define-macro="main">
@@ -29,9 +30,10 @@
   <div tal:replace="structure provider:plone.abovecontentbody" />
 
   <h2 i18n:translate="">Entry page</h2>
+
   <div>
     <div tal:define="picture nocall:context/picture"
-             tal:condition="nocall:picture">
+         tal:condition="nocall:picture">
       <img tal:attributes="src string:${context/absolute_url}/@@images/picture;
                            height picture/_height | nothing;
                            width picture/_width | nothing;
@@ -39,13 +41,12 @@
       <p tal:condition="python: context.image_type == 'tile'" id="background-placeholder" style="background: url('${context/absolute_url}/@@images/picture') repeat scroll 0 0 transparent" />
       <p tal:condition="python: context.image_type == 'original'" id="background-placeholder" style="background: url('${context/absolute_url}/@@images/picture') no-repeat transparent; background-position: 50% 0%;" />
       <p tal:condition="python: context.image_type == 'cover'" id="background-placeholder" style="background: url('${context/absolute_url}/@@images/picture') no-repeat transparent; background-size: contain; background-position:center;" />
-
     </div>
     <div tal:condition="context/text">
       <div id="text-container" class="entrypage-text-container">
         <p tal:attributes="class context/font_type"
            id="entrypage-text">
-           ${context/text}
+          ${context/text}
         </p>
       </div>
     </div>

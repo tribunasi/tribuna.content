@@ -1,23 +1,23 @@
 <div id="plone-comments-${context/UID}"
      tal:content="structure view/render_comments"></div>
 <script>
-        var comments = jQuery("#plone-comments-${context/UID}"),
-            comments_form = comments.find("#commenting form"),
-            comments_container = comments.parent();
+    var comments = jQuery("#plone-comments-${context/UID}"),
+        comments_form = comments.find("#commenting form"),
+        comments_container = comments.parent();
 
-        var options = {
-            data: comments_form.serialize(),
-            success:function() {
-                comments_container.load(comments_container.attr("data-url") + "?replying=True");
+    var options = {
+        data: comments_form.serialize(),
+        success:function() {
+            comments_container.load(comments_container.attr("data-url") + "?replying=True");
+        }
+    };
+    
+    comments_form.ajaxForm(options);
 
-            }
-        };
-        comments_form.ajaxForm(options);
-
-        $("#latest").bind("change", function (e) {
-            sel = $("#latest option:selected");
-            comments_container.load(comments_container.attr("data-url") + "?" + $("#latest option:selected").attr("id") + "=True");
-        });
+    $("#latest").bind("change", function (e) {
+        sel = $("#latest option:selected");
+        comments_container.load(comments_container.attr("data-url") + "?" + $("#latest option:selected").attr("id") + "=True");
+    });
 </script>
 <script type="text/javascript"
         tal:define="navroot context/@@plone_portal_state/navigation_root_url"

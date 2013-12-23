@@ -22,24 +22,27 @@
 <tal:main-macro metal:define-macro="main">
 
   <div tal:replace="structure provider:plone.abovecontenttitle" />
+
   <h1 class="documentFirstHeading">Home page</h1>
+
   <div tal:replace="structure provider:plone.belowcontenttitle" />
+
   <div tal:replace="structure provider:plone.abovecontentbody" />
 
   <div id="search-form">
-      <form id="searchForm" name="searchForm" method="post" action="@@search">
-        <div class="LSBox">
-          <input type="text" id="searchGadget" class="searchField"
-                 placeholder="Search ..." title="Search" name="SearchableText"
-                 autocomplete="off" i18n:attributes="placeholder">
-          <div class="LSResult bordered" id="LSResult" style="display:none;">
-            <div class="LSShadow" id="LSShadow"></div>
-          </div>
+    <form id="searchForm" name="searchForm" method="post" action="@@search">
+      <div class="LSBox">
+        <input type="text" id="searchGadget" class="searchField"
+               placeholder="Search ..." title="Search" name="SearchableText"
+               autocomplete="off" i18n:attributes="placeholder">
+        <div class="LSResult bordered" id="LSResult" style="display:none;">
+          <div class="LSShadow" id="LSShadow"></div>
         </div>
-        <div id="search-controls" class="formControls">
-          <input id="search-button" name="search-button" class="submit-widget button-field" value="Search" type="submit" />
-        </div>
-      </form>
+      </div>
+      <div id="search-controls" class="formControls">
+        <input id="search-button" name="search-button" class="submit-widget button-field" value="Search" type="submit" />
+      </div>
+    </form>
   </div>
 
   <tal:block tal:define="articles view/_get_articles">
@@ -47,7 +50,7 @@
     <div id="homepage-div"
          tal:define="articles_num python: len(articles['all'])">
       <div id="empty-results"
-          tal:condition="python: not articles['all'] or articles_num == 0">
+           tal:condition="python: not articles['all'] or articles_num == 0">
 
           <h2>Pravljica o pravljici</h2>
           <p>Nekoč je živela pravljica, ki se ni začela z “Nekoč je …”<br />
@@ -99,14 +102,14 @@
                   <a tal:condition="isImage"
                      class="article-header"
                      href="${context/absolute_url}/articles/${article/id}${view/getArgs}">
-                     <img tal:attributes="src string:${article/absolute_url}/@@images/image;
-                                          alt article/title" />
+                    <img tal:attributes="src string:${article/absolute_url}/@@images/image;
+                                         alt article/title" />
                   </a>
                   <a tal:condition="isComment"
                      class="comment-header"
                      href="${context/absolute_url}/articles/${article/id}${view/getArgs}"
                      tal:content="structure python: view.shorten_text(article.text)" />
-                   <a tal:condition="isAnnotation"
+                  <a tal:condition="isAnnotation"
                      class="annotation-header"
                      href="${context/absolute_url}/articles/${article/id}${view/getArgs}"
                      tal:content="structure python: view.shorten_text(article.quote)" />
@@ -151,8 +154,8 @@
                   <a tal:condition="isImage"
                      class="article-header"
                      href="${context/absolute_url}/articles/${article/id}${view/getArgs}">
-                     <img tal:attributes="src string:${article/absolute_url}/@@images/image;
-                                          alt article/title" />
+                    <img tal:attributes="src string:${article/absolute_url}/@@images/image;
+                                         alt article/title" />
                   </a>
                   <a tal:condition="isComment"
                      class="comment-header"
@@ -173,7 +176,7 @@
                 <p tal:condition="isComment" class="content-type">
                   <span class="red" i18n:translate="">comment</span>
                 </p>
-                 <p tal:condition="isImage" class="content-type">
+                <p tal:condition="isImage" class="content-type">
                   <span class="red" i18n:translate="">image</span>
                 </p>
                 <p tal:condition="isAnnotation" class="content-type">
@@ -239,9 +242,9 @@
                   </p>
                   <div tal:condition="isComment" id="drag-comment-info">
                     <span tal:define="creator article/Creator;
-                                 mtool article/@@plone_tools/membership;
-                                 author python:mtool.getMemberInfo(creator)"
-                           tal:content="python:author and author['fullname'] or creator">
+                                      mtool article/@@plone_tools/membership;
+                                      author python:mtool.getMemberInfo(creator)"
+                          tal:content="python:author and author['fullname'] or creator">
                       Author name
                     </span>
                     <span tal:define="DateTime python:modules['DateTime'].DateTime;"
@@ -249,9 +252,9 @@
                   </div>
                   <div tal:condition="isAnnotation" id="drag-annotation-info">
                     <span tal:define="creator article/Creator;
-                                 mtool article/@@plone_tools/membership;
-                                 author python:mtool.getMemberInfo(creator)"
-                           tal:content="python:author and author['fullname'] or creator">
+                                      mtool article/@@plone_tools/membership;
+                                      author python:mtool.getMemberInfo(creator)"
+                          tal:content="python:author and author['fullname'] or creator">
                       Author name
                     </span>
                     <span tal:define="DateTime python:modules['DateTime'].DateTime;"
@@ -264,8 +267,8 @@
                     <span class="red" i18n:translate="">annotation</span>
                   </p>
                   <p tal:condition="isImage" class="content-type">
-                  <span class="red" i18n:translate="">image</span>
-                </p>
+                    <span class="red" i18n:translate="">image</span>
+                  </p>
                 </div>
                 <div id="drag-view-tags">
                   <span id="drag-view-tags-list">
@@ -281,10 +284,12 @@
           </tal:block>
         </tal:block>
       </tal:block>
-      </div>
-    </tal:block>
-    <div tal:replace="structure provider:plone.belowcontentbody" />
-  </tal:main-macro>
+    </div>
+  </tal:block>
+
+  <div tal:replace="structure provider:plone.belowcontentbody" />
+
+</tal:main-macro>
 </metal:main>
 
 </body>

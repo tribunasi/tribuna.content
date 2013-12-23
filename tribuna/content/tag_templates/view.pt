@@ -8,35 +8,33 @@
 <body>
 
 <metal:main fill-slot="main">
-    <tal:main-macro metal:define-macro="main"
-        tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime">
+  <tal:main-macro metal:define-macro="main"
+                  tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime">
 
-        <div tal:replace="structure provider:plone.abovecontenttitle" />
+    <div tal:replace="structure provider:plone.abovecontenttitle" />
 
-        <h1 class="documentFirstHeading" tal:content="context/title" />
+    <h1 class="documentFirstHeading" tal:content="context/title" />
 
-        <div tal:replace="structure provider:plone.belowcontenttitle" />
+    <div tal:replace="structure provider:plone.belowcontenttitle" />
 
-        <div tal:replace="structure provider:plone.abovecontentbody" />
+    <div tal:replace="structure provider:plone.abovecontentbody" />
 
-        <p tal:content="structure context/text"></p>
+    <p tal:content="structure context/text"></p>
 
-        <h2 i18n:translate="">Articles</h2>
-        <!-- <p class="tagBodyText" tal:content="structure context/text" />
-        <img tal:attributes="src string:${context/absolute_url}/@@images/image" /> -->
-        <dl>
-            <tal:block repeat="article view/articles">
-                <dt>
-                    <a tal:attributes="href article/getURL"
-                       tal:content="article/Title" />
-                </dt>
-                <dd tal:content="article/Description" />
-            </tal:block>
-        </dl>
+    <h2 i18n:translate="">Articles</h2>
+    <dl>
+      <tal:block repeat="article view/articles">
+        <dt>
+          <a tal:attributes="href article/getURL"
+             tal:content="article/Title" />
+        </dt>
+        <dd tal:content="article/Description" />
+      </tal:block>
+    </dl>
 
-        <div tal:replace="structure provider:plone.belowcontentbody" />
+    <div tal:replace="structure provider:plone.belowcontentbody" />
 
-    </tal:main-macro>
+  </tal:main-macro>
 </metal:main>
 
 </body>

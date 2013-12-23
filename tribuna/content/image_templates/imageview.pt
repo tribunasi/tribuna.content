@@ -6,9 +6,6 @@
       metal:use-macro="context/main_template/macros/master"
       i18n:domain="tribuna.content">
 <body>
-<metal:block fill-slot="style_slot">
-
-</metal:block>
 
 <metal:main fill-slot="main">
 <tal:main-macro metal:define-macro="main"
@@ -24,8 +21,6 @@
           <span tal:repeat="tag selected_tags"
                 class="selected"
                 tal:content="tag">tag</span>
-          <!--span tal:repeat="tag context/subject"
-                class="selected" tal:content="tag">tag</span-->
         </div>
       </div>
     </div>
@@ -40,37 +35,37 @@
                            alt context/title" />
       <div id="image-info">
         <span tal:define="creator context/Creator;
-                     mtool context/@@plone_tools/membership;
-                     author python:mtool.getMemberInfo(creator)"
-               tal:content="python:author and author['fullname'] or creator">
+                          mtool context/@@plone_tools/membership;
+                          author python:mtool.getMemberInfo(creator)"
+              tal:content="python:author and author['fullname'] or creator">
           Author name
         </span>
         <span tal:define="DateTime python:modules['DateTime'].DateTime;"
               tal:replace="python:context.toLocalizedTime(context.modification_date)" />
       </div>
       <div id="article-tags-info">
-          <p class="articleTag" tal:content="python: ', '.join(context.subject)" />
+        <p class="articleTag" tal:content="python: ', '.join(context.subject)" />
       </div>
       <div class="red" i18n:translate="">image</div>
       <a class="twitter-share" style="display: inline-block" href="#"
-                      onclick="
-                        window.open(
-                          'http://twitter.com/share?text=${context/title}&url=${context/@@plone_portal_state/navigation_root_url}/articles/${context/getId}',
-                          'twitter-share-dialog',
-                          'width=626,height=436');
-                        return false;">
-            <img src="${context/@@plone_portal_state/navigation_root_url}/++resource++tribuna.diazotheme/img/twitter_button.png" alt="Twitter" />
-          </a>
+         onclick="
+                  window.open(
+                  'http://twitter.com/share?text=${context/title}&url=${context/@@plone_portal_state/navigation_root_url}/articles/${context/getId}',
+                  'twitter-share-dialog',
+                  'width=626,height=436');
+                  return false;">
+        <img src="${context/@@plone_portal_state/navigation_root_url}/++resource++tribuna.diazotheme/img/twitter_button.png" alt="Twitter" />
+      </a>
 
-          <a class="facebook-share" style="display: inline-block" href="#"
-                      onclick="
-                        window.open(
-                          'http://www.facebook.com/sharer.php?s=100&p[title]=${context/title}&p[summary]=${context/Description}&p[url]=${context/@@plone_portal_state/navigation_root_url}/articles/${context/getId}&p[images][0]=${context/absolute_url}/@@images/image/preview',
-                          'facebook-share-dialog',
-                          'width=626,height=436');
-                        return false;">
-            <img src="${context/@@plone_portal_state/navigation_root_url}/++resource++tribuna.diazotheme/img/facebook_icon.jpg" alt="Facebook" />
-          </a>
+      <a class="facebook-share" style="display: inline-block" href="#"
+         onclick="
+                  window.open(
+                  'http://www.facebook.com/sharer.php?s=100&p[title]=${context/title}&p[summary]=${context/Description}&p[url]=${context/@@plone_portal_state/navigation_root_url}/articles/${context/getId}&p[images][0]=${context/absolute_url}/@@images/image/preview',
+                  'facebook-share-dialog',
+                  'width=626,height=436');
+                  return false;">
+        <img src="${context/@@plone_portal_state/navigation_root_url}/++resource++tribuna.diazotheme/img/facebook_icon.jpg" alt="Facebook" />
+      </a>
     </div>
   </div>
 

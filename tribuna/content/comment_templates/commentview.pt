@@ -23,8 +23,6 @@
           <span tal:repeat="tag selected_tags"
                 class="selected"
                 tal:content="tag">tag</span>
-          <!--span tal:repeat="tag context/subject"
-                class="selected" tal:content="tag">tag</span-->
         </div>
       </div>
     </div>
@@ -40,16 +38,16 @@
          tal:attributes="href view/get_article_url">link to the article</a> →
       <div id="comment-info">
         <span tal:define="creator context/Creator;
-                     mtool context/@@plone_tools/membership;
-                     author python:mtool.getMemberInfo(creator)"
-               tal:content="python:author and author['fullname'] or creator">
+                          mtool context/@@plone_tools/membership;
+                          author python:mtool.getMemberInfo(creator)"
+              tal:content="python:author and author['fullname'] or creator">
           Author name
         </span>
         <span tal:define="DateTime python:modules['DateTime'].DateTime;"
               tal:replace="python:context.toLocalizedTime(context.modification_date)" />
       </div>
       <div id="comment-tags-info">
-          <p class="oneCommentTag" tal:content="python: ', '.join(context.subject)" />
+        <p class="oneCommentTag" tal:content="python: ', '.join(context.subject)" />
       </div>
       <div class="red redTag" i18n:translate="">comment</div>
     </div>

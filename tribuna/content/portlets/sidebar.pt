@@ -3,37 +3,38 @@
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       i18n:domain="plone.app.widgets"
-      lang="en"
-      >
+      lang="en">
+
   <dl class="portlet portletSidebar"
-    i18n:domain="tribuna.content">
+      i18n:domain="tribuna.content">
 
     <dt class="portletHeader">
       <span class="portletTopLeft"></span>
       Sidebar tag navigation
       <span class="portletTopRight"></span>
     </dt>
+
     <tal:main-macro metal:define-macro="main">
 
       <h1 class="documentFirstHeading">Select filter</h1>
 
       <div id="skel-contents">
-
         <tal:block define="form view/portlet_data">
           <tal:block define="view nocall:form">
             <metal:block use-macro="form/@@ploneform-macros/titlelessform" />
           </tal:block>
-
         </tal:block>
       </div>
 
     </tal:main-macro>
+
     <div id="all-tags" class="ui-widget-content ui-corner-all overlay">
       <h3 class="ui-widget-header ui-corner-all">Toggle</h3>
       <p>
         Etiam libero neque, luctus a, eleifend nec, semper at, lorem. Sed pede. Nulla lorem metus, adipiscing ut, luctus sed, hendrerit vitae, mi.
       </p>
     </div>
+
     <a href="javascript:;" id="show-all-tags">All tags</a>
     <a id="home-link"
        href="${context/@@plone_portal_state/navigation_root_url}/home"
@@ -45,4 +46,5 @@
     </dd>
 
   </dl>
+
 </html>
