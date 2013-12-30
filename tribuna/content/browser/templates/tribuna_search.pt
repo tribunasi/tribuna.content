@@ -48,8 +48,6 @@
     <input id="search-use-filters" name="use-filters" type="checkbox" />
   </div>
 
-  <div id="search-view" style="display:none"></div>
-
   <tal:block tal:define="articles view/_get_articles">
 
     <div id="homepage-div"
