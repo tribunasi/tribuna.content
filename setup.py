@@ -26,7 +26,7 @@ setup(
         "Programming Language :: Python",
     ],
     keywords='tribuna, content',
-    author='Termitnjak Ltd.',
+    author='Termitnjak d.o.o.',
     author_email='info@termitnjak.com',
     url='',
     license='BSD',

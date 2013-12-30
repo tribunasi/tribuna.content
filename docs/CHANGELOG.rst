@@ -1,10 +1,8 @@
-Changelog
-=========
+tribuna.content
+---------------
 
-
-0.1 (unreleased)
-----------------
+0.1
+^^^
 
 - Initial release.
-  [YOUR NAME HERE]
-
+  [Termitnjak d.o.o.]
