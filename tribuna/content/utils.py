@@ -135,16 +135,8 @@ def get_articles_home(form):
     all_content.sort(
         key=lambda x: count_same(x.Subject, query), reverse=True)
     all_content = all_content[:LIMIT]
-
-    intersection_count = 0
-    num_all_tags = len(query)
-    for i in all_content:
-        if count_same(i.Subject, query) == num_all_tags:
-            intersection_count += 1
-        else:
-            break
-
     all_content = [content.getObject() for content in all_content]
+    intersection_count = 0
 
     return (all_content[:intersection_count], all_content[intersection_count:])
 

@@ -83,58 +83,8 @@
           <tal:block tal:content="articles_num">num</tal:block>
           <tal:block i18n:translate="">results</tal:block>
         </span>
-        <div class="articles-intersection">
-          <tal:block repeat="article python: articles['intersection']">
-            <tal:block tal:define="isArticle python: article.portal_type == 'tribuna.content.article';
-                                   isComment python: article.portal_type == 'Discussion Item';
-                                   isImage python: article.portal_type == 'tribuna.content.image';
-                                   isAnnotation python: article.portal_type == 'tribuna.annotator.annotation';
-                                   typeClassAddition python: (isArticle and 'article') or (isComment and 'comment') or (isImage and 'image') or (isAnnotation and 'annotation');
-                                   varUID python: isComment and article.getId() or article.UID();
-                                   padding python: ''" >
-              <div id="${varUID}"
-                   class="ui-widget-content text-view text-view-${typeClassAddition} ${padding}">
-                <div id="gallery-link">
-                  <a tal:condition="isArticle"
-                     class="article-header"
-                     href="${context/absolute_url}/articles/${article/id}${view/getArgs}"
-                     tal:content="article/title" />
-                  <a tal:condition="isImage"
-                     class="article-header"
-                     href="${context/absolute_url}/articles/${article/id}${view/getArgs}">
-                    <img tal:attributes="src string:${article/absolute_url}/@@images/image;
-                                         alt article/title" />
-                  </a>
-                  <a tal:condition="isComment"
-                     class="comment-header"
-                     href="${context/absolute_url}/articles/${article/id}${view/getArgs}"
-                     tal:content="structure python: view.shorten_text(article.text)" />
-                  <a tal:condition="isAnnotation"
-                     class="annotation-header"
-                     href="${context/absolute_url}/articles/${article/id}${view/getArgs}"
-                     tal:content="structure python: view.shorten_text(article.quote)" />
-                </div>
-                <p class="article-body" tal:condition="isArticle">
-                  <a tal:content="article/description"
-                     href="${context/absolute_url}/articles/${article/id}${view/getArgs}"></a>
-                </p>
-                <p tal:condition="isArticle" class="content-type">
-                  <span class="red" i18n:translate="">article</span>
-                </p>
-                <p tal:condition="isComment" class="content-type">
-                  <span class="red" i18n:translate="">comment</span>
-                </p>
-                <p tal:condition="isImage" class="content-type">
-                  <span class="red" i18n:translate="">image</span>
-                </p>
-                <p tal:condition="isAnnotation" class="content-type">
-                  <span class="red" i18n:translate="">annotation</span>
-                </p>
-              </div>
-            </tal:block>
-          </tal:block>
-        </div>
 
+        <div class="articles-intersection"></div>
         <div class="articles-union">
           <tal:block repeat="article python: articles['union']">
             <tal:block tal:define="isArticle python: article.portal_type == 'tribuna.content.article';
