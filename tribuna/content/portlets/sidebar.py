@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Portlet for filterting/searching the content."""
 
 from five import grok
@@ -156,7 +158,7 @@ def default_use_filters(data):
 class SidebarForm(form.SchemaForm):
     """ Defining form handler for sidebar portlet
     """
-    grok.name('my-form')
+    grok.name('tribuna-sidebar')
     grok.require('zope2.View')
     grok.context(ISiteRoot)
 
