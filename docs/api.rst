@@ -35,6 +35,12 @@ Views
 .. automodule:: tribuna.content.search
     :members:
 
+Portlets
+========
+
+.. automodule:: tribuna.content.portlets.sidebar
+    :members:
+
 Behaviors
 =========
 
