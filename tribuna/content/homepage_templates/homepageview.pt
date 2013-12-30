@@ -196,7 +196,6 @@
                                  isAnnotation python: article.portal_type == 'tribuna.annotator.annotation';
                                  typeClassAddition python: (isArticle and 'article') or (isComment and 'comment') or (isImage and 'image') or (isAnnotation and 'annotation');
                                  articleWithImage python: (isArticle and not article.image) and 'article-no-image' or '';
-                                 articleWithImage python: (isArticle and not article.image) and 'article-no-image' or '';
                                  varUID python: isComment and article.getId() or article.UID()">
             <div id="${varUID}" class="ui-widget-content drag-view-${typeClassAddition} ${articleWithImage}">
               <img tal:condition="isArticle"
@@ -207,22 +206,23 @@
                                    alt article/title" />
               <div id="text">
                 <div id="gallery-link">
-                  <a tal:condition="python: isArticle and article.article_author"
-                     class="article-author"
-                     href="${context/absolute_url}/articles/${article/id}${view/getArgs}"
-                     tal:content="article/article_author" />
-                  <br tal:condition="python: isArticle and article.article_author">
-                  <br tal:condition="python: isArticle and article.article_author">
-                  <a tal:condition="isArticle"
-                     class="article-header"
-                     href="${context/absolute_url}/articles/${article/id}${view/getArgs}"
-                     tal:content="article/title" />
-                  <br tal:condition="isArticle">
-                  <a tal:condition="python: isArticle and article.subtitle"
-                     class="article-subtitle"
-                     href="${context/absolute_url}/articles/${article/id}${view/getArgs}"
-                     tal:content="article/subtitle" />
-
+                  <tal:block tal:condition="isArticle">
+                    <tal:block tal:condition="article/article_author">
+                      <a class="article-author"
+                         href="${context/absolute_url}/articles/${article/id}${view/getArgs}"
+                         tal:content="article/article_author" />
+                      <br />
+                      <br />
+                    </tal:block>
+                    <a class="article-header"
+                       href="${context/absolute_url}/articles/${article/id}${view/getArgs}"
+                       tal:content="article/title" />
+                    <br />
+                    <a tal:condition="article/subtitle"
+                       class="article-subtitle"
+                       href="${context/absolute_url}/articles/${article/id}${view/getArgs}"
+                       tal:content="article/subtitle" />
+                  </tal:block>
                   <a tal:condition="isImage"
                      class="image-header"
                      href="${context/absolute_url}/articles/${article/id}${view/getArgs}"
