@@ -6,7 +6,7 @@ One of the packages used for Tribuna webpage. Managed by ``tribuna.buildout``.
 
 Contains custom content types, views and other utility code.
 
-* `Source code @ GitHub <https://github.com/termitnjak/tribuna.content>`_
+* `Source code @ GitHub <https://github.com/tribunasi/tribuna.content>`_
 
 
 Installation
