@@ -17,7 +17,7 @@ long_description = \
 
 setup(
     name='tribuna.content',
-    version='0.1',
+    version='0.2dev',
     description="Content types for Tribuna webpage",
     long_description=long_description,
     # Get more from http://pypi.python.org/pypi?%3Aaction=list_classifiers
