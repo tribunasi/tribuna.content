@@ -1,0 +1,11 @@
+.*
+*.pyc
+bin
+src
+var
+parts
+develop-eggs
+include
+lib
+local
+tribuna.content.egg*
