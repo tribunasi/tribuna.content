@@ -67,4 +67,13 @@
         template="browser/templates/tribuna_search.pt"
         />
 
+    <browser:page
+      for="*"
+      name="sitemap_builder_view"
+      class=".sitemap.CatalogSiteMap"
+      permission="zope.Public"
+      allowed_attributes="siteMap"
+      layer="tribuna.content.interfaces.ITribunaContentLayer"
+      />
+
 </configure>

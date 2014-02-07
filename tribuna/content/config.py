@@ -24,3 +24,9 @@ TYPE_TO_VIEW = {
     'tribuna.content.article': 'view',
     'tribuna.annotator.annotation': 'view',
 }
+
+SITEMAP_SETTINGS = (
+    ('/tags-folder', '/tags', ['tribuna.content.tag', 'Folder']),
+    ('/articles-folder', '/articles', ['tribuna.content.article', 'Folder']),
+    ('/images-folder', '/articles', ['tribuna.content.image', 'Folder']),
+)
