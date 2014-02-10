@@ -76,4 +76,12 @@
       layer="tribuna.content.interfaces.ITribunaContentLayer"
       />
 
+    <browser:page
+      name="sitemap.xml.gz"
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
+      class=".sitemap.SiteMapView"
+      permission="zope2.Public"
+      layer="tribuna.content.interfaces.ITribunaContentLayer"
+     />
+
 </configure>
