@@ -333,6 +333,12 @@ class TagsView(grok.View):
         :rtype:   Dict
         """
         title = tags_published_dict().get(self.request.form.get("tags"))
+        # If there are no published tags with this title, return defaults
+        if not title:
+            return {
+                'text': '',
+                'image': None,
+            }
         with api.env.adopt_user('tags_user'):
             catalog = api.portal.get_tool(name='portal_catalog')
             tag = catalog(
